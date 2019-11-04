@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="SafariExtensionViewController" customModule="redditweaks2_Extension" customModuleProvider="target">
+            <connections>
+                <outlet property="nsfwCountField" destination="Ayr-Qy-nzD" id="hzy-2p-bW5"/>
+                <outlet property="nsfwFilterContextTabs" destination="d7c-YH-cJG" id="Om0-t3-6K3"/>
+                <outlet property="nsfwFilterSwitch" destination="zEc-fF-zsW" id="IPL-7L-JUr"/>
+                <outlet property="view" destination="c22-O7-iKe" id="vwT-Xx-Aiz"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="240" height="158"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Iy-aV-wGF">
+                    <rect key="frame" x="28" y="105" width="184" height="33"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="redditweaks" id="2Ec-kd-q2K">
+                        <font key="font" metaFont="systemBlack" size="28"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <box title="NSFW Filter" translatesAutoresizingMaskIntoConstraints="NO" id="gGf-gY-TVY">
+                    <rect key="frame" x="5" y="16" width="230" height="81"/>
+                    <view key="contentView" id="LMg-Qa-Y8N">
+                        <rect key="frame" x="3" y="3" width="224" height="63"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="zEc-fF-zsW">
+                                <rect key="frame" x="7" y="35" width="42" height="21"/>
+                                <connections>
+                                    <action selector="toggleNSFW:" target="-2" id="fZX-1O-YVA"/>
+                                </connections>
+                            </switch>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ayr-Qy-nzD">
+                                <rect key="frame" x="53" y="37" width="68" height="18"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" placeholderString="0 blocked" id="3fE-BM-gVe">
+                                    <font key="font" metaFont="systemBold"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d7c-YH-cJG">
+                                <rect key="frame" x="13" y="6" width="198" height="24"/>
+                                <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="nNG-Pw-1Tv">
+                                    <font key="font" metaFont="system"/>
+                                    <segments>
+                                        <segment label="Global" width="64" selected="YES"/>
+                                        <segment label="r/All" width="63" tag="1"/>
+                                        <segment label="Subs" width="63"/>
+                                    </segments>
+                                </segmentedCell>
+                                <connections>
+                                    <action selector="changeFilterContext:" target="-2" id="QTq-dg-4Te"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Ayr-Qy-nzD" firstAttribute="top" secondItem="LMg-Qa-Y8N" secondAttribute="top" constant="8" id="7ea-27-8Tk"/>
+                            <constraint firstItem="Ayr-Qy-nzD" firstAttribute="leading" secondItem="zEc-fF-zsW" secondAttribute="trailing" constant="8" symbolic="YES" id="82Q-HA-56J"/>
+                            <constraint firstItem="d7c-YH-cJG" firstAttribute="top" secondItem="zEc-fF-zsW" secondAttribute="bottom" constant="8" symbolic="YES" id="C55-bC-exZ"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ayr-Qy-nzD" secondAttribute="trailing" constant="20" symbolic="YES" id="HCg-9x-5ug"/>
+                            <constraint firstAttribute="bottom" secondItem="d7c-YH-cJG" secondAttribute="bottom" constant="8" id="HR1-xd-bXj"/>
+                            <constraint firstItem="d7c-YH-cJG" firstAttribute="centerX" secondItem="LMg-Qa-Y8N" secondAttribute="centerX" id="PW4-LG-FP6"/>
+                            <constraint firstItem="zEc-fF-zsW" firstAttribute="top" secondItem="LMg-Qa-Y8N" secondAttribute="top" constant="8" id="eoG-nx-MR0"/>
+                            <constraint firstItem="zEc-fF-zsW" firstAttribute="leading" secondItem="LMg-Qa-Y8N" secondAttribute="leading" constant="9" id="mhI-cU-g1b"/>
+                            <constraint firstItem="zEc-fF-zsW" firstAttribute="centerY" secondItem="Ayr-Qy-nzD" secondAttribute="centerY" id="oqc-PJ-WWZ"/>
+                        </constraints>
+                    </view>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="224" id="DyZ-hl-Nxb"/>
+                        <constraint firstAttribute="height" constant="77" id="xk1-xz-zVF"/>
+                    </constraints>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstItem="4Iy-aV-wGF" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="5bm-W4-NwU"/>
+                <constraint firstItem="gGf-gY-TVY" firstAttribute="centerX" secondItem="4Iy-aV-wGF" secondAttribute="centerX" id="6RP-Ko-GPd"/>
+                <constraint firstItem="gGf-gY-TVY" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="8" id="BmF-us-D1M"/>
+                <constraint firstAttribute="bottom" secondItem="gGf-gY-TVY" secondAttribute="bottom" constant="20" symbolic="YES" id="HiK-EA-qTR"/>
+                <constraint firstItem="4Iy-aV-wGF" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="30" id="sG6-O7-i2q"/>
+                <constraint firstItem="4Iy-aV-wGF" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" id="sSA-Nx-Y0Y"/>
+                <constraint firstItem="gGf-gY-TVY" firstAttribute="top" secondItem="4Iy-aV-wGF" secondAttribute="bottom" constant="8" symbolic="YES" id="yV5-Vj-Bfa"/>
+            </constraints>
+            <point key="canvasLocation" x="-33" y="258.5"/>
+        </customView>
+    </objects>
+</document>
