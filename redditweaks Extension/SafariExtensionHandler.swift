@@ -12,10 +12,10 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
 
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
         switch messageName {
-            case "shouldFilterNSFW":
+            case "redditweaks.domLoaded":
                 SafariExtensionViewController.shared.count = 0
                 SafariExtensionViewController.shared.updateFilter()
-            case "+over18":
+            case "redditweaks.incrementNSFWCounter":
                 SafariExtensionViewController.shared.count += 1
             default:
                 return
