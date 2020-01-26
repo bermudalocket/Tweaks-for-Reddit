@@ -10,7 +10,6 @@
 		8949C04623DD582D002CF0C0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8949C04223DD5810002CF0C0 /* LICENSE */; };
 		8949C04723DD582E002CF0C0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8949C04223DD5810002CF0C0 /* LICENSE */; };
 		8949C04923DD5C91002CF0C0 /* preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 8949C04823DD5C90002CF0C0 /* preview.png */; };
-		8949C04C23DD5E63002CF0C0 /* .xcodesamplecode.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8949C04B23DD5E63002CF0C0 /* .xcodesamplecode.plist */; };
 		895A8ED023DD4548000CD345 /* new-toolbar.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 895A8ECF23DD4548000CD345 /* new-toolbar.pdf */; };
 		8983812123DBF892004F4BA7 /* jquery-3.4.1.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 8983812023DBF892004F4BA7 /* jquery-3.4.1.min.js */; };
 		8983812323DBFF81004F4BA7 /* NSControl.StateValue+fromBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8983812223DBFF81004F4BA7 /* NSControl.StateValue+fromBool.swift */; };
@@ -246,7 +245,6 @@
 			files = (
 				99C7C2F1235D81A700ABA6EA /* redditweaks.entitlements in Resources */,
 				99C7C2FA235D81AA00ABA6EA /* Assets.xcassets in Resources */,
-				8949C04C23DD5E63002CF0C0 /* .xcodesamplecode.plist in Resources */,
 				8949C04623DD582D002CF0C0 /* LICENSE in Resources */,
 				99C7C2F6235D81A700ABA6EA /* Main.storyboard in Resources */,
 			);
