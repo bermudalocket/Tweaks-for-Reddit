@@ -9,20 +9,26 @@
 import Cocoa
 import SafariServices.SFSafariApplication
 
+import AVFoundation
+
 class ViewController: NSViewController {
 
+    static let shared: ViewController = {
+        ViewController()
+    }()
+
     @IBOutlet var appNameLabel: NSTextField!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.appNameLabel.stringValue = "redditweaks";
     }
-    
+
     @IBAction func openSafariExtensionPreferences(_ sender: AnyObject?) {
         SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks-Extension") { error in
             if let error = error {
                 // Insert code to inform the user that something went wrong.
-                NSLog("error: \(error.localizedDescription )")
+                NSLog("error: \(error.localizedDescription)")
             }
         }
     }

@@ -1,147 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SafariExtensionViewController" customModule="redditweaks_Extension" customModuleProvider="target">
             <connections>
-                <outlet property="hideNewRedditButton" destination="WL6-w5-RBJ" id="41E-Yn-JOR"/>
-                <outlet property="hideRedditPremiumAd" destination="ma1-sq-hAW" id="lEa-uS-Nm7"/>
-                <outlet property="nsfwFilterContextTabs" destination="d7c-YH-cJG" id="Om0-t3-6K3"/>
-                <outlet property="nsfwFilterSwitch" destination="Uc6-aQ-chD" id="FP9-HF-WUm"/>
+                <outlet property="toggleableFeaturesStackView" destination="XHI-Xw-RHm" id="ZNN-5z-kDH"/>
+                <outlet property="versionLabel" destination="oxx-oX-3c7" id="bYb-D0-u8z"/>
                 <outlet property="view" destination="c22-O7-iKe" id="vwT-Xx-Aiz"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe">
-            <rect key="frame" x="0.0" y="0.0" width="267" height="267"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <rect key="frame" x="0.0" y="0.0" width="351" height="472"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <box title="NSFW Filter" translatesAutoresizingMaskIntoConstraints="NO" id="gGf-gY-TVY">
-                    <rect key="frame" x="5" y="16" width="257" height="81"/>
-                    <view key="contentView" id="LMg-Qa-Y8N">
-                        <rect key="frame" x="3" y="3" width="251" height="64"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d7c-YH-cJG">
-                                <rect key="frame" x="26" y="6" width="199" height="24"/>
-                                <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="nNG-Pw-1Tv">
-                                    <font key="font" metaFont="system"/>
-                                    <segments>
-                                        <segment label="Global" width="64" selected="YES"/>
-                                        <segment label="r/All" width="63" tag="1"/>
-                                        <segment label="Subs" width="63"/>
-                                    </segments>
-                                </segmentedCell>
-                                <connections>
-                                    <action selector="changeFilterContext:" target="-2" id="QTq-dg-4Te"/>
-                                </connections>
-                            </segmentedControl>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Uc6-aQ-chD">
-                                <rect key="frame" x="6" y="38" width="78" height="18"/>
-                                <buttonCell key="cell" type="check" title="0 hidden" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Y0A-zR-nrA">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="systemSemibold" size="13"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="toggleNSFW:" target="-2" id="ZnK-P2-Grc"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="Uc6-aQ-chD" firstAttribute="leading" secondItem="LMg-Qa-Y8N" secondAttribute="leading" constant="8" id="4KC-XO-YS7"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Uc6-aQ-chD" secondAttribute="trailing" constant="20" symbolic="YES" id="Au9-gs-8xE"/>
-                            <constraint firstItem="d7c-YH-cJG" firstAttribute="top" secondItem="Uc6-aQ-chD" secondAttribute="bottom" constant="11" id="GAf-Sq-Ceb"/>
-                            <constraint firstAttribute="bottom" secondItem="d7c-YH-cJG" secondAttribute="bottom" constant="8" id="HR1-xd-bXj"/>
-                            <constraint firstItem="d7c-YH-cJG" firstAttribute="centerX" secondItem="LMg-Qa-Y8N" secondAttribute="centerX" id="PW4-LG-FP6"/>
-                            <constraint firstAttribute="trailing" secondItem="d7c-YH-cJG" secondAttribute="trailing" constant="28" id="qD9-hP-FDu"/>
-                        </constraints>
-                    </view>
+                <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9RA-VB-bUB">
+                    <rect key="frame" x="20" y="20" width="311" height="432"/>
+                    <subviews>
+                        <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v1j-a4-sHm">
+                            <rect key="frame" x="8" y="374" width="200" height="50"/>
+                            <subviews>
+                                <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X67-Hm-znr">
+                                    <rect key="frame" x="0.0" y="17" width="200" height="33"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Iy-aV-wGF">
+                                            <rect key="frame" x="-2" y="0.0" width="174" height="33"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="redditweaks" id="2Ec-kd-q2K">
+                                                <font key="font" metaFont="systemHeavy" size="28"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oxx-oX-3c7">
+                                            <rect key="frame" x="176" y="4" width="26" height="16"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="v1.1" id="z46-0i-YDM">
+                                                <font key="font" metaFont="label" size="13"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="oxx-oX-3c7" secondAttribute="bottom" constant="4" id="gnO-d1-nhL"/>
+                                    </constraints>
+                                    <visibilityPriorities>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                    </visibilityPriorities>
+                                    <customSpacing>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                    </customSpacing>
+                                </stackView>
+                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dCK-rG-YM9">
+                                    <rect key="frame" x="0.0" y="-1" width="45" height="14"/>
+                                    <buttonCell key="cell" type="inline" title="GitHub" bezelStyle="inline" alignment="center" borderStyle="border" inset="2" id="13s-b3-Dyi">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="systemBold" size="9"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="openRepoInBrowser:" target="-2" id="V2N-Bp-ScE"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                        <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="HtI-qC-2gH">
+                            <rect key="frame" x="8" y="363" width="252" height="5"/>
+                        </box>
+                        <stackView autoresizesSubviews="NO" distribution="fillEqually" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XHI-Xw-RHm">
+                            <rect key="frame" x="8" y="8" width="295" height="349"/>
+                        </stackView>
+                    </subviews>
+                    <edgeInsets key="edgeInsets" left="8" right="8" top="8" bottom="8"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="251" id="DyZ-hl-Nxb"/>
-                        <constraint firstAttribute="height" constant="77" id="xk1-xz-zVF"/>
+                        <constraint firstItem="XHI-Xw-RHm" firstAttribute="leading" secondItem="9RA-VB-bUB" secondAttribute="leading" constant="8" id="2aH-fF-gLM"/>
+                        <constraint firstAttribute="trailing" secondItem="XHI-Xw-RHm" secondAttribute="trailing" constant="8" id="Hgv-bk-zC5"/>
+                        <constraint firstAttribute="bottom" secondItem="XHI-Xw-RHm" secondAttribute="bottom" constant="8" id="J4o-UF-CEC"/>
+                        <constraint firstItem="XHI-Xw-RHm" firstAttribute="top" secondItem="HtI-qC-2gH" secondAttribute="bottom" constant="8" id="W5v-P3-hEf"/>
                     </constraints>
-                    <font key="titleFont" size="11" name="SFProDisplay-Regular"/>
-                </box>
-                <box title="Annoyances" translatesAutoresizingMaskIntoConstraints="NO" id="FUd-Ia-4Px">
-                    <rect key="frame" x="5" y="101" width="257" height="105"/>
-                    <view key="contentView" id="cZd-nl-wBg">
-                        <rect key="frame" x="3" y="3" width="251" height="88"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ma1-sq-hAW">
-                                <rect key="frame" x="6" y="25" width="146" height="18"/>
-                                <buttonCell key="cell" type="check" title="Remove premium ad" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="1Ug-Ft-euj">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="togglePremiumAd:" target="-2" id="rAa-PX-BMJ"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WL6-w5-RBJ">
-                                <rect key="frame" x="6" y="45" width="235" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="14X-Ds-MjA"/>
-                                </constraints>
-                                <buttonCell key="cell" type="check" title="Remove top-left new Reddit button" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="t0j-pg-A1E">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="toggleNewRedditButton:" target="-2" id="e9Y-d2-Zim"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ma1-sq-hAW" secondAttribute="trailing" constant="20" symbolic="YES" id="0hB-er-sNH"/>
-                            <constraint firstItem="WL6-w5-RBJ" firstAttribute="leading" secondItem="ma1-sq-hAW" secondAttribute="leading" id="KJX-UN-GmI"/>
-                            <constraint firstItem="WL6-w5-RBJ" firstAttribute="top" secondItem="cZd-nl-wBg" secondAttribute="top" constant="11" id="Mmm-c5-hjX"/>
-                            <constraint firstItem="ma1-sq-hAW" firstAttribute="top" secondItem="WL6-w5-RBJ" secondAttribute="bottom" constant="6" symbolic="YES" id="alK-nC-Je9"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WL6-w5-RBJ" secondAttribute="trailing" constant="12" id="cHx-n3-sHP"/>
-                            <constraint firstItem="WL6-w5-RBJ" firstAttribute="leading" secondItem="cZd-nl-wBg" secondAttribute="leading" constant="8" id="gld-zo-ysi"/>
-                        </constraints>
-                    </view>
-                    <font key="titleFont" size="11" name="SFProDisplay-Regular"/>
-                </box>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oxx-oX-3c7">
-                    <rect key="frame" x="196" y="217" width="26" height="16"/>
-                    <textFieldCell key="cell" lineBreakMode="clipping" title="v1.1" id="z46-0i-YDM">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Iy-aV-wGF">
-                    <rect key="frame" x="18" y="214" width="194" height="33"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="redditweaks" id="2Ec-kd-q2K">
-                        <font key="font" metaFont="systemBlack" size="28"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
             </subviews>
             <constraints>
-                <constraint firstItem="4Iy-aV-wGF" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" constant="-18.5" id="5bm-W4-NwU"/>
-                <constraint firstItem="gGf-gY-TVY" firstAttribute="centerX" secondItem="4Iy-aV-wGF" secondAttribute="centerX" constant="18.5" id="6RP-Ko-GPd"/>
-                <constraint firstItem="gGf-gY-TVY" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="8" id="BmF-us-D1M"/>
-                <constraint firstAttribute="bottom" secondItem="gGf-gY-TVY" secondAttribute="bottom" constant="20" symbolic="YES" id="HiK-EA-qTR"/>
-                <constraint firstItem="FUd-Ia-4Px" firstAttribute="trailing" secondItem="gGf-gY-TVY" secondAttribute="trailing" id="JMV-by-Nf5"/>
-                <constraint firstItem="oxx-oX-3c7" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="198" id="Ty6-TI-T0M"/>
-                <constraint firstItem="oxx-oX-3c7" firstAttribute="baseline" secondItem="4Iy-aV-wGF" secondAttribute="baseline" id="ahH-G5-lc3"/>
-                <constraint firstItem="FUd-Ia-4Px" firstAttribute="top" secondItem="oxx-oX-3c7" secondAttribute="bottom" constant="11" id="j8l-eV-OJf"/>
-                <constraint firstItem="FUd-Ia-4Px" firstAttribute="leading" secondItem="gGf-gY-TVY" secondAttribute="leading" id="keQ-52-SIZ"/>
-                <constraint firstItem="4Iy-aV-wGF" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="sG6-O7-i2q"/>
-                <constraint firstItem="4Iy-aV-wGF" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" id="sSA-Nx-Y0Y"/>
-                <constraint firstItem="gGf-gY-TVY" firstAttribute="top" secondItem="FUd-Ia-4Px" secondAttribute="bottom" constant="8" symbolic="YES" id="uV3-0g-9r4"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="oxx-oX-3c7" secondAttribute="trailing" constant="20" symbolic="YES" id="wSf-c0-rsD"/>
-                <constraint firstItem="gGf-gY-TVY" firstAttribute="top" secondItem="4Iy-aV-wGF" secondAttribute="bottom" constant="117" id="yV5-Vj-Bfa"/>
+                <constraint firstItem="9RA-VB-bUB" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" symbolic="YES" id="92j-EL-tRA"/>
+                <constraint firstAttribute="bottom" secondItem="9RA-VB-bUB" secondAttribute="bottom" constant="20" symbolic="YES" id="Da6-hr-JGh"/>
+                <constraint firstItem="9RA-VB-bUB" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" symbolic="YES" id="GTY-Dd-RtI"/>
+                <constraint firstAttribute="trailing" secondItem="9RA-VB-bUB" secondAttribute="trailing" constant="20" symbolic="YES" id="aPF-o7-Jfe"/>
             </constraints>
-            <point key="canvasLocation" x="-19.5" y="312.5"/>
+            <point key="canvasLocation" x="-105.5" y="262"/>
         </customView>
     </objects>
 </document>
