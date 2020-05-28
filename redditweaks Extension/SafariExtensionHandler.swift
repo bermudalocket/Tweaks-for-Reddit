@@ -1,23 +1,61 @@
 //
-//  SafariExtensionHandler.swift
-//  redditweaks2 Extension
+//  Model.swift
+//  redditweaks Extension
 //
-//  Created by bermudalocket on 10/21/19.
-//  Copyright © 2019 bermudalocket. All rights reserved.
+//  Created by Michael Rippe on 5/2/20.
+//  Copyright © 2020 bermudalocket. All rights reserved.
 //
 
+import Cocoa
+import Foundation
 import SafariServices
-import SwiftUI
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
 
-    @objc static func sendScriptToSafariPage(_ script: String) {
+    static let shared = SafariExtensionHandler()
+
+    let model = Model()
+
+    lazy var viewController = SafariExtensionViewController(model: self.model)
+
+    override func popoverViewController() -> SFSafariExtensionViewController {
+        self.viewController
+    }
+
+    override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
+        if messageName == "redditweaks.onDomLoaded" {
+            self.model.features
+                .filter { $0.value }
+                .map { $0.key }
+                .forEach(self.sendScriptToSafariPage(_:))
+        }
+    }
+
+    internal func sendScriptToSafariPage(_ feature: Feature) {
         SFSafariApplication.getActiveWindow { window in
-            window?.getActiveTab { tab in
-                tab?.getActivePage { page in
+            guard let window = window else {
+                NSLog("Couldn't send script to page b/c getActiveWindow was nil")
+                return
+            }
+            window.getActiveTab { tab in
+                guard let tab = tab else {
+                    NSLog("Couldn't send script to page b/c getActiveTab was nil")
+                    return
+                }
+                tab.getActivePage { page in
                     guard let page = page else {
-                        NSLog("Failed to fetch page for script \(script)")
+                        NSLog("Couldn't send script to page b/c getActivePage was nil")
                         return
+                    }
+                    guard var script = self.model.features[feature]! ? feature.javascript : feature.javascriptOff else {
+                        NSLog("Couldn't send script to page b/c the script itself was nil")
+                        return
+                    }
+                    if feature.name == "customSubredditBar",
+                        let subs = UserDefaults.standard.string(forKey: "customSubsArray"),
+                        let disabled = UserDefaults.standard.array(forKey: "disabledShortcuts") {
+                        script = script.replacingOccurrences(of: "%SUBS%", with: subs)
+                        script = script.replacingOccurrences(of: "%DISABLEDSHORTCUTS%", with: disabled.compactMap { $0 as? Int }.compactMap { "\($0)" }.joined(separator: ",") )
                     }
                     page.dispatchMessageToScript(withName: "redditweaks.script", userInfo: [
                         "script": script
@@ -27,31 +65,5 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         }
     }
 
-    override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping (Bool, String) -> Void) {
-        let numberOfFilteredPosts = SafariExtensionViewController.shared.numberOfFilteredPosts
-        let badge = numberOfFilteredPosts == 0 ? "" : "\(numberOfFilteredPosts)"
-        validationHandler(true, badge)
-    }
-
-    override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
-        if messageName == "redditweaks.incrementCounter" {
-            SafariExtensionViewController.shared.numberOfFilteredPosts += 1
-        } else if messageName == "redditweaks.decrementCounter" {
-            SafariExtensionViewController.shared.numberOfFilteredPosts -= 1
-        } else if messageName == "redditweaks.resetCounter" {
-            SafariExtensionViewController.shared.numberOfFilteredPosts = 0
-        } else if messageName == "redditweaks.onDomLoaded" {
-            page.getPropertiesWithCompletionHandler { properties in
-                guard let properties = properties, let url = properties.url else {
-                    return
-                }
-                SafariExtensionViewController.shared.pageLoaded(url)
-            }
-        }
-    }
-
-    override func popoverViewController() -> SFSafariExtensionViewController {
-        SafariExtensionViewController.shared
-    }
-
 }
+

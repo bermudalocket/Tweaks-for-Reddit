@@ -5,9 +5,31 @@
 
 import Foundation
 
-class Feature {
+struct Feature: Hashable {
+
+    let name: String
+
+    let description: String
+
+    let javascript: String
+
+    let javascriptOff: String?
+
+    init(name: String, description: String, javascript: String, javascriptOff: String? = nil) {
+        self.name = name
+        self.description = description
+        self.javascript = javascript
+        self.javascriptOff = javascriptOff
+    }
+
+}
+
+extension Feature {
 
     static let features: [Feature] = [
+        Feature.noChat,
+        Feature.showKarma,
+        Feature.customSubredditBar,
         Feature.hideAds,
         Feature.removePromotedPosts,
         Feature.hideUsername,
@@ -27,20 +49,66 @@ class Feature {
         return nil
     }
 
-    let name: String
+    static let noChat = Feature(name: "noChat", description: "Remove chat", javascript: """
+        watchForChildren(document.body, "script", (ele) => {
+            const script = ele;
+            if ((/^\\/_chat/).test(new URL(script.src, location.origin).pathname)) {
+                script.remove();
+            }
+        });
 
-    let description: String
+        watchForChildren(document.body, '#chat-app', ele => {
+            ele.remove();
+        });
+    """, javascriptOff: """
+        location.reload();
+    """)
 
-    let javascript: String
+    static let showKarma = Feature(name: "showKarma", description: "Show karma", javascript: """
+        let username = $('.user a').text();
+        let url = `https://www.reddit.com/user/${username}`;
 
-    let javascriptOff: String?
+        let karmaArea = $('span .userkarma');
+        let karma = karmaArea.text();
+        karmaArea.html(`<a href='${url}/submitted/'>${karma}</a>`);
 
-    init(name: String, description: String, javascript: String, javascriptOff: String? = nil) {
-        self.name = name
-        self.description = description
-        self.javascript = javascript
-        self.javascriptOff = javascriptOff
-    }
+        let userHTML = $.get(url, function(data) {
+            let ck = $(data).find('.comment-karma').text();
+            let cmturl = `<a href='${url}/comments/'>${ck}</a>`;
+            $('span .userkarma').append(" | " + cmturl);
+        });
+    """, javascriptOff: "location.reload();")
+
+    static let customSubredditBar = Feature(
+        name: "customSubredditBar",
+        description: "Custom subreddit bar",
+        javascript: """
+            let span = `<span class='separator'>-</span>`;
+            let subs = [%SUBS%];
+            $('#sr-header-area ul').last().children().each(function(i) {
+                if (i >= subs.length) {
+                    $(this).hide();
+                    return;
+                }
+                let sub = subs[i];
+                let html = `<a class='choice' href='https://www.reddit.com/r/${sub}'>${sub}</a>`;
+                if (i < subs.length - 1) {
+                    html = `${html}${span}`
+                }
+                $(this).html(html);
+            });
+
+            let disable = [%DISABLEDSHORTCUTS%];
+            $('#sr-header-area ul').first().children().each(function(i) {
+                if (disable.includes(i + 1)) {
+                    $(this).hide();
+                }
+            });
+        """,
+        javascriptOff: """
+            location.reload();
+        """
+    )
 
     static let hideAds = Feature(
         name: "hideAds",
@@ -48,13 +116,11 @@ class Feature {
         javascript: """
             $('.ad-container, .ad-container, #ad_1').each(function() {
                 $(this).remove();
-                safari.extension.dispatchMessage("redditweaks.incrementCounter");
             });
         """,
         javascriptOff: """
             $('.ad-container, .ad-container ').each(function() {
                 $(this).show();
-                safari.extension.dispatchMessage("redditweaks.decrementCounter");
             });
         """
     )
@@ -65,13 +131,11 @@ class Feature {
         javascript: """
             $('.promoted').each(function() {
                 $(this).hide();
-                safari.extension.dispatchMessage("redditweaks.incrementCounter");
             });
         """,
         javascriptOff: """
             $('.promoted').each(function() {
                 $(this).show();
-                safari.extension.dispatchMessage("redditweaks.decrementCounter");
             });
         """
     )
@@ -80,12 +144,10 @@ class Feature {
         name: "hideUsername",
         description: "Remove username from user bar",
         javascript: """
-            let stuff = $('#header-bottom-right span').html();
-            localStorage.setItem('redditweaks.usernameinfo', stuff);
-            $('#header-bottom-right span').html('');
+            $('#header-bottom-right .user a').first().hide();
         """,
         javascriptOff: """
-            $('#header-bottom-right span').first().html(localStorage.getItem('redditweaks.usernameinfo'));
+            $('#header-bottom-right .user a').first().show();
         """
     )
 
