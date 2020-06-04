@@ -2,11 +2,6 @@ document.addEventListener("DOMContentLoaded", onDomLoad);
 
 safari.self.addEventListener("message", processEvent);
 
-Object.defineProperty(navigator, 'userAgent', {
-    get: function () { return 'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0)'; }
-    }
-);
-
 function watchForChildren(ele, selector, callback) {
     for (const child of Array.from(ele.children).filter(child => child.matches(selector))) {
         callback(child);
