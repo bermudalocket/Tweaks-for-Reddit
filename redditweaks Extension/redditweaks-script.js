@@ -7,8 +7,6 @@ Object.defineProperty(navigator, 'userAgent', {
     }
 );
 
-console.log("ayo");
-
 function watchForChildren(ele, selector, callback) {
     for (const child of Array.from(ele.children).filter(child => child.matches(selector))) {
         callback(child);
