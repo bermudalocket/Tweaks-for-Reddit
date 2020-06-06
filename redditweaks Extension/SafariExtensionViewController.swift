@@ -30,8 +30,8 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     }()
 
     lazy var versionView: NSTextField = {
-        let appVersionString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "???"
-        let view = NSTextField(labelWithString: "v\(appVersionString)")
+        let appVersionString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let view = NSTextField(labelWithString: "v\(appVersionString ?? "")")
         view.font = .systemFont(ofSize: 14, weight: .regular)
         return view
     }()
@@ -143,7 +143,9 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         self.model.features.sorted {
             $0.key.description < $1.key.description
         }.forEach { (feature, state) in
-            let button = NSButton(checkboxWithTitle: feature.description, target: self, action: #selector(changeFeatureState(_:)))
+            let button = NSButton(checkboxWithTitle: feature.description,
+                                  target: self,
+                                  action: #selector(changeFeatureState(_:)))
             button.state = .fromBool(state)
             self.featuresList.addArrangedSubview(button)
         }
@@ -167,9 +169,8 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         let shortcut = sender.title
         let shortcuts = ["home", "popular", "all", "random", "myrandom", "friends", "mod", "users"]
         let index = shortcuts.firstIndex(of: shortcut)!
-        let state = sender.state == .on
         if var disabled = UserDefaults.standard.array(forKey: "disabledShortcuts") as? [Int] {
-            if (state) {
+            if sender.state == .on {
                 disabled.append(Int(index))
             } else {
                 disabled.removeAll { $0 == index }

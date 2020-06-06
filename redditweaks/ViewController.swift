@@ -21,12 +21,12 @@ class ViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.appNameLabel.stringValue = "redditweaks";
+        self.appNameLabel.stringValue = "redditweaks"
     }
 
     @IBAction func openSafariExtensionPreferences(_ sender: AnyObject?) {
-        SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks-Extension") { error in
-            if let error = error {
+        SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks-Extension") {
+            if let error = $0 {
                 // Insert code to inform the user that something went wrong.
                 NSLog("error: \(error.localizedDescription)")
             }

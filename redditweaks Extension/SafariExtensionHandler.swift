@@ -22,7 +22,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         self.viewController
     }
 
-    override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
+    override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String: Any]?) {
         if messageName == "redditweaks.onDomLoaded" {
             self.model.features
                 .filter { $0.value }
@@ -52,10 +52,11 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                         return
                     }
                     if feature.name == "customSubredditBar",
-                        let subs = UserDefaults.standard.string(forKey: "customSubsArray"),
-                        let disabled = UserDefaults.standard.array(forKey: "disabledShortcuts") {
+                            let subs = UserDefaults.standard.string(forKey: "customSubsArray"),
+                            let disabled = UserDefaults.standard.array(forKey: "disabledShortcuts") {
+                        let disabledShortcuts = disabled.compactMap { "\($0 as? Int)" }.joined(separator: ",")
                         script = script.replacingOccurrences(of: "%SUBS%", with: subs)
-                        script = script.replacingOccurrences(of: "%DISABLEDSHORTCUTS%", with: disabled.compactMap { $0 as? Int }.compactMap { "\($0)" }.joined(separator: ",") )
+                        script = script.replacingOccurrences(of: "%DISABLEDSHORTCUTS%", with: disabledShortcuts)
                     }
                     page.dispatchMessageToScript(withName: "redditweaks.script", userInfo: [
                         "script": script
@@ -66,4 +67,3 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
 
 }
-

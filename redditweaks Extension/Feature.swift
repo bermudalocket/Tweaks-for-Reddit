@@ -41,12 +41,7 @@ extension Feature {
     ]
 
     static func fromDescription(_ description: String) -> Feature? {
-        for feature in features {
-            if feature.description == description {
-                return feature
-            }
-        }
-        return nil
+        features.first(where: { $0.description == description })
     }
 
     static let noChat = Feature(name: "noChat", description: "Remove chat", javascript: """
@@ -192,7 +187,7 @@ extension Feature {
         name: "hideRedditPremiumBanner",
         description: "Hide Reddit Premium banner",
         javascript: "$('.premium-banner-outer').hide();",
-        javascriptOff: "$('.premium-banner-outer').show();");
+        javascriptOff: "$('.premium-banner-outer').show();")
 
     static let hideNewRedditButton = Feature(
         name: "hideNewRedditButton",
