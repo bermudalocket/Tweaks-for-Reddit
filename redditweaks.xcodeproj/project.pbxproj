@@ -169,6 +169,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 99C7C31B235D81AA00ABA6EA /* Build configuration list for PBXNativeTarget "redditweaks" */;
 			buildPhases = (
+				89310F9B248B66B600B75A01 /* ShellScript */,
 				99C7C2E9235D81A700ABA6EA /* Sources */,
 				99C7C2EA235D81A700ABA6EA /* Frameworks */,
 				99C7C2EB235D81A700ABA6EA /* Resources */,
@@ -277,6 +278,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		89310F9B248B66B600B75A01 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		895A8ECA23DD4190000CD345 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
