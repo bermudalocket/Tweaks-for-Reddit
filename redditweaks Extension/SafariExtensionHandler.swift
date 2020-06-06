@@ -54,7 +54,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                     if feature.name == "customSubredditBar",
                             let subs = UserDefaults.standard.string(forKey: "customSubsArray"),
                             let disabled = UserDefaults.standard.array(forKey: "disabledShortcuts") {
-                        let disabledShortcuts = disabled.compactMap { "\($0 as? Int)" }.joined(separator: ",")
+                        let disabledShortcuts = disabled.compactMap { "\($0 as? Int ?? -1)" }.joined(separator: ",")
                         script = script.replacingOccurrences(of: "%SUBS%", with: subs)
                         script = script.replacingOccurrences(of: "%DISABLEDSHORTCUTS%", with: disabledShortcuts)
                     }
