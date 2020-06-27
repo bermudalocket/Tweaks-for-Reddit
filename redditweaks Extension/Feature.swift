@@ -26,6 +26,12 @@ struct Feature: Hashable {
 
 extension Feature {
 
+    static var sortedFeatures: [Feature] {
+        self.features.sorted { a, b in
+            a.description < b.description
+        }
+    }
+
     static let features: [Feature] = [
         Feature.noChat,
         Feature.showKarma,
