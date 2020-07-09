@@ -11,22 +11,6 @@ import SwiftUI
 import SafariServices
 import WebKit
 
-let APP_ID = "com.bermudalocket.redditweaks"
-let EXTENSION_ID = "com.bermudalocket.redditweaks-Extension"
-let CLIENT_ID = "H6S3-yPygNPNfA"
-
-extension Notification.Name {
-    public static let RDTWKSVerificationNotification = Notification.Name("redditweaks.verify")
-}
-
-struct RedditTokenResponse: Codable {
-    let access_token: String
-    let token_type: String
-    let expires_in: Int
-    let scope: String
-    let refresh_token: String
-}
-
 class OnboardingEnvironment: ObservableObject {
 
     @Published var isSafariExtensionEnabled = false
@@ -34,51 +18,59 @@ class OnboardingEnvironment: ObservableObject {
     @Published var isRedditAuthorized = false
     @Published var isWaitingForRedditAuthToken = false
 
-    @Published var checkForExtensionTimer: AnyCancellable?
-    @Published var isRedditAuthorizedListener: AnyCancellable?
-
-    private var cancellables = [AnyCancellable]()
+    var cancellables = [AnyCancellable]()
 
     init() {
+        // check to see if we already have a valid token
+        Reddit.checkIfTokenIsValid(token: RedditAuthState.shared.accessToken)
+            .receive(on: RunLoop.main)
+            .sink { completion in
+                switch completion {
+                    case .failure(let error):
+                        print("Error: \(error)")
+                        Reddit.refreshAccessToken(RedditAuthState.shared.accessToken.refreshToken)
+                    case .finished: print("finished")
+                }
+            } receiveValue: { valid in
+                if valid {
+                    print("Token exists and is valid")
+                    self.isRedditAuthorized = true
+                    self.isWaitingForRedditAuthToken = false
+                } else {
+                    print("Token exists but is invalid")
+                    Reddit.refreshAccessToken(RedditAuthState.shared.accessToken.refreshToken)
+                }
+            }.store(in: &cancellables)
+
+        // reddit auth callback
         NotificationCenter.default
             .publisher(for: .RDTWKSVerificationNotification)
             .sink { notification in
+                self.isWaitingForRedditAuthToken = true
+                self.isPresentingRedditAuthView = false
                 guard let response = notification.userInfo?["response"] as? RedditAuthResponse else {
+                    // TODO
                     return
                 }
                 if response.error || response.state == "" || response.state != UserDefaults.standard.string(forKey: "lastRandomCode") {
-                    // handle bad state
+                    // TODO
                     return
                 }
-                let login = "\(CLIENT_ID):"
-                    .data(using: .utf8)!
-                    .base64EncodedString()
-                print(login)
-                var request = URLRequest(url: URL(string: "https://www.reddit.com/api/v1/access_token")!)
-                let data = "grant_type=authorization_code&code=\(response.code)&redirect_uri=rdtwks://token".data(using: .utf8)
-                request.httpMethod = "POST"
-                request.setValue("Basic \(login)", forHTTPHeaderField: "Authorization")
-                request.setValue("redditweaks", forHTTPHeaderField: "User-Agent")
-                request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-                request.httpBody = data
-                print(String(data: data!, encoding: .utf8)!)
-                URLSession.shared.dataTaskPublisher(for: request)
-                    .compactMap { (data, response) in
-                        guard let resp = response as? HTTPURLResponse, resp.statusCode == 200 else {
-                            return nil
-                        }
-                        print(String(data: data, encoding: .utf8)!)
-                        return data
-                    }.decode(type: RedditTokenResponse.self, decoder: JSONDecoder())
+                Reddit.askForAccessToken(code: response.code)
                     .sink(receiveCompletion: { completion in
-                        print(completion)
+                        // TODO
                     }, receiveValue: { response in
-                        print(response)
+                        let expires = Date().addingTimeInterval(Double(response.lifetime))
+                        let token = Reddit.AccessToken(accessToken: response.accessToken, refreshToken: response.refreshToken, expires: expires)
+                        if let data = try? JSONEncoder().encode(token) {
+                            UserDefaults.standard.setValue(data, forKey: Reddit.ACCESS_TOKEN_KEY)
+                        }
+                        self.isWaitingForRedditAuthToken = false
+                        self.isRedditAuthorized = true
                     }).store(in: &self.cancellables)
-
-                self.isWaitingForRedditAuthToken = true
-                self.isPresentingRedditAuthView = false
             }.store(in: &cancellables)
+
+        // Safari extension checker
         Timer.publish(every: 1, tolerance: 1, on: .main, in: .common, options: nil)
             .autoconnect()
             .receive(on: RunLoop.main)
@@ -109,6 +101,7 @@ class OnboardingEnvironment: ObservableObject {
 
 struct MainAppView: View {
 
+    @EnvironmentObject var redditAuthState: RedditAuthState
     @EnvironmentObject var onboardingEnvironment: OnboardingEnvironment
 
     var successIcon: some View {
@@ -116,8 +109,6 @@ struct MainAppView: View {
             .foregroundColor(.green)
             .font(.system(size: 28, weight: .regular, design: .rounded))
     }
-
-    private var checkForExtensionTimer: AnyCancellable?
 
     var body: some View {
         VStack {
@@ -152,6 +143,7 @@ struct MainAppView: View {
                             }
                         }
                     }.disabled(onboardingEnvironment.isSafariExtensionEnabled)
+                    .focusable()
                 }.padding()
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -171,9 +163,17 @@ struct MainAppView: View {
                         Spacer()
                     }
                     Text("This step is optional. Allowing Redditweaks to access certain parts of the Reddit API, such as your comment history, make it easier and more accurate for us to tell you information like your comment karma.")
-                    Button("Authorize via Reddit") {
-                        onboardingEnvironment.isPresentingRedditAuthView = true
-                    }.disabled(onboardingEnvironment.isRedditAuthorized)
+                    if onboardingEnvironment.isWaitingForRedditAuthToken {
+                        if #available(macOS 10.16, *) {
+                            ProgressView()
+                        } else {
+                            SpinnerView()
+                        }
+                    } else {
+                        Button("Authorize via Reddit") {
+                            onboardingEnvironment.isPresentingRedditAuthView = true
+                        }.disabled(onboardingEnvironment.isRedditAuthorized)
+                    }
                 }.padding()
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -203,28 +203,9 @@ struct RedditAuthView: View {
     }
 
     var body: some View {
-        WebViewRepresentable(url: URL(string: "https://www.reddit.com/api/v1/authorize.compact?client_id=\(CLIENT_ID)&response_type=code&state=\(randomString(length: 16))&redirect_uri=rdtwks://verify&duration=temporary&scope=identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote")!)
+        WebViewRepresentable(url: URL(string: "https://www.reddit.com/api/v1/authorize.compact?client_id=\(CLIENT_ID)&response_type=code&state=\(randomString(length: 16))&redirect_uri=rdtwks://verify&duration=permanent&scope=identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote")!)
             .frame(width: 500, height: 800)
     }
-}
-
-struct WebViewRepresentable: NSViewRepresentable {
-
-    var url: URL?
-
-    func makeNSView(context: Context) -> WKWebView {
-        let view = WKWebView()
-        view.load(URLRequest(url: self.url!))
-        return view
-    }
-
-    func updateNSView(_ nsView: WKWebView, context: Context) {
-        guard let url = self.url else { return }
-        nsView.load(URLRequest(url: url))
-    }
-
-    typealias NSViewType = WKWebView
-
 }
 
 struct MainAppView_Previews: PreviewProvider {

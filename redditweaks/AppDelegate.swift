@@ -9,22 +9,9 @@
 import Cocoa
 import SwiftUI
 
-extension URL {
-    public var queryParameters: [String: String]? {
-        guard
-            let components = URLComponents(url: self, resolvingAgainstBaseURL: true),
-            let queryItems = components.queryItems else { return nil }
-        return queryItems.reduce(into: [String: String]()) { (result, item) in
-            result[item.name] = item.value
-        }
-    }
-}
-
-struct RedditAuthResponse {
-    let error: Bool
-    let code: String
-    let state: String
-}
+let APP_ID = "com.bermudalocket.redditweaks"
+let EXTENSION_ID = "com.bermudalocket.redditweaks-Extension"
+let CLIENT_ID = "H6S3-yPygNPNfA"
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -32,8 +19,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let lastTokenExpiry = Reddit.mostRecentToken.expires
+        let expired = lastTokenExpiry < Date()
+        print("--------------------------------------------")
+        print("Most recent token expiry: \(lastTokenExpiry)")
+        print("Expired? \(expired ? "y" : "n") (\(Date()))")
+        print("--------------------------------------------")
+        if !expired {
+            RedditAuthState.shared.accessToken = Reddit.mostRecentToken
+        }
+
         let contentView = MainAppView()
             .environmentObject(OnboardingEnvironment())
+            .environmentObject(RedditAuthState.shared)
 
         window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 400, height: 330),
@@ -44,20 +42,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.center()
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(nil)
+        window.makeFirstResponder(nil)
+        window.makeKeyAndOrderFront(self)
     }
 
     func application(_ application: NSApplication, open urls: [URL]) {
-        urls.filter { url in
-            url.absoluteString.starts(with: "rdtwks://")
-        }.compactMap { url -> RedditAuthResponse in
+        urls.compactMap { url in
+            print("url in: \(url)")
             guard let params = url.queryParameters,
                   let code = params["code"],
                   let state = params["state"] else {
-                print("Error ----------------------------")
-                return RedditAuthResponse(error: true, code: "", state: "")
+                let alert = NSAlert()
+                alert.alertStyle = .critical
+                alert.messageText = "Error"
+                alert.informativeText = "redditweaks encountered an error opening a rdtwks:// uri."
+                alert.addButton(withTitle: "OK")
+                alert.runModal()
+                return nil
             }
-            print("code ===== \(code)")
             return RedditAuthResponse(error: false, code: code, state: state)
         }.forEach { response in
             NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "redditweaks.verify"), object: nil, userInfo: [
@@ -70,4 +72,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
+}
+
+class EasyAlert: NSAlert {
+
+    init(title: String, message: String) {
+        super.init()
+        super.messageText = title
+        super.informativeText = message
+        super.addButton(withTitle: "OK")
+        super.runModal()
+    }
 }

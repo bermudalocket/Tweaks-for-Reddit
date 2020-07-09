@@ -10,8 +10,11 @@
 
 import XCTest
 import Combine
+@testable import redditweaks
 
 class redditweaksTests: XCTestCase {
+
+    private var cancellables = [AnyCancellable]()
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -22,10 +25,26 @@ class redditweaksTests: XCTestCase {
     }
 
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-
-        NSWorkspace.shared.open(URL(string: "rdtwks://verify")!)
+        let expectation = self.expectation(description: "karma")
+        Reddit.countKarma().sink(receiveCompletion: { completion in
+            switch completion {
+                case .failure(let error):
+                    XCTFail(error.localizedDescription)
+                default:
+                    break
+            }
+        }, receiveValue: { karma in
+            let total = karma.reduce(into: 0) { totalKarma, subreddit in
+                totalKarma += subreddit.comment_karma
+            }
+            XCTAssert(total > 6200)
+            expectation.fulfill()
+        }).store(in: &cancellables)
+        self.waitForExpectations(timeout: 5000) { completion in
+            if let error = completion {
+                XCTFail(error.localizedDescription)
+            }
+        }
     }
 
     func testPerformanceExample() throws {
