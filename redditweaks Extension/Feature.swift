@@ -3,6 +3,7 @@
 // Copyright (c) 2020 bermudalocket. All rights reserved.
 //
 
+import Combine
 import Foundation
 
 struct Feature: Hashable {
@@ -25,6 +26,14 @@ struct Feature: Hashable {
 }
 
 extension Feature {
+
+    static var mainSectionFeatures: [Feature] = {
+        features
+            .filter { $0 != .customSubredditBar }
+            .sorted { a, b in
+                a.description < b.description
+            }
+    }()
 
     static let features: [Feature] = [
         Feature.noChat,
@@ -56,7 +65,6 @@ extension Feature {
             ele.remove();
         });
     """, javascriptOff: """
-        location.reload();
     """)
 
     static let showKarma = Feature(name: "showKarma", description: "Show karma", javascript: """
@@ -72,7 +80,7 @@ extension Feature {
             let cmturl = `<a href='${url}/comments/'>${ck}</a>`;
             $('span .userkarma').append(" | " + cmturl);
         });
-    """, javascriptOff: "location.reload();")
+    """)
 
     static let customSubredditBar = Feature(
         name: "customSubredditBar",
@@ -92,19 +100,17 @@ extension Feature {
                 }
                 $(this).html(html);
             });
-
+        """)
+    /*
             let disable = [%DISABLEDSHORTCUTS%];
             $('#sr-header-area ul').first().children().each(function(i) {
                 if (disable.includes(i + 1)) {
                     $(this).hide();
                 }
             });
-        """,
-        javascriptOff: """
-            location.reload();
-        """
-    )
-
+        """)
+*/
+    
     static let hideAds = Feature(
         name: "hideAds",
         description: "Hide ads",
