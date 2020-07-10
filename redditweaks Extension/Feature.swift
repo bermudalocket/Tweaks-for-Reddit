@@ -27,11 +27,13 @@ struct Feature: Hashable {
 
 extension Feature {
 
-    static var sortedFeatures: [Feature] {
-        self.features.sorted { a, b in
-            a.description < b.description
-        }
-    }
+    static var mainSectionFeatures: [Feature] = {
+        features
+            .filter { $0 != .customSubredditBar }
+            .sorted { a, b in
+                a.description < b.description
+            }
+    }()
 
     static let features: [Feature] = [
         Feature.noChat,

@@ -8,6 +8,7 @@
 //  Copyright © 2020 bermudalocket. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 
 struct PopoverView: View {
@@ -39,48 +40,34 @@ struct PopoverView: View {
 
     private var featuresList: some View {
         VStack(alignment: .leading) {
-            ForEach(Feature.sortedFeatures, id: \.self) { feature in
+            ForEach(Feature.mainSectionFeatures, id: \.self) { feature in
                 FeatureToggleView(feature: feature)
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical)
+        .padding()
         .background(sectionBackground)
     }
 
-    @State private var favoriteSubreddits: [String] = Redditweaks.favoriteSubreddits
-
-    @State private var newFavoriteSubredditField: String = "r/"
-
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        let view = ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 8) {
                 self.title
                 self.featuresList
-                VStack(alignment: .leading) {
-                    HStack {
-                        TextField("r/", text: $newFavoriteSubredditField)
-                        if #available(OSXApplicationExtension 10.16, *) {
-                            Button("Add", action: {
-                                Redditweaks.addFavoriteSubreddit(&newFavoriteSubredditField)
-                            }).keyboardShortcut(.return)
-                        } else {
-                            Button("Add", action: {
-                                Redditweaks.addFavoriteSubreddit(&newFavoriteSubredditField)
-                            })
-                        }
-                    }
-                    ForEach(favoriteSubreddits, id: \.self) { favoriteSubreddit in
-                        FavoriteSubredditView(favoriteSubreddit: favoriteSubreddit)
-                    }
-                }
+                FavoriteSubredditsSectionView()
+                    .padding()
+                    .background(sectionBackground)
                 Spacer()
             }
             .padding()
         }
         .frame(width: 300, height: 500)
-        .onReceive(Redditweaks.favoriteSubredditsPublisher) { favs in
-            self.favoriteSubreddits = favs
+        return Group {
+            if #available(OSXApplicationExtension 10.16, *) {
+                view.accentColor(.accentColor)
+            } else {
+                view
+            }
         }
     }
 }

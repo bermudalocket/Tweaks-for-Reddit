@@ -36,8 +36,6 @@ struct FeatureToggleView: View {
         Toggle(viewModel.feature.description, isOn: $viewModel.enabled)
             .onReceive(viewModel.$enabled) { state in
                 Redditweaks.defaults.setValue(state, forKey: viewModel.feature.name)
-                SafariExtensionHandler.shared.sendScriptToSafariPage(viewModel.feature)
-                print("Set \(viewModel.feature.name) == \(state)")
             }
     }
 
