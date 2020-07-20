@@ -67,7 +67,7 @@ struct MainAppView: View {
                 Text("There are a few things we have to do before you can get started.")
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                  .foregroundColor(.white))
+                                  .foregroundColor(Color(.textBackgroundColor)))
 
                 VStack {
                     HStack {
@@ -93,18 +93,26 @@ struct MainAppView: View {
                 }.padding()
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .foregroundColor(.white)
+                        .foregroundColor(Color(.textBackgroundColor))
                 )
             }
         }
         .frame(width: 300, height: 400)
         .padding()
+        .background(Color(.windowBackgroundColor))
     }
 
 }
 
 struct MainAppView_Previews: PreviewProvider {
     static var previews: some View {
-        MainAppView()
+        Group {
+            MainAppView()
+                .environment(\.colorScheme, ColorScheme.dark)
+                .environmentObject(OnboardingEnvironment())
+            MainAppView()
+                .environment(\.colorScheme, ColorScheme.light)
+                .environmentObject(OnboardingEnvironment())
+        }
     }
 }
