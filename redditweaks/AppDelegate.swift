@@ -7,16 +7,28 @@
 //
 
 import Cocoa
+import SwiftUI
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-    }
+    var window: NSWindow!
 
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let contentView = MainAppView()
+            .environmentObject(OnboardingEnvironment())
+
+        window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 400, height: 330),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered,
+            defer: false)
+        window.isReleasedWhenClosed = false
+        window.center()
+        window.setFrameAutosaveName("Main Window")
+        window.contentView = NSHostingView(rootView: contentView)
+        window.makeFirstResponder(nil)
+        window.makeKeyAndOrderFront(self)
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

@@ -1,6 +1,14 @@
-document.addEventListener("DOMContentLoaded", onDomLoad);
+document.addEventListener("DOMContentLoaded", function() {
+    if (window.top === window) {
+        safari.extension.dispatchMessage("redditweaks.onDomLoaded");
+    }
+});
 
-safari.self.addEventListener("message", processEvent);
+safari.self.addEventListener("message", function(event) {
+    if (event.name === "redditweaks.script") {
+        eval(event.message["script"]);
+    }
+});
 
 function watchForChildren(ele, selector, callback) {
     for (const child of Array.from(ele.children).filter(child => child.matches(selector))) {
@@ -18,16 +26,4 @@ function watchForFutureChildren(ele, selector, callback) {
             }
         }
     }).observe(ele, { childList: true });
-}
-
-function processEvent(event) {
-    if (event.name === "redditweaks.script") {
-        eval(event.message["script"]);
-    }
-}
-
-function onDomLoad() {
-    if (window.top === window) {
-        safari.extension.dispatchMessage("redditweaks.onDomLoaded");
-    }
 }
