@@ -1,6 +1,9 @@
 <p align="center">
     A Safari App Extension that makes Reddit suck just a little bit less on Safari 13+.
-    <img src='https://i.imgur.com/RLFPr6i.jpg'>
+    <img src='https://i.imgur.com/wytyfjh.jpg' width=85%>
+    <img src='https://i.imgur.com/RLFPr6i.jpg' width=33%>
+    <img src='https://i.imgur.com/VNxAfgB.jpg' width=33%>
+    <img src='https://i.imgur.com/Mgz1lbk.png' width=33%>
 </p>
 
 ## Background
