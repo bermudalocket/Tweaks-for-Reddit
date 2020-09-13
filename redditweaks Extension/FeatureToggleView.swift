@@ -35,7 +35,7 @@ struct FeatureToggleView: View {
     var body: some View {
         Toggle(viewModel.feature.description, isOn: $viewModel.enabled)
             .onReceive(viewModel.$enabled) { state in
-                Redditweaks.defaults.setValue(state, forKey: viewModel.feature.name)
+                Redditweaks.defaults.setValue(state, forKey: self.viewModel.feature.name)
             }
     }
 

@@ -19,7 +19,7 @@ class FavoriteSubredditsSectionViewModel: ObservableObject {
 
     var isSearching = false
 
-    private var cancelBag = CancelBag()
+    private var cancellables = Set<AnyCancellable>()
 
     var textFieldColor: Color {
         if isSearching {
@@ -44,21 +44,20 @@ class FavoriteSubredditsSectionViewModel: ObservableObject {
                 self.objectWillChange.send()
                 return
             }
-            cancelBag.forEach { $0.cancel() }
-            cancelBag.collect {
-                Redditweaks.verifySubredditExists(newValue)
-                    .receive(on: DispatchQueue.main)
-                    .print()
-                    .sink { completion in
-                        switch completion {
-                            case .failure: self.isSubredditValid = false
-                            case .finished: break
-                        }
-                        self.isSearching = false
-                    } receiveValue: { value in
-                        self.isSubredditValid = value
+            self.cancellables.forEach { $0.cancel() }
+            Redditweaks.verifySubredditExists(newValue)
+                .receive(on: DispatchQueue.main)
+                .print()
+                .sink(receiveCompletion: { completion in
+                    switch completion {
+                        case .failure: self.isSubredditValid = false
+                        case .finished: break
                     }
-            }
+                    self.isSearching = false
+                }, receiveValue: { value in
+                    self.isSubredditValid = value
+                })
+                .store(in: &cancellables)
         }
     }
 
@@ -76,24 +75,19 @@ struct FavoriteSubredditsSectionView: View {
                     .foregroundColor(self.viewModel.isSubredditValid ? .black : .red)
                 ZStack {
                     Button("Add") {
-                        Redditweaks.addFavoriteSubreddit(viewModel.newFavoriteSubredditField)
+                        Redditweaks.addFavoriteSubreddit(self.viewModel.newFavoriteSubredditField)
                     }
-                        .opacity(self.viewModel.isSearching ? 0 : 1)
-                        .disabled(!self.viewModel.isSubredditValid)
-                    if #available(OSXApplicationExtension 10.16, *) {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .controlSize(.small)
-                            .opacity(self.viewModel.isSearching ? 1 : 0)
-                    } else {
-                        SpinnerView()
-                            .opacity(self.viewModel.isSearching ? 1 : 0)
-                    }
+                    .opacity(self.viewModel.isSearching ? 0 : 1)
+                    .disabled(!self.viewModel.isSubredditValid)
+                    SpinnerView()
+                        .opacity(self.viewModel.isSearching ? 1 : 0)
                 }
             }
-            ForEach(viewModel.favoriteSubreddits, id: \.self) {
-                FavoriteSubredditView(favoriteSubreddit: $0)
-            }
+            ScrollView(.vertical) {
+                ForEach(viewModel.favoriteSubreddits, id: \.self) {
+                    FavoriteSubredditView(favoriteSubreddit: $0)
+                }
+            }.frame(maxHeight: 70)
         }
         .onReceive(Redditweaks.favoriteSubredditsPublisher) { favs in
             self.viewModel.favoriteSubreddits = favs

@@ -14,6 +14,7 @@ struct SpinnerView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> NSProgressIndicator {
         let progress = NSProgressIndicator()
+        progress.style = .spinning
         progress.isIndeterminate = true
         return progress
     }

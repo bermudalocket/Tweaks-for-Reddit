@@ -23,18 +23,14 @@ struct FavoriteSubredditView: View {
 
     var body: some View {
         HStack {
-            if #available(OSXApplicationExtension 10.16, *) {
-                Image(systemName: "xmark.circle.fill")
-                    .foregroundColor(.accentColor)
-                    .opacity(isHovered ? 1 : 0)
-                    .onTapGesture {
-                        if isHovered {
-                            Redditweaks.removeFavoriteSubreddit(favoriteSubreddit)
-                        }
+            Text("⊕")
+                .foregroundColor(.blue)
+                .opacity(isHovered ? 1 : 0)
+                .onTapGesture {
+                    if self.isHovered {
+                        Redditweaks.removeFavoriteSubreddit(self.favoriteSubreddit)
                     }
-            } else {
-                // Fallback on earlier versions
-            }
+                }
             Text("r/\(favoriteSubreddit)")
             Spacer()
         }

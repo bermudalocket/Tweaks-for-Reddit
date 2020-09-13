@@ -19,7 +19,9 @@ struct PopoverView: View {
 
     private var sectionBackground: some View {
         RoundedRectangle(cornerRadius: 12, style: .continuous)
-            .foregroundColor(Color(.controlBackgroundColor))
+            .fill(Color.white)
+            .opacity(0.3)
+            .shadow(radius: 5)
     }
 
     private var title: some View {
@@ -50,25 +52,16 @@ struct PopoverView: View {
     }
 
     var body: some View {
-        let view = ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 8) {
-                self.title
-                self.featuresList
-                FavoriteSubredditsSectionView()
-                    .padding()
-                    .background(sectionBackground)
-                Spacer()
-            }
-            .padding()
+        VStack(alignment: .leading, spacing: 10) {
+            self.title
+            self.featuresList
+            FavoriteSubredditsSectionView()
+                .padding()
+                .background(sectionBackground)
         }
-        .frame(width: 300, height: 500)
-        return Group {
-            if #available(OSXApplicationExtension 10.16, *) {
-                view.accentColor(.accentColor)
-            } else {
-                view
-            }
-        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 2)
+        .frame(width: 300)
     }
 }
 

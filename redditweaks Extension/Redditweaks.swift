@@ -17,7 +17,7 @@ class Redditweaks {
         case networkError
     }
 
-    private static var cancelBag = CancelBag()
+    private static var cancellables = Set<AnyCancellable>()
 
     public static let defaults = UserDefaults(suiteName: "com.bermudalocket.redditweaks")!
 
@@ -55,10 +55,9 @@ class Redditweaks {
             guard let url = URL(string: "https://www.reddit.com/\(subreddit)") else {
                 return promise(.failure(RedditweaksError.networkError))
             }
-            cancelBag.collect {
-                URLSession.shared.dataTaskPublisher(for: url)
-                    .sink { completion in
-                    } receiveValue: { data, response in
+            URLSession.shared.dataTaskPublisher(for: url)
+                .sink(receiveCompletion: { completion in },
+                      receiveValue: { data, response in
                         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
                             return promise(.failure(RedditweaksError.networkError))
                         }
@@ -66,8 +65,7 @@ class Redditweaks {
                             return promise(.failure(RedditweaksError.networkError))
                         }
                         return promise(.success(!html.contains("there doesn't seem to be anything here")))
-                    }
-            }
+                }).store(in: &cancellables)
         }
     }
 
