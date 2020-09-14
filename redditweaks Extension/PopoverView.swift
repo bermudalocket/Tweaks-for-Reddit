@@ -47,7 +47,7 @@ struct PopoverView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .padding()
+        .padding(.vertical)
         .background(sectionBackground)
     }
 
@@ -60,7 +60,7 @@ struct PopoverView: View {
                 .background(sectionBackground)
         }
         .padding(.horizontal, 10)
-        .padding(.vertical, 2)
+        .padding(.vertical, 10)
         .frame(width: 300)
     }
 }
