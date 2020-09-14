@@ -26,7 +26,6 @@
 		8982998B24B4059C0063FFE9 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8982998A24B4059C0063FFE9 /* PopoverView.swift */; };
 		8982998D24B405BC0063FFE9 /* PopoverViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8982998C24B405BC0063FFE9 /* PopoverViewWrapper.swift */; };
 		8983812123DBF892004F4BA7 /* jquery-3.4.1.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 8983812023DBF892004F4BA7 /* jquery-3.4.1.min.js */; };
-		8983812323DBFF81004F4BA7 /* NSControl.StateValue+fromBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8983812223DBFF81004F4BA7 /* NSControl.StateValue+fromBool.swift */; };
 		89C02DAD24A7C0D000B37744 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89C02DAC24A7C0D000B37744 /* Main.storyboard */; };
 		89CD138B245E153200A8D3E4 /* SafariExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CD138A245E153200A8D3E4 /* SafariExtensionHandler.swift */; };
 		89DD692324AA8AE800599B28 /* redditweaksUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DD692224AA8AE800599B28 /* redditweaksUITests.swift */; };
@@ -99,7 +98,6 @@
 		8982998A24B4059C0063FFE9 /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		8982998C24B405BC0063FFE9 /* PopoverViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewWrapper.swift; sourceTree = "<group>"; };
 		8983812023DBF892004F4BA7 /* jquery-3.4.1.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-3.4.1.min.js"; sourceTree = "<group>"; };
-		8983812223DBFF81004F4BA7 /* NSControl.StateValue+fromBool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSControl.StateValue+fromBool.swift"; sourceTree = "<group>"; };
 		89C02DAC24A7C0D000B37744 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		89CD138A245E153200A8D3E4 /* SafariExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariExtensionHandler.swift; sourceTree = "<group>"; };
 		89DD692024AA8AE800599B28 /* redditweaksUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = redditweaksUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -251,7 +249,6 @@
 				8982998A24B4059C0063FFE9 /* PopoverView.swift */,
 				8914CDAB24B787950015E4C4 /* CancelBag.swift */,
 				8982998824B4057B0063FFE9 /* FeatureToggleView.swift */,
-				8983812223DBFF81004F4BA7 /* NSControl.StateValue+fromBool.swift */,
 				99C7C30F235D81AA00ABA6EA /* Info.plist */,
 				8983812023DBF892004F4BA7 /* jquery-3.4.1.min.js */,
 				99C7C310235D81AA00ABA6EA /* redditweaks-script.js */,
@@ -475,7 +472,6 @@
 				89E4F57323DCF79600F72DDD /* Feature.swift in Sources */,
 				8914CDA824B6B7D40015E4C4 /* FavoriteSubredditView.swift in Sources */,
 				89653D0A24B7B7AA00827F91 /* SpinnerView.swift in Sources */,
-				8983812323DBFF81004F4BA7 /* NSControl.StateValue+fromBool.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -715,7 +711,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bermudalocket.redditweaks-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -739,7 +735,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bermudalocket.redditweaks-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -764,7 +760,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -788,7 +784,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

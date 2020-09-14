@@ -64,7 +64,7 @@ struct MainAppView: View {
                 Text("redditweaks").font(.largeTitle).fontWeight(.heavy)
             }.padding()
             VStack(spacing: 12) {
-                Text("There are a few things we have to do before you can get started.")
+                Text("There's just one thing you have to do before you can get started.")
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
                                   .foregroundColor(Color(.textBackgroundColor)))
