@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8914CDA824B6B7D40015E4C4 /* FavoriteSubredditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8914CDA724B6B7D40015E4C4 /* FavoriteSubredditView.swift */; };
 		8914CDAA24B776150015E4C4 /* Redditweaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8914CDA924B776150015E4C4 /* Redditweaks.swift */; };
-		8914CDAC24B787950015E4C4 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8914CDAB24B787950015E4C4 /* CancelBag.swift */; };
 		8914CDAE24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8914CDAD24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift */; };
 		894559DF24A9317500C70CF1 /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894559DE24A9317500C70CF1 /* Notification.Name.swift */; };
 		894559E324A931AA00C70CF1 /* URL+queryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894559E224A931AA00C70CF1 /* URL+queryParameters.swift */; };
@@ -80,7 +79,6 @@
 /* Begin PBXFileReference section */
 		8914CDA724B6B7D40015E4C4 /* FavoriteSubredditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteSubredditView.swift; sourceTree = "<group>"; };
 		8914CDA924B776150015E4C4 /* Redditweaks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Redditweaks.swift; sourceTree = "<group>"; };
-		8914CDAB24B787950015E4C4 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		8914CDAD24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteSubredditsSectionView.swift; sourceTree = "<group>"; };
 		894559D824A9312B00C70CF1 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		894559DE24A9317500C70CF1 /* Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
@@ -247,7 +245,6 @@
 				8914CDA724B6B7D40015E4C4 /* FavoriteSubredditView.swift */,
 				8914CDAD24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift */,
 				8982998A24B4059C0063FFE9 /* PopoverView.swift */,
-				8914CDAB24B787950015E4C4 /* CancelBag.swift */,
 				8982998824B4057B0063FFE9 /* FeatureToggleView.swift */,
 				99C7C30F235D81AA00ABA6EA /* Info.plist */,
 				8983812023DBF892004F4BA7 /* jquery-3.4.1.min.js */,
@@ -468,7 +465,6 @@
 				8914CDAA24B776150015E4C4 /* Redditweaks.swift in Sources */,
 				8982998924B4057B0063FFE9 /* FeatureToggleView.swift in Sources */,
 				8914CDAE24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift in Sources */,
-				8914CDAC24B787950015E4C4 /* CancelBag.swift in Sources */,
 				89E4F57323DCF79600F72DDD /* Feature.swift in Sources */,
 				8914CDA824B6B7D40015E4C4 /* FavoriteSubredditView.swift in Sources */,
 				89653D0A24B7B7AA00827F91 /* SpinnerView.swift in Sources */,
