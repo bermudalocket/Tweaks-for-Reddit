@@ -25,8 +25,20 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                         let favSubsList = Redditweaks.favoriteSubreddits.map { "\"\($0)\"" }.joined(separator: ",")
                         script = $0.javascript.replacingOccurrences(of: "%SUBS%", with: favSubsList)
                     }
-                    page.dispatchMessageToScript(withName: "redditweaks.script", userInfo: [ "script": script ])
+                    page.dispatchMessageToScript(withName: "redditweaks.script", userInfo: [ "name": $0.name, "script": script ])
                 }
+        } else if messageName == "redditweaks.addFavoriteSub" {
+            guard let userInfo = userInfo, let sub = userInfo["subreddit"] as? String else {
+                return
+            }
+            Redditweaks.addFavoriteSubreddit(sub)
+            page.dispatchMessageToScript(withName: "redditweaks.debug", userInfo: ["info": "added favorite \(sub)"])
+        } else if messageName == "redditweaks.removeFavoriteSub" {
+            guard let userInfo = userInfo, let sub = userInfo["subreddit"] as? String else {
+                return
+            }
+            Redditweaks.removeFavoriteSubreddit(sub)
+            page.dispatchMessageToScript(withName: "redditweaks.debug", userInfo: ["info": "removed favorite \(sub)"])
         }
     }
 

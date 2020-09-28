@@ -46,12 +46,19 @@ extension Feature {
         Feature.collapseAutoModerator,
         Feature.hideNewRedditButton,
         Feature.hideRedditPremiumBanner,
-        Feature.nsfwFilter
+        Feature.nsfwFilter,
+        Feature.noHappeningNowBanners,
     ]
 
     static func fromDescription(_ description: String) -> Feature? {
         features.first(where: { $0.description == description })
     }
+
+    static let noHappeningNowBanners = Feature(name: "noHappeningNowBanners", description: "Remove Happening Now banners", javascript: """
+        $('.happening-now-wrap').hide();
+    """, javascriptOff: """
+        $('.happening-now-wrap').show();
+    """)
 
     static let noChat = Feature(name: "noChat", description: "Remove chat", javascript: """
         watchForChildren(document.body, "script", (ele) => {
@@ -99,6 +106,9 @@ extension Feature {
                     html = `${html}${span}`
                 }
                 $(this).html(html);
+                let remove = $('<div style="display: inline-block" title="Remove ' + sub + ' from favorites">&nbsp;[-]</div>')
+                remove.click(function() { safari.extension.dispatchMessage("redditweaks.removeFavoriteSub", { "subreddit": sub }); location.reload(); })
+                $(this).hover(function() { if (i < subs.length - 1) { $(this).children().last().before(remove) } else { $(this).append(remove) } }, function() { remove.remove() });
             });
         """)
     /*
