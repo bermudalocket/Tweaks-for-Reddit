@@ -10,6 +10,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build
-      run: swift build -v
+      run: cd redditweaks && swift build -v
     - name: GitHub Releases
       uses: fnkr/github-action-ghr@v1.3
