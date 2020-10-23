@@ -11,6 +11,9 @@
 import SafariServices
 import SwiftUI
 
+/**
+ A bridge to SwiftUI via NSHostingView.
+ */
 class PopoverViewWrapper: SFSafariExtensionViewController {
 
     init() {

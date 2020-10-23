@@ -77,7 +77,6 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         BundleIdentifier = "com.apple.Safari"
          FilePath = "/Applications/Safari.app">
       </PathRunnable>
       <MacroExpansion>

@@ -32,7 +32,7 @@
 		<array>
 			<dict>
 				<key>Script</key>
-				<string>jquery-3.4.1.min.js</string>
+				<string>jquery-3.5.1.min.js</string>
 			</dict>
 			<dict>
 				<key>Script</key>
