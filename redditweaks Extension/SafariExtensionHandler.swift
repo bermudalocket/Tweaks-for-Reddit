@@ -55,29 +55,30 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     func messageReceived(message: Message, from page: SFSafariPage, userInfo: [String: Any]? = nil) {
         switch message {
             case .ON_DOM_LOADED:
+                let state = AppState()
                 Feature.features
-                    .filter { Redditweaks.defaults.bool(forKey: $0.name) }
+                    .filter { Redditweaks.defaults.bool(forKey: $0.key) }
                     .forEach {
                         var script = $0.javascript
-                        if $0.name == "customSubredditBar" {
-                            let favSubsList = Redditweaks.favoriteSubreddits.map { "\"\($0)\"" }.joined(separator: ",")
+                        if $0.key == "customSubredditBar" {
+                            let favSubsList = state.favoriteSubreddits.map { "\"\($0)\"" }.joined(separator: ",")
                             script = script.replacingOccurrences(of: "%SUBS%", with: favSubsList)
                         }
-                        page.dispatchMessageToScript(message: .SCRIPT, userInfo: [ "name": $0.name, "script": script ])
+                        page.dispatchMessageToScript(message: .SCRIPT, userInfo: [ "name": $0.key, "script": script ])
                     }
 
             case .ADD_FAVORITE_SUB:
                 guard let userInfo = userInfo, let sub = userInfo["subreddit"] as? String else {
                     return
                 }
-                Redditweaks.addFavoriteSubreddit(sub)
+                AppState().addFavoriteSubreddit(subreddit: sub)
                 page.dispatchMessageToScript(message: .DEBUG, userInfo: ["info": "added favorite \(sub)"])
 
             case .REMOVE_FAVORITE_SUB:
                 guard let userInfo = userInfo, let sub = userInfo["subreddit"] as? String else {
                     return
                 }
-                Redditweaks.removeFavoriteSubreddit(sub)
+                AppState().removeFavoriteSubreddit(subreddit: sub)
                 page.dispatchMessageToScript(message: .DEBUG, userInfo: ["info": "removed favorite \(sub)"])
 
             default: print("Received a weird message: \(message)")

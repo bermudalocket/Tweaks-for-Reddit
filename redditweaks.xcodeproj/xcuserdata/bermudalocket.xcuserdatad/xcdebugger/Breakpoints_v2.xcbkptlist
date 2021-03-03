@@ -135,17 +135,112 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "E3FB4F5F-8D2E-4C6D-9D29-D2D96A8EE220"
-            shouldBeEnabled = "Yes"
+            uuid = "361AFC7B-610B-4712-9FC2-6C310B406F9F"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "redditweaksTests/redditweaksTests.swift"
+            filePath = "shared/PopoverView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
-            landmarkName = "testCheckSubredditValidity()"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2F7A64BE-EFFC-4489-B589-F36F91B12EAC"
+            shouldBeEnabled = "No"
+            ignoreCount = "2"
+            continueAfterRunningActions = "No"
+            filePath = "shared/UpdateHelper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "pollUpdate(forced:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9887E5D4-612E-44C6-A7E4-583E8AFE5573"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "shared/UpdateHelper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "pollUpdate(forced:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BC8977E0-E89F-487E-8F2B-AFC599618BD8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "shared/UpdateHelper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "pollUpdate(forced:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BC8977E0-E89F-487E-8F2B-AFC599618BD8 - 80e019e0c4ff00a5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "redditweaks_Extension.UpdateHelper.pollUpdate() -&gt; ()"
+                  moduleName = "redditweaks Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bermudalocket/Documents/redditweaks/shared/UpdateHelper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "1357">
+               </Location>
+               <Location
+                  uuid = "BC8977E0-E89F-487E-8F2B-AFC599618BD8 - 80e019e0c4ff00a5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "redditweaks_Extension.UpdateHelper.pollUpdate() -&gt; ()"
+                  moduleName = "redditweaks Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bermudalocket/Documents/redditweaks/shared/UpdateHelper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "1504">
+               </Location>
+               <Location
+                  uuid = "BC8977E0-E89F-487E-8F2B-AFC599618BD8 - 39f15004a65b2d9f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in redditweaks_Extension.UpdateHelper.pollUpdate() -&gt; ()"
+                  moduleName = "redditweaks Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bermudalocket/Documents/redditweaks/shared/UpdateHelper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "244">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

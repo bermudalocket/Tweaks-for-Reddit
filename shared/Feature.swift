@@ -11,7 +11,7 @@ struct Feature: Hashable {
     /**
      User defaults key.
      */
-    let name: String
+    let key: String
 
     /**
      Description shown in popover.
@@ -22,17 +22,19 @@ struct Feature: Hashable {
 
     let javascriptOff: String?
 
-    var isEnabled: Bool {
-        Redditweaks.defaults.bool(forKey: name)
-    }
-
     init(name: String, description: String, javascript: String, javascriptOff: String? = nil) {
-        self.name = name
+        self.key = name
         self.description = description
         self.javascript = javascript
         self.javascriptOff = javascriptOff
     }
 
+}
+
+extension Feature: Comparable {
+    static func < (lhs: Feature, rhs: Feature) -> Bool {
+        lhs.description < rhs.description
+    }
 }
 
 extension Feature {

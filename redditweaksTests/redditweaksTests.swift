@@ -14,16 +14,22 @@ import Combine
 
 class redditweaksTests: XCTestCase {
 
-    private var cancellables = Set<AnyCancellable>()
+    func testSettings() {
+        let state = AppState()
+        let binding = state.bindingForFeature(.collapseAutoModerator)
+        let currentFeatureState = binding.wrappedValue
+        binding.projectedValue.wrappedValue.toggle()
+        XCTAssert(currentFeatureState != binding.wrappedValue)
+    }
 
-    func testCheckSubredditValidity() {
-        Redditweaks.verifySubredditExists("abcdefgrgrgrg")
-            .sink { completion in
+    func testVersionUpdate() {
+        let helper = UpdateHelper()
+        helper.pollUpdate(forced: true)
+    }
 
-            } receiveValue: { value in
-                
-            }
-            .store(in: &cancellables)
+    func testSubreddit() throws {
+        XCTAssertTrue(true)
+        
     }
 
 }

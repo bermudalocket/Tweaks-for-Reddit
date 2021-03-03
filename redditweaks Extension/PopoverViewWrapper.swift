@@ -18,8 +18,8 @@ class PopoverViewWrapper: SFSafariExtensionViewController {
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        self.view = NSHostingView(rootView: PopoverView())
-        self.preferredContentSize = NSSize(width: 500, height: 800)
+        let view = PopoverView().environmentObject(AppState())
+        self.view = NSHostingView(rootView: view)
     }
 
     required init?(coder: NSCoder) {

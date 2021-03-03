@@ -11,90 +11,48 @@
 import Combine
 import SwiftUI
 
-class FavoriteSubredditsSectionViewModel: ObservableObject {
-
-    @Published var favoriteSubreddits: [String] = Redditweaks.favoriteSubreddits
-
-    @Published var isSubredditValid = false
-
-    var isSearching = false
-
-    private var cancellables = Set<AnyCancellable>()
-
-    var textFieldColor: Color {
-        if isSearching {
-            return .gray
-        }
-        if !isSubredditValid {
-            if newFavoriteSubredditField == "r/" {
-                return .gray
-            }
-            return .red
-        }
-        return Color(.textColor)
-    }
-
-    var newFavoriteSubredditField: String = "r/" {
-        willSet(newValue) {
-            self.isSearching = true
-            self.objectWillChange.send()
-            print("newValue = \(newValue)")
-            if newValue == "" || newValue == "r" {
-                self.newFavoriteSubredditField = "r/"
-                self.objectWillChange.send()
-                return
-            }
-            self.cancellables.forEach { $0.cancel() }
-            Redditweaks.verifySubredditExists(newValue)
-                .debounce(for: .seconds(1), scheduler: RunLoop.main)
-                .receive(on: DispatchQueue.main)
-                .print()
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                        case .failure: self.isSubredditValid = false
-                        case .finished: break
-                    }
-                    self.isSearching = false
-                }, receiveValue: { value in
-                    self.isSubredditValid = value
-                })
-                .store(in: &cancellables)
-        }
-    }
-
-}
-
 struct FavoriteSubredditsSectionView: View {
 
-    @ObservedObject private var viewModel = FavoriteSubredditsSectionViewModel()
+    @EnvironmentObject private var appState: AppState
+
+    @State private var favoriteSubredditField = ""
+    @State private var isSearching = false
+    @State private var isSubredditValid = false
 
     var body: some View {
         VStack(alignment: .leading) {
-            FeatureToggleView(feature: Feature.customSubredditBar)
-                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-            if Feature.customSubredditBar.isEnabled {
-                HStack {
-                    TextField("r/", text: $viewModel.newFavoriteSubredditField)
-                        .foregroundColor(self.viewModel.isSubredditValid ? .black : .red)
-                    ZStack {
-                        Button("Add") {
-                            Redditweaks.addFavoriteSubreddit(self.viewModel.newFavoriteSubredditField)
-                        }
-                        .opacity(self.viewModel.isSearching ? 0 : 1)
-                        .disabled(!self.viewModel.isSubredditValid)
-                        SpinnerView()
-                            .opacity(self.viewModel.isSearching ? 1 : 0)
+            HStack(spacing: 5) {
+                TextField("r/", text: $favoriteSubredditField)
+                    .foregroundColor(isSubredditValid ? .black : .red)
+                    .onChange(of: favoriteSubredditField) {
+                        appState.verifySubreddit(subreddit: $0, isValid: $isSubredditValid, isSearching: $isSearching)
                     }
+                    .focusable(false)
+                if isSearching {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .scaleEffect(0.5)
+                } else {
+                    Button("Add") {
+                        appState.addFavoriteSubreddit(subreddit: favoriteSubredditField)
+                    }
+                    .disabled(!isSubredditValid)
                 }
+            }
+            if appState.favoriteSubreddits.count > 0 {
                 ScrollView(.vertical) {
-                    ForEach(viewModel.favoriteSubreddits, id: \.self) {
-                        FavoriteSubredditView(favoriteSubreddit: $0)
+                    ForEach(appState.favoriteSubreddits, id: \.self) {
+                        FavoriteSubredditView(subreddit: $0)
                     }
-                }.frame(maxHeight: 180)
+                }.frame(minHeight: 20, maxHeight: 180)
             }
         }
-        .onReceive(Redditweaks.favoriteSubredditsPublisher) { favs in
-            self.viewModel.favoriteSubreddits = favs
-        }
+    }
+}
+
+struct FavoriteSubredditsSectionView_Previews: PreviewProvider {
+    static var previews: some View {
+        FavoriteSubredditsSectionView()
+            .environmentObject(AppState())
     }
 }
