@@ -11,6 +11,8 @@
 		8914CDAA24B776150015E4C4 /* Redditweaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8914CDA924B776150015E4C4 /* Redditweaks.swift */; };
 		8914CDAE24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8914CDAD24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift */; };
 		8932BAF02527FEEC00D77FDA /* jquery-3.5.1.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 8932BAEF2527FEEC00D77FDA /* jquery-3.5.1.min.js */; };
+		8936A35925F0C0FA001F5DA6 /* InternetAccessPolicy.json in Resources */ = {isa = PBXBuildFile; fileRef = 8936A35825F0C0FA001F5DA6 /* InternetAccessPolicy.json */; };
+		8936A35A25F0C0FA001F5DA6 /* InternetAccessPolicy.json in Resources */ = {isa = PBXBuildFile; fileRef = 8936A35825F0C0FA001F5DA6 /* InternetAccessPolicy.json */; };
 		894559DF24A9317500C70CF1 /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894559DE24A9317500C70CF1 /* Notification.Name.swift */; };
 		894559E324A931AA00C70CF1 /* URL+queryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894559E224A931AA00C70CF1 /* URL+queryParameters.swift */; };
 		894559E924A952F200C70CF1 /* WebViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894559E824A952F200C70CF1 /* WebViewRepresentable.swift */; };
@@ -94,6 +96,7 @@
 		8914CDA924B776150015E4C4 /* Redditweaks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Redditweaks.swift; sourceTree = "<group>"; };
 		8914CDAD24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteSubredditsSectionView.swift; sourceTree = "<group>"; };
 		8932BAEF2527FEEC00D77FDA /* jquery-3.5.1.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-3.5.1.min.js"; sourceTree = "<group>"; };
+		8936A35825F0C0FA001F5DA6 /* InternetAccessPolicy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = InternetAccessPolicy.json; sourceTree = SOURCE_ROOT; };
 		894559DE24A9317500C70CF1 /* Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
 		894559E224A931AA00C70CF1 /* URL+queryParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+queryParameters.swift"; sourceTree = "<group>"; };
 		894559E824A952F200C70CF1 /* WebViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewRepresentable.swift; sourceTree = "<group>"; };
@@ -164,6 +167,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8936A35725F0C0E1001F5DA6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8936A35825F0C0FA001F5DA6 /* InternetAccessPolicy.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		894559DD24A9316800C70CF1 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -221,6 +232,7 @@
 		99C7C2E4235D81A700ABA6EA = {
 			isa = PBXGroup;
 			children = (
+				8936A35725F0C0E1001F5DA6 /* Resources */,
 				8949C04223DD5810002CF0C0 /* LICENSE */,
 				897BAE3325264C16004849DB /* shared */,
 				99C7C2EF235D81A700ABA6EA /* redditweaks */,
@@ -428,6 +440,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8936A35925F0C0FA001F5DA6 /* InternetAccessPolicy.json in Resources */,
 				89C02DAD24A7C0D000B37744 /* Main.storyboard in Resources */,
 				99C7C2FA235D81AA00ABA6EA /* Assets.xcassets in Resources */,
 				8949C04623DD582D002CF0C0 /* LICENSE in Resources */,
@@ -441,6 +454,7 @@
 				8949C04723DD582E002CF0C0 /* LICENSE in Resources */,
 				99A81B7D236FBD42006D4A61 /* toolbar.pdf in Resources */,
 				8932BAF02527FEEC00D77FDA /* jquery-3.5.1.min.js in Resources */,
+				8936A35A25F0C0FA001F5DA6 /* InternetAccessPolicy.json in Resources */,
 				99C7C311235D81AA00ABA6EA /* redditweaks-script.js in Resources */,
 				897BAE2E252573EE004849DB /* Assets.xcassets in Resources */,
 				895A8ED023DD4548000CD345 /* new-toolbar.pdf in Resources */,

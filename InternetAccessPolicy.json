@@ -1,0 +1,22 @@
+{
+  "ApplicationDescription" : "Redditweaks is a Safari app extension for reddit.com.",
+  "Connections" : [
+    {
+      "DenyConsequences" : "If you deny this connection, automatic update checking will not work.",
+      "Host" : "github.com",
+      "IsIncoming" : false,
+      "NetworkProtocol" : "TCP",
+      "Port" : "443",
+      "Purpose" : "Redditweaks checks for updates by fetching the latest version from GitHub."
+    },
+    {
+      "DenyConsequences" : "If you deny this connection, Redditweaks will not be able to verify subreddits.",
+      "Host" : "reddit.com",
+      "IsIncoming" : false,
+      "NetworkProtocol" : "TCP",
+      "Port" : "443",
+      "Purpose" : "Redditweaks checks to see if subreddits are valid before adding them to your favorites."
+    }
+  ],
+  "DeveloperName" : "bermudalocket"
+}
