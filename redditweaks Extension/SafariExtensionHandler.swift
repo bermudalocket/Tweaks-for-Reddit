@@ -35,8 +35,10 @@ extension SFSafariPage {
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
 
+    static let viewWrapper = PopoverViewWrapper()
+
     override func popoverViewController() -> SFSafariExtensionViewController {
-        PopoverViewWrapper()
+        SafariExtensionHandler.viewWrapper
     }
 
     #if DEBUG
@@ -61,6 +63,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                     .forEach {
                         var script = $0.javascript
                         if $0.key == "customSubredditBar" {
+                            // surround with quotes and join with commas: "a", "b", "c"
                             let favSubsList = state.favoriteSubreddits.map { "\"\($0)\"" }.joined(separator: ",")
                             script = script.replacingOccurrences(of: "%SUBS%", with: favSubsList)
                         }
@@ -81,7 +84,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                 AppState().removeFavoriteSubreddit(subreddit: sub)
                 page.dispatchMessageToScript(message: .DEBUG, userInfo: ["info": "removed favorite \(sub)"])
 
-            default: print("Received a weird message: \(message)")
+            default:
+                print("Received a weird message: \(message)")
         }
     }
 

@@ -2,12 +2,12 @@
   "object": {
     "pins": [
       {
-        "package": "SnapKit",
-        "repositoryURL": "https://github.com/SnapKit/SnapKit",
+        "package": "AppStorage",
+        "repositoryURL": "https://github.com/xavierLowmiller/AppStorage",
         "state": {
           "branch": null,
-          "revision": "d458564516e5676af9c70b4f4b2a9178294f1bc6",
-          "version": "5.0.1"
+          "revision": "db62f9cd3aec28e901900b9ea71ec38c0665d9f3",
+          "version": "1.0.3"
         }
       }
     ]

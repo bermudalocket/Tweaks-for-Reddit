@@ -46,7 +46,7 @@
 			<key>Identifier</key>
 			<string>redditweaks</string>
 			<key>Image</key>
-			<string>toolbar.pdf</string>
+			<string>new-toolbar.pdf</string>
 			<key>Label</key>
 			<string>redditweaks</string>
 		</dict>
@@ -62,7 +62,7 @@
 		</dict>
 	</dict>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2019 - 2020 bermudalocket. All rights reserved.</string>
+	<string>Copyright © 2019 - 2021 bermudalocket. All rights reserved.</string>
 	<key>NSHumanReadableDescription</key>
 	<string>An extension to make Reddit suck a little less in Safari 13+.</string>
 </dict>

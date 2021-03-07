@@ -18,31 +18,65 @@ struct FavoriteSubredditView: View {
 
     @State private var isHovered = false
 
-    var body: some View {
-        HStack(alignment: .center) {
-            Image(systemName: "newspaper")
-            Text("r/\(subreddit)")
-            if isHovered {
-                Button("Open") {
-                    NSWorkspace.shared.open(URL(string: "https://www.reddit.com/r/\(subreddit)")!)
-                }
-                .buttonStyle(LinkButtonStyle())
-                .padding(.horizontal)
-                Button {
-                    appState.removeFavoriteSubreddit(subreddit: subreddit)
-                } label: {
-                    Text("Delete")
-                        .foregroundColor(.red)
-                }
-                .buttonStyle(BorderlessButtonStyle())
-                .padding(.horizontal, 5)
-                .background(Color.red.opacity(0.05).cornerRadius(10))
-            }
-            Spacer()
-        }
-        .onHover { hovering in
-            isHovered = hovering
+    private var imageName: String {
+        switch subreddit.uppercased() {
+            case "APPLE":
+                return "applelogo"
+
+            case "ASKREDDIT":
+                return "person.fill.questionmark"
+
+            case "GAMING":
+                return "gamecontroller.fill"
+
+            case "PICS":
+                return "camera.fill"
+
+            case "MATH":
+                return "function"
+
+            default:
+                return "doc"
         }
     }
 
+    var body: some View {
+        HStack(alignment: .center) {
+            Image(systemName: isHovered ? "xmark" : imageName)
+                .padding(2.5)
+                .frame(width: 25)
+                .onTapGesture {
+                    if isHovered {
+                        appState.removeFavoriteSubreddit(subreddit: subreddit)
+                    }
+                }
+            Text("r/\(subreddit)")
+                .lineLimit(1)
+                .frame(width: 125, alignment: .leading)
+        }
+        .contentShape(Rectangle())
+        .onHover { hovering in
+            isHovered = hovering
+        }
+        .frame(height: 25)
+        .onTapGesture(count: 2) {
+            NSWorkspace.shared.open(URL(string: "https://www.reddit.com/r/\(subreddit)")!)
+        }
+    }
+
+}
+
+struct FavoriteSubredditViewPreview: PreviewProvider {
+    static var previews: some View {
+        FavoriteSubredditView(subreddit: "politics")
+            .environmentObject(AppState())
+        FavoriteSubredditView(subreddit: "macos")
+            .environmentObject(AppState())
+        VStack {
+            ForEach(["politics", "askreddit", "macos", "ios", "apple", "mildlyinteresting"], id: \.self) { sub in
+                FavoriteSubredditView(subreddit: sub)
+                    .environmentObject(AppState())
+            }
+        }
+    }
 }

@@ -14,13 +14,11 @@ struct FeaturesListView: View {
 
     var body: some View {
         DisclosureGroup(isExpanded: appState.$isFeaturesListExpanded) {
-            ScrollView {
-                VStack(alignment: .leading) {
-                    ForEach(appState.features.keys.lazy.compactMap { $0 }.sorted { $0 < $1 }, id: \.self) { feature in
-                        Toggle(feature.description, isOn: appState.bindingForFeature(feature))
-                    }
-                }.padding(.bottom)
-            }
+            VStack(alignment: .leading) {
+                ForEach(appState.features.keys.lazy.compactMap { $0 }.sorted { $0 < $1 }, id: \.self) { feature in
+                    Toggle(feature.description, isOn: appState.bindingForFeature(feature))
+                }
+            }.padding(.bottom)
         } label: {
             HStack {
                 Text("Features")
@@ -28,8 +26,10 @@ struct FeaturesListView: View {
                 Spacer()
             }
             .padding(5)
-                .contentShape(Rectangle())
-                .onTapGesture { appState.isFeaturesListExpanded.toggle() }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                appState.isFeaturesListExpanded.toggle()
+            }
         }
     }
 

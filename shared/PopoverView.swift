@@ -15,8 +15,6 @@ struct PopoverView: View {
 
     @EnvironmentObject private var appState: AppState
 
-    @StateObject private var updateHelper: UpdateHelper = UpdateHelper()
-
     var body: some View {
         VStack(spacing: 10) {
             TitleView()
@@ -39,42 +37,10 @@ struct PopoverView: View {
                 .padding(.horizontal)
                 .background(SectionBackgroundView())
 
-            HStack {
-                if updateHelper.isCheckingForUpdate {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .controlSize(.small)
-                        .padding(5)
-                } else {
-                    Image(systemName: "checkmark.circle")
-                        .foregroundColor(.gray)
-                        .imageScale(.large)
-                }
-                VStack(alignment: .leading) {
-                    Text(updateHelper.isCheckingForUpdate ? "Checking for update..." : "You're up to date")
-                        .bold()
-                        .font(.callout)
-                    if !updateHelper.isCheckingForUpdate {
-                        Text(updateHelper.lastCheckedForUpdate)
-                            .font(.footnote)
-                    }
-                }
-                .foregroundColor(.gray)
-                Spacer()
-            }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                updateHelper.pollUpdate(forced: true)
-            }
+            UpdateView()
         }
         .padding(10)
         .frame(width: 300, alignment: .top)
-        .onAppear {
-            updateHelper.pollUpdate()
-        }
-        .alert(isPresented: $updateHelper.updateIsAvailable) {
-            Alert(title: Text("An update is available!"))
-        }
     }
 }
 
