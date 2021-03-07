@@ -40,9 +40,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2019 bermudalocket. All rights reserved.</string>
 	<key>NSMainStoryboardFile</key>
-	<string>Main</string>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
+	<string></string>
 	<key>NSSupportsAutomaticTermination</key>
 	<true/>
 	<key>NSSupportsSuddenTermination</key>

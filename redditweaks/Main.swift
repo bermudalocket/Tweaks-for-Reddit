@@ -9,7 +9,16 @@
 import Combine
 import SwiftUI
 import SafariServices
-import WebKit
+
+@main
+struct RedditweaksApp: App {
+    var body: some Scene {
+        WindowGroup {
+            MainAppView()
+                .environmentObject(OnboardingEnvironment())
+        }
+    }
+}
 
 class OnboardingEnvironment: ObservableObject {
 
@@ -31,8 +40,7 @@ class OnboardingEnvironment: ObservableObject {
             )
             .sink { _, safariResponse in
                 guard let state = safariResponse.0, safariResponse.1 == nil else {
-                    let error = safariResponse.1
-                    print("Error fetching extension state: \(error?.localizedDescription ?? "(no description)")")
+                    print("Error fetching extension state: \(safariResponse.1?.localizedDescription ?? "(no description)")")
                     return
                 }
                 if state.isEnabled != self.isSafariExtensionEnabled {
@@ -49,10 +57,10 @@ class OnboardingEnvironment: ObservableObject {
 
 struct MainAppView: View {
 
-    @EnvironmentObject var onboardingEnvironment: OnboardingEnvironment
+    @EnvironmentObject private var onboardingEnvironment: OnboardingEnvironment
 
     var successIcon: some View {
-        Image("checkmark.square.fill")
+        Image(systemName: "checkmark.square.fill")
             .foregroundColor(.green)
             .font(.system(size: 28, weight: .regular, design: .rounded))
     }
@@ -74,7 +82,7 @@ struct MainAppView: View {
                         if onboardingEnvironment.isSafariExtensionEnabled {
                             self.successIcon
                         } else {
-                            Image("1.square")
+                            Image(systemName: "1.square")
                                 .font(.system(size: 28, weight: .regular, design: .rounded))
                         }
                         Text("Activate the extension")
@@ -106,13 +114,11 @@ struct MainAppView: View {
 
 struct MainAppView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            MainAppView()
-                .environment(\.colorScheme, ColorScheme.dark)
-                .environmentObject(OnboardingEnvironment())
-            MainAppView()
-                .environment(\.colorScheme, ColorScheme.light)
-                .environmentObject(OnboardingEnvironment())
-        }
+        MainAppView()
+            .environment(\.colorScheme, ColorScheme.dark)
+            .environmentObject(OnboardingEnvironment())
+        MainAppView()
+            .environment(\.colorScheme, ColorScheme.light)
+            .environmentObject(OnboardingEnvironment())
     }
 }
