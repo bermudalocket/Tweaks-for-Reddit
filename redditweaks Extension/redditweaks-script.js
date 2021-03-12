@@ -162,11 +162,11 @@ let rememberUserVotes = () => {
             let isAlreadyUpvoted = $(upvote).hasClass("upmod")
             if (isAlreadyUpvoted) {
                 rememberVote(false, author)
-                alert("removing remembered upvote")
+                //alert("removing remembered upvote")
                 safari.extension.dispatchMessage("removeupvote", { "user": author })
             } else {
                 rememberVote(true, author)
-                alert("upvoted " + author)
+                //alert("upvoted " + author)
                 safari.extension.dispatchMessage("rememberupvote", { "user": author })
             }
         })
@@ -176,11 +176,11 @@ let rememberUserVotes = () => {
             let isAlreadyDownvoted = $(downvote).hasClass("downmod")
             if (isAlreadyDownvoted) {
                 rememberVote(true, author)
-                alert("removing remembered downvote")
+                //alert("removing remembered downvote")
                 safari.extension.dispatchMessage("removedownvote", { "user": author })
             } else {
                 rememberVote(false, author)
-                alert("downvoted " + author)
+                //alert("downvoted " + author)
                 safari.extension.dispatchMessage("rememberdownvote", { "user": author })
             }
         })
