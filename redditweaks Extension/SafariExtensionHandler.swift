@@ -10,26 +10,45 @@ import Foundation
 import SafariServices
 
 enum Message: CaseIterable {
-    case ADD_FAVORITE_SUB
-    case DEBUG
-    case KEEP_ALIVE
-    case ON_DOM_LOADED
-    case PING
-    case REMOVE_FAVORITE_SUB
-    case SCRIPT
+    case addFavoriteSub
+    case begin
+    case domLoaded
+    case removeFavoriteSub
+    case script
 
     var key: String {
         "\(self)".lowercased()
     }
 
-    static func fromKey(_ key: String) -> Message? {
-        Message.allCases.first { "\($0)".lowercased() == key }
+    static func fromString(_ string: String) -> Message? {
+        Message.allCases.first { "\($0)" == string }
     }
 }
 
 extension SFSafariPage {
     func dispatchMessageToScript(message: Message, userInfo: [String: Any]? = nil) {
         dispatchMessageToScript(withName: message.key, userInfo: userInfo)
+    }
+}
+
+enum RedditPageType {
+    case feed, subreddit, post, user
+
+    var features: [Feature] {
+        let base: [Feature] = [.customSubredditBar, .hideNewRedditButton, .hideUsername, .noChat, .oldRedditRedirect, .showKarma, .showNewComments, .rememberUserVotes]
+        switch self {
+            case .feed:
+                return base + [.hideAds, .hideRedditPremiumBanner, .noHappeningNowBanners, .nsfwFilter, .removePromotedPosts]
+
+            case .post:
+                return base + [.collapseAutoModerator, .collapseChildComments]
+
+            case .subreddit:
+                return base + [.nsfwFilter]
+
+            case .user:
+                return base
+        }
     }
 }
 
@@ -41,11 +60,16 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         SafariExtensionHandler.viewWrapper
     }
 
-    #if DEBUG
-    override func page(_ page: SFSafariPage, willNavigateTo url: URL?) {
-        page.dispatchMessageToScript(message: .KEEP_ALIVE)
+    private func pageType(for url: URL) -> RedditPageType {
+        let urlStr = url.absoluteString
+        if urlStr.contains("/r/") {
+            return urlStr.contains("/comments/") ? .post : .subreddit
+        }
+        if urlStr.contains("/user/") {
+            return .user
+        }
+        return .feed
     }
-    #endif
 
     /**
      Receives a wrapped message from the extension.
@@ -56,33 +80,43 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
      */
     func messageReceived(message: Message, from page: SFSafariPage, userInfo: [String: Any]? = nil) {
         switch message {
-            case .ON_DOM_LOADED:
-                let state = AppState()
-                Feature.features
-                    .filter { Redditweaks.defaults.bool(forKey: $0.key) }
-                    .forEach {
-                        var script = $0.javascript
-                        if $0.key == "customSubredditBar" {
-                            // surround with quotes and join with commas: "a", "b", "c"
-                            let favSubsList = state.favoriteSubreddits.map { "\"\($0)\"" }.joined(separator: ",")
-                            script = script.replacingOccurrences(of: "%SUBS%", with: favSubsList)
-                        }
-                        page.dispatchMessageToScript(message: .SCRIPT, userInfo: [ "name": $0.key, "script": script ])
+            case .begin:
+                guard let userInfo = userInfo,
+                      let urlStr = userInfo["url"] as? String,
+                      let url = URL(string: urlStr)
+                else {
+                    return
+                }
+                let features = self.pageType(for: url)
+                    .features
+                    .filter { feature in
+                        Redditweaks.defaults.bool(forKey: feature.key)
                     }
+                    .map { feature -> String in
+                        switch feature {
+                            case .customSubredditBar:
+                                let subs = AppState().favoriteSubreddits.map { "'\($0)'" }.joined(separator: ",")
+                                return "customSubredditBar([\(subs)])"
 
-            case .ADD_FAVORITE_SUB:
+                            default:
+                                return feature.key + "()"
+                        }
+                    }
+                page.dispatchMessageToScript(message: .script, userInfo: [
+                    "functions": features
+                ])
+
+            case .addFavoriteSub:
                 guard let userInfo = userInfo, let sub = userInfo["subreddit"] as? String else {
                     return
                 }
                 AppState().addFavoriteSubreddit(subreddit: sub)
-                page.dispatchMessageToScript(message: .DEBUG, userInfo: ["info": "added favorite \(sub)"])
 
-            case .REMOVE_FAVORITE_SUB:
+            case .removeFavoriteSub:
                 guard let userInfo = userInfo, let sub = userInfo["subreddit"] as? String else {
                     return
                 }
                 AppState().removeFavoriteSubreddit(subreddit: sub)
-                page.dispatchMessageToScript(message: .DEBUG, userInfo: ["info": "removed favorite \(sub)"])
 
             default:
                 print("Received a weird message: \(message)")
@@ -93,7 +127,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
      Converts a vanilla Safari extension message into an enumerable one and passes it along.
      */
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String: Any]?) {
-        guard let message = Message.fromKey(messageName) else {
+        guard let message = Message.fromString(messageName) else {
             print("ERROR: couldn't get Message object from key \(messageName)")
             return
         }

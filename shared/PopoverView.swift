@@ -46,9 +46,11 @@ struct PopoverView: View {
 
 struct PopoverView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            PopoverView()
-                .environmentObject(AppState())
-        }
+        PopoverView()
+            .environmentObject(AppState())
+            .environment(\.colorScheme, .light)
+        PopoverView()
+            .environmentObject(AppState())
+            .environment(\.colorScheme, .dark)
     }
 }

@@ -9,10 +9,11 @@
 import SwiftUI
 
 struct SectionBackgroundView: View {
+    @Environment(\.colorScheme) private var colorScheme
     var body: some View {
         RoundedRectangle(cornerRadius: 10, style: .continuous)
-            .fill(Color.white)
-            .opacity(0.3)
+            .fill(Color(.textBackgroundColor))
+            .opacity(colorScheme == .light ? 0.3 : 0.7)
             .shadow(radius: 5)
     }
 }

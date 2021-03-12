@@ -203,6 +203,7 @@
 		895673DA25F158EA00D1195F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C96A6649FD5348AC8CA9E48B /* Feature.swift */,
 				895673DF25F15B8200D1195F /* FavoriteSubreddits.swift */,
 			);
 			path = Model;
@@ -223,7 +224,6 @@
 				897C570C25E8181000E08F27 /* FeaturesListView.swift */,
 				897C570F25E8184F00E08F27 /* SectionBackgroundView.swift */,
 				8914CDA924B776150015E4C4 /* Redditweaks.swift */,
-				C96A6649FD5348AC8CA9E48B /* Feature.swift */,
 				8914CDA724B6B7D40015E4C4 /* FavoriteSubredditView.swift */,
 				8914CDAD24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift */,
 			);
@@ -776,6 +776,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.6.3;
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bermudalocket.redditweaks-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -801,6 +803,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.6.3;
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bermudalocket.redditweaks-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

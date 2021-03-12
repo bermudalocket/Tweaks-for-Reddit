@@ -25,7 +25,7 @@ struct SettingsView: View {
 //                        $0 ? NSCursor.disappearingItem.push() : NSCursor.pop()
 //                    }
             }
-            .padding(.bottom, 5)
+            .padding(.bottom)
         } label: {
             HStack {
                 Text("Settings")

@@ -43,6 +43,7 @@ struct FavoriteSubredditView: View {
     var body: some View {
         HStack(alignment: .center) {
             Image(systemName: isHovered ? "xmark" : imageName)
+                .foregroundColor(isHovered ? .red : .accentColor)
                 .padding(2.5)
                 .frame(width: 25)
                 .onTapGesture {
@@ -52,7 +53,7 @@ struct FavoriteSubredditView: View {
                 }
             Text("r/\(subreddit)")
                 .lineLimit(1)
-                .frame(width: 125, alignment: .leading)
+                .frame(width: 200, alignment: .leading)
         }
         .contentShape(Rectangle())
         .onHover { hovering in

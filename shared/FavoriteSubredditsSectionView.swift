@@ -40,11 +40,12 @@ struct FavoriteSubredditsSectionView: View {
                 }
             }
             if appState.favoriteSubreddits.count > 0 {
-                ScrollView(.vertical) {
+                ScrollView(.vertical, showsIndicators: false) {
                     ForEach(appState.favoriteSubreddits, id: \.self) {
                         FavoriteSubredditView(subreddit: $0)
                     }
-                }.frame(minHeight: 20, maxHeight: 180)
+                }
+                .frame(minHeight: 20, maxHeight: 180)
             }
         }
     }

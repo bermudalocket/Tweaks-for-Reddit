@@ -22,17 +22,15 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
+			<string>None</string>
 			<key>CFBundleURLName</key>
-			<string>com.bermudalocket.redditweaks</string>
+			<string></string>
 			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>rdtwks</string>
-			</array>
+			<array/>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>448</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>

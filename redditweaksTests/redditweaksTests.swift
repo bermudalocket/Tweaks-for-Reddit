@@ -29,7 +29,16 @@ class redditweaksTests: XCTestCase {
 
     func testSubreddit() throws {
         XCTAssertTrue(true)
-        
+    }
+
+    func testGetThreadId() {
+        let urlStr = "https://www.reddit.com/r/valheim/comments/lz9n5r/i_can_hold_80_more_wooden_arrows_dammit/"
+        guard let id = urlStr.split(separator: "/").dropLast().last else {
+            XCTFail()
+            return
+        }
+        let str = String(id)
+        XCTAssertEqual(str, "lz9n5r")
     }
 
 }
