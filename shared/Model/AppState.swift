@@ -21,12 +21,6 @@ final class AppState: ObservableObject {
     @AppStorage("isFeaturesListExpanded") var isFeaturesListExpanded = true
     @AppStorage("verifySubreddits") var doSubredditVerification = true
 
-    // MARK: - telemetry
-
-    @AppStorage("telemetry") var doTelemetry = true
-    @AppStorage("telemetry.uuid") var telemetryUUID = UUID().uuidString
-    @AppStorage("telemetry.userAgent") var telemetryUserAgent = ""
-
     // MARK: - features
 
     @Published var features: [Feature: Bool] = {
