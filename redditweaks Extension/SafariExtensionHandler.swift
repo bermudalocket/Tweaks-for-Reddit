@@ -50,6 +50,17 @@ enum RedditPageType {
                 return base
         }
     }
+
+    public static func forURL(_ url: URL) -> RedditPageType {
+        let urlStr = url.absoluteString
+        if urlStr.contains("/r/") {
+            return urlStr.contains("/comments/") ? .post : .subreddit
+        }
+        if urlStr.contains("/user/") {
+            return .user
+        }
+        return .feed
+    }
 }
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
@@ -60,17 +71,6 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         SafariExtensionHandler.viewWrapper
     }
 
-    private func pageType(for url: URL) -> RedditPageType {
-        let urlStr = url.absoluteString
-        if urlStr.contains("/r/") {
-            return urlStr.contains("/comments/") ? .post : .subreddit
-        }
-        if urlStr.contains("/user/") {
-            return .user
-        }
-        return .feed
-    }
-
     /**
      Receives a wrapped message from the extension.
 
@@ -79,6 +79,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
      - Parameter userInfo: An optional dictionary containing extra information relevant to the message.
      */
     func messageReceived(message: Message, from page: SFSafariPage, userInfo: [String: Any]? = nil) {
+        let state = AppState()
         switch message {
             case .begin:
                 guard let userInfo = userInfo,
@@ -87,7 +88,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                 else {
                     return
                 }
-                let features = self.pageType(for: url)
+                let features = RedditPageType.forURL(url)
                     .features
                     .filter { feature in
                         Redditweaks.defaults.bool(forKey: feature.key)
@@ -95,7 +96,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                     .map { feature -> String in
                         switch feature {
                             case .customSubredditBar:
-                                let subs = AppState().favoriteSubreddits.map { "'\($0)'" }.joined(separator: ",")
+                                let subs = state.favoriteSubreddits.map { "'\($0)'" }.joined(separator: ",")
                                 return "customSubredditBar([\(subs)])"
 
                             default:
@@ -110,13 +111,13 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                 guard let userInfo = userInfo, let sub = userInfo["subreddit"] as? String else {
                     return
                 }
-                AppState().addFavoriteSubreddit(subreddit: sub)
+                state.addFavoriteSubreddit(subreddit: sub)
 
             case .removeFavoriteSub:
                 guard let userInfo = userInfo, let sub = userInfo["subreddit"] as? String else {
                     return
                 }
-                AppState().removeFavoriteSubreddit(subreddit: sub)
+                state.removeFavoriteSubreddit(subreddit: sub)
 
             default:
                 print("Received a weird message: \(message)")

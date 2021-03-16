@@ -18,12 +18,6 @@ struct SettingsView: View {
                 if appState.features[.customSubredditBar] ?? false {
                     Toggle("Verify favorite subreddits exist when typing", isOn: $appState.doSubredditVerification)
                 }
-//                Toggle("Debug", isOn: .constant(true))
-//                Toggle("Send Safari and Redditweaks version info to Redditweaks", isOn: .constant(false))
-//                    .disabled(true)
-//                    .onHover {
-//                        $0 ? NSCursor.disappearingItem.push() : NSCursor.pop()
-//                    }
             }
             .padding(.bottom)
         } label: {
@@ -38,12 +32,17 @@ struct SettingsView: View {
                 appState.isSettingsExpanded.toggle()
             }
         }
+        .frame(height: appState.isSettingsExpanded ? CGFloat(100) : CGFloat(35)) // TODO: weird compiler error here w/o CGFloat casts
     }
 }
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
-            .environmentObject(AppState())
+            .environmentObject(AppState.preview)
+            .onAppear {
+                AppState.preview.isSettingsExpanded = true
+            }
+            .frame(width: 300)
     }
 }

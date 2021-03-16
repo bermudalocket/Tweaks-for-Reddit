@@ -11,6 +11,17 @@
 import Combine
 import SwiftUI
 
+// TODO
+// https://stackoverflow.com/questions/60454752/swiftui-background-color-of-list-mac-os
+extension NSTableView {
+  open override func viewDidMoveToWindow() {
+    super.viewDidMoveToWindow()
+
+    backgroundColor = NSColor.clear
+    enclosingScrollView!.drawsBackground = false
+  }
+}
+
 struct FavoriteSubredditsSectionView: View {
 
     @EnvironmentObject private var appState: AppState
@@ -39,21 +50,25 @@ struct FavoriteSubredditsSectionView: View {
                     .disabled(!isSubredditValid)
                 }
             }
-            if appState.favoriteSubreddits.count > 0 {
-                ScrollView(.vertical, showsIndicators: false) {
-                    ForEach(appState.favoriteSubreddits, id: \.self) {
-                        FavoriteSubredditView(subreddit: $0)
-                    }
+            List {
+                ForEach(appState.favoriteSubreddits, id: \.self) {
+                    FavoriteSubredditView(subreddit: $0)
                 }
-                .frame(minHeight: 20, maxHeight: 180)
+                .onMove(perform: onMove)
             }
+            .listStyle(PlainListStyle())
+            .frame(height: 25 * CGFloat(appState.favoriteSubreddits.count))
         }
+    }
+
+    private func onMove(indices: IndexSet, newOffset: Int) {
+        appState.favoriteSubreddits.move(fromOffsets: indices, toOffset: newOffset)
     }
 }
 
 struct FavoriteSubredditsSectionView_Previews: PreviewProvider {
     static var previews: some View {
         FavoriteSubredditsSectionView()
-            .environmentObject(AppState())
+            .environmentObject(AppState.preview)
     }
 }

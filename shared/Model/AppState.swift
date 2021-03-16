@@ -21,16 +21,30 @@ final class AppState: ObservableObject {
     @AppStorage("isFeaturesListExpanded") var isFeaturesListExpanded = true
     @AppStorage("verifySubreddits") var doSubredditVerification = true
 
+    // MARK: - telemetry
+
+    @AppStorage("telemetry") var doTelemetry = true
+    @AppStorage("telemetry.uuid") var telemetryUUID = UUID().uuidString
+    @AppStorage("telemetry.userAgent") var telemetryUserAgent = ""
+
     // MARK: - features
 
-    @Published var features = [Feature: Bool]()
+    @Published var features: [Feature: Bool] = {
+        var map = [Feature: Bool]()
+        Feature.features.forEach { feature in
+            map[feature] = Redditweaks.defaults.bool(forKey: feature.key)
+        }
+        return map
+    }()
     @AppStorage("favoriteSubreddits") var favoriteSubreddits = FavoriteSubreddits()
 
-    init() {
-        Feature.features.forEach { feature in
-            self.features[feature] = Redditweaks.defaults.bool(forKey: feature.key)
-        }
-    }
+    // MARK: - preview
+
+    public static let preview: AppState = {
+        let state = AppState()
+        state.favoriteSubreddits = [ "politics", "apple", "math", "PhasmophobiaGame" ]
+        return state
+    }()
 
     final func bindingForFeature(_ feature: Feature) -> Binding<Bool> {
         .init(get: {

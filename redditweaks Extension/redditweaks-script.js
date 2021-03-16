@@ -1,6 +1,5 @@
 $(document).ready(function() {
     if (window.top === window) {
-
         safari.self.addEventListener("message", event => {
             if (event.name === "script") {
                 let start = performance.now()
@@ -16,10 +15,8 @@ $(document).ready(function() {
                 console.log("--> Total: " + duration + " ms")
             }
         });
-
         safari.extension.dispatchMessage("begin", {
             "url": window.location.href,
-            "time": performance.now()
         })
     }
 })

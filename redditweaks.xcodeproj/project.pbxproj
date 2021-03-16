@@ -47,6 +47,7 @@
 		897C571125E8184F00E08F27 /* SectionBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897C570F25E8184F00E08F27 /* SectionBackgroundView.swift */; };
 		8982998B24B4059C0063FFE9 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8982998A24B4059C0063FFE9 /* PopoverView.swift */; };
 		8982998D24B405BC0063FFE9 /* PopoverViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8982998C24B405BC0063FFE9 /* PopoverViewWrapper.swift */; };
+		898A20162601313500E28B37 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898A20152601313500E28B37 /* DebugView.swift */; };
 		89C6E25F25EF3CA700CB1680 /* UpdateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C6E25E25EF3CA700CB1680 /* UpdateHelper.swift */; };
 		89C6E26025EF3D6F00CB1680 /* UpdateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C6E25E25EF3CA700CB1680 /* UpdateHelper.swift */; };
 		89CD138B245E153200A8D3E4 /* SafariExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CD138A245E153200A8D3E4 /* SafariExtensionHandler.swift */; };
@@ -122,6 +123,7 @@
 		897C570F25E8184F00E08F27 /* SectionBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionBackgroundView.swift; sourceTree = "<group>"; };
 		8982998A24B4059C0063FFE9 /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		8982998C24B405BC0063FFE9 /* PopoverViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewWrapper.swift; sourceTree = "<group>"; };
+		898A20152601313500E28B37 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		89C6E25E25EF3CA700CB1680 /* UpdateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateHelper.swift; sourceTree = "<group>"; };
 		89CD138A245E153200A8D3E4 /* SafariExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariExtensionHandler.swift; sourceTree = "<group>"; };
 		89DD692024AA8AE800599B28 /* redditweaksUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = redditweaksUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -203,6 +205,7 @@
 		895673DA25F158EA00D1195F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				897C570925E8130100E08F27 /* AppState.swift */,
 				C96A6649FD5348AC8CA9E48B /* Feature.swift */,
 				895673DF25F15B8200D1195F /* FavoriteSubreddits.swift */,
 			);
@@ -212,13 +215,12 @@
 		897BAE3325264C16004849DB /* shared */ = {
 			isa = PBXGroup;
 			children = (
+				89B4B08225FFCEEC002E5A1B /* Helper */,
 				895673DA25F158EA00D1195F /* Model */,
 				895673D725F1563000D1195F /* Extension */,
 				99C7C2F9235D81AA00ABA6EA /* Assets.xcassets */,
-				897C570925E8130100E08F27 /* AppState.swift */,
 				8982998A24B4059C0063FFE9 /* PopoverView.swift */,
 				895673E525F15EFD00D1195F /* UpdateView.swift */,
-				89C6E25E25EF3CA700CB1680 /* UpdateHelper.swift */,
 				8952B9C125EED97D00EF44DF /* TitleView.swift */,
 				8952B9BE25EED54200EF44DF /* SettingsView.swift */,
 				897C570C25E8181000E08F27 /* FeaturesListView.swift */,
@@ -228,6 +230,14 @@
 				8914CDAD24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift */,
 			);
 			path = shared;
+			sourceTree = "<group>";
+		};
+		89B4B08225FFCEEC002E5A1B /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				89C6E25E25EF3CA700CB1680 /* UpdateHelper.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		89DD692124AA8AE800599B28 /* redditweaksUITests */ = {
@@ -271,6 +281,7 @@
 			children = (
 				99C7C2F0235D81A700ABA6EA /* redditweaks.entitlements */,
 				99C7C2F7235D81A700ABA6EA /* Main.swift */,
+				898A20152601313500E28B37 /* DebugView.swift */,
 				99C7C2FB235D81AA00ABA6EA /* Info.plist */,
 			);
 			path = redditweaks;
@@ -504,6 +515,7 @@
 				8952B9BF25EED54200EF44DF /* SettingsView.swift in Sources */,
 				897C571025E8184F00E08F27 /* SectionBackgroundView.swift in Sources */,
 				99C7C2F8235D81A700ABA6EA /* Main.swift in Sources */,
+				898A20162601313500E28B37 /* DebugView.swift in Sources */,
 				897C570A25E8130100E08F27 /* AppState.swift in Sources */,
 				895673DE25F15B4F00D1195F /* Date.swift in Sources */,
 				897BAE6825264CC8004849DB /* FavoriteSubredditView.swift in Sources */,
@@ -775,7 +787,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.6.3.1;
+				MARKETING_VERSION = 1.6.4;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bermudalocket.redditweaks-Extension";
@@ -802,7 +814,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.6.3.1;
+				MARKETING_VERSION = 1.6.4;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bermudalocket.redditweaks-Extension";
@@ -831,7 +843,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.6.3.1;
+				MARKETING_VERSION = 1.6.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -857,7 +869,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.6.3.1;
+				MARKETING_VERSION = 1.6.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -103,7 +103,13 @@ struct MainAppView: View {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .foregroundColor(Color(.textBackgroundColor))
                 )
+
+                Button("Open debug window") {
+                    let window = NSWindow(contentViewController: NSHostingController(rootView: DebugView()))
+                    window.makeKeyAndOrderFront(nil)
+                }
             }
+
         }
         .frame(width: 300, height: 400)
         .padding()

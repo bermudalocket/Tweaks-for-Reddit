@@ -16,7 +16,8 @@ struct FavoriteSubredditView: View {
 
     let subreddit: String
 
-    @State private var isHovered = false
+    @State private var isEditing = false
+    @State private var subredditRenameField = ""
 
     private var imageName: String {
         switch subreddit.uppercased() {
@@ -40,28 +41,43 @@ struct FavoriteSubredditView: View {
         }
     }
 
+    func openSubredditInBrowser() {
+        NSWorkspace.shared.open(URL(string: "https://www.reddit.com/r/\(subreddit)")!)
+    }
+
     var body: some View {
         HStack(alignment: .center) {
-            Image(systemName: isHovered ? "xmark" : imageName)
-                .foregroundColor(isHovered ? .red : .accentColor)
-                .padding(2.5)
-                .frame(width: 25)
-                .onTapGesture {
-                    if isHovered {
+            Image(systemName: imageName)
+                .foregroundColor(.accentColor)
+                .frame(width: 20)
+            if isEditing {
+                TextField("Subreddit", text: $subredditRenameField, onEditingChanged: { _ in }) {
+                    guard let index = appState.favoriteSubreddits.firstIndex(of: subreddit) else {
+                        return
+                    }
+                    appState.favoriteSubreddits[index] = subredditRenameField
+                    isEditing = false
+                }
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 200, alignment: .leading)
+            } else {
+                Menu("r/\(subreddit)") {
+                    Button("Open", action: openSubredditInBrowser)
+                    Button("Edit") { isEditing = true }
+                    Divider()
+                    Button {
                         appState.removeFavoriteSubreddit(subreddit: subreddit)
+                    } label: {
+                        Text("Delete").foregroundColor(.red)
                     }
                 }
-            Text("r/\(subreddit)")
-                .lineLimit(1)
                 .frame(width: 200, alignment: .leading)
+                .menuStyle(BorderlessButtonMenuStyle())
+            }
         }
         .contentShape(Rectangle())
-        .onHover { hovering in
-            isHovered = hovering
-        }
-        .frame(height: 25)
-        .onTapGesture(count: 2) {
-            NSWorkspace.shared.open(URL(string: "https://www.reddit.com/r/\(subreddit)")!)
+        .onAppear {
+            self.subredditRenameField = self.subreddit
         }
     }
 
@@ -69,15 +85,7 @@ struct FavoriteSubredditView: View {
 
 struct FavoriteSubredditViewPreview: PreviewProvider {
     static var previews: some View {
-        FavoriteSubredditView(subreddit: "politics")
-            .environmentObject(AppState())
         FavoriteSubredditView(subreddit: "macos")
-            .environmentObject(AppState())
-        VStack {
-            ForEach(["politics", "askreddit", "macos", "ios", "apple", "mildlyinteresting"], id: \.self) { sub in
-                FavoriteSubredditView(subreddit: sub)
-                    .environmentObject(AppState())
-            }
-        }
+            .environmentObject(AppState.preview)
     }
 }
