@@ -32,11 +32,11 @@ final class UpdateHelper: ObservableObject {
     @Published var updateHelperError: UpdateError?
 
     final var canCheckForUpdate: Bool {
-        Date.now() - lastCheckedForUpdate > .minutes(10)
+        Date().timeIntervalSince1970 - lastCheckedForUpdate > .minutes(10)
     }
 
     final func pollUpdate(forced: Bool = false) {
-        if !forced && canCheckForUpdate {
+        if !forced && !canCheckForUpdate {
             return
         }
         DispatchQueue.main.async {
