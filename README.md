@@ -1,9 +1,10 @@
 <p align="center">
     A Safari App Extension that makes Reddit suck just a little bit less on Safari 13+.
-    <img src='https://i.imgur.com/wytyfjh.jpg' width=85%>
-    <img src='https://i.imgur.com/RLFPr6i.jpg' width=33%>
-    <img src='https://i.imgur.com/VNxAfgB.jpg' width=33%>
-    <img src='https://i.imgur.com/Mgz1lbk.png' width=33%>
+</p>
+<p align="center">
+    <a href='https://apps.apple.com/us/app/tweaks-for-reddit/id1524828965?mt=12'>
+        <img src='https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-mac-app-store.svg'>
+    </a>
 </p>
 
 ## Background
@@ -33,3 +34,10 @@ Previews cannot be hosted inside "com.apple.Safari.extension" app extensions
 ````
 
 To get around this, I needed to add the  `redditweaks` target to the files' target memberships. This allows the Xcode canvas previews to work as intended.
+
+## Historical Screenshots
+
+    <img src='https://i.imgur.com/wytyfjh.jpg' width=85%>
+    <img src='https://i.imgur.com/RLFPr6i.jpg' width=33%>
+    <img src='https://i.imgur.com/VNxAfgB.jpg' width=33%>
+    <img src='https://i.imgur.com/Mgz1lbk.png' width=33%>
