@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "99C7C2EC235D81A700ABA6EA"
-               BuildableName = "redditweaks.app"
-               BlueprintName = "redditweaks"
+               BuildableName = "Tweaks for Reddit.app"
+               BlueprintName = "Tweaks for Reddit"
                ReferencedContainer = "container:redditweaks.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -65,8 +65,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "99C7C2EC235D81A700ABA6EA"
-            BuildableName = "redditweaks.app"
-            BlueprintName = "redditweaks"
+            BuildableName = "Tweaks for Reddit.app"
+            BlueprintName = "Tweaks for Reddit"
             ReferencedContainer = "container:redditweaks.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -82,8 +82,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "99C7C2EC235D81A700ABA6EA"
-            BuildableName = "redditweaks.app"
-            BlueprintName = "redditweaks"
+            BuildableName = "Tweaks for Reddit.app"
+            BlueprintName = "Tweaks for Reddit"
             ReferencedContainer = "container:redditweaks.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

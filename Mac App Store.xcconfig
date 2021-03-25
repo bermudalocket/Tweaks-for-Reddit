@@ -1,0 +1,13 @@
+//
+//  Config.xcconfig
+//  redditweaks
+//
+//  Created by Michael Rippe on 3/17/21.
+//  Copyright © 2021 bermudalocket. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+MAC_APP_STORE = 1
+TOOLBAR_IMAGE = toolbar.pdf

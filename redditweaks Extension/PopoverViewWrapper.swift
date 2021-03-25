@@ -18,7 +18,12 @@ class PopoverViewWrapper: SFSafariExtensionViewController {
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        let view = PopoverView().environmentObject(AppState())
+
+        let state = AppState()
+        if Bundle.main.object(forInfoDictionaryKey: "MAC_APP_STORE") as? Bool ?? true {
+            state.setFromMacAppStore()
+        }
+        let view = PopoverView().environmentObject(state)
         self.view = NSHostingView(rootView: view)
     }
 

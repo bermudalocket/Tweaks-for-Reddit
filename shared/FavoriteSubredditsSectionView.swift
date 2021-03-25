@@ -18,7 +18,7 @@ extension NSTableView {
     super.viewDidMoveToWindow()
 
     backgroundColor = NSColor.clear
-    enclosingScrollView!.drawsBackground = false
+    enclosingScrollView?.drawsBackground = false
   }
 }
 
@@ -33,12 +33,12 @@ struct FavoriteSubredditsSectionView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 5) {
-                TextField("r/", text: $favoriteSubredditField)
-                    .foregroundColor(isSubredditValid ? .black : .red)
-                    .onChange(of: favoriteSubredditField) {
-                        appState.verifySubreddit(subreddit: $0, isValid: $isSubredditValid, isSearching: $isSearching)
-                    }
-                    .focusable(false)
+                TextField("r/", text: $favoriteSubredditField) { _ in
+                    appState.verifySubreddit(subreddit: favoriteSubredditField,
+                                             isValid: $isSubredditValid,
+                                             isSearching: $isSearching)
+                }
+                .foregroundColor(isSubredditValid ? .black : .red)
                 if isSearching {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
@@ -47,6 +47,7 @@ struct FavoriteSubredditsSectionView: View {
                     Button("Add") {
                         appState.addFavoriteSubreddit(subreddit: favoriteSubredditField)
                     }
+                    .keyboardShortcut(.return)
                     .disabled(!isSubredditValid)
                 }
             }
@@ -57,6 +58,7 @@ struct FavoriteSubredditsSectionView: View {
                 .onMove(perform: onMove)
             }
             .listStyle(PlainListStyle())
+            .focusable()
             .frame(height: 25 * CGFloat(appState.favoriteSubreddits.count))
         }
     }

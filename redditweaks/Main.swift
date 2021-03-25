@@ -33,7 +33,7 @@ class OnboardingEnvironment: ObservableObject {
             .receive(on: RunLoop.main)
             .zip(
                 Future { promise in
-                    SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: "com.bermudalocket.redditweaks-Extension") { (state, error) in
+                    SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") { (state, error) in
                         promise(.success((state, error)))
                     }
                 }
@@ -69,8 +69,11 @@ struct MainAppView: View {
         VStack {
             VStack {
                 Image("Icon")
-                Text("redditweaks").font(.largeTitle).fontWeight(.heavy)
-            }.padding()
+                Text("Tweaks for Reddit")
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+            }
+            .padding()
             VStack(spacing: 12) {
                 Text("There's just one thing you have to do before you can get started.")
                     .padding()
@@ -91,7 +94,7 @@ struct MainAppView: View {
                     }
                     Text("You have to manually activate the extension in Safari, otherwise we can't work our magic on Reddit.")
                     Button("Open in Safari") {
-                        SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks-Extension") {
+                        SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") {
                             if let error = $0 {
                                 NSLog("Error opening Safari: \(error).")
                             }
@@ -103,11 +106,6 @@ struct MainAppView: View {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .foregroundColor(Color(.textBackgroundColor))
                 )
-
-                Button("Open debug window") {
-                    let window = NSWindow(contentViewController: NSHostingController(rootView: DebugView()))
-                    window.makeKeyAndOrderFront(nil)
-                }
             }
 
         }

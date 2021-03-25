@@ -12,24 +12,25 @@ struct FeaturesListView: View {
 
     @EnvironmentObject private var appState: AppState
 
+    private var features: [Feature] {
+        appState.features.keys.lazy.compactMap {
+            ($0 == .nsfwFilter && appState.isFromMacAppStore) ? nil : $0
+        }
+    }
+
     var body: some View {
-        DisclosureGroup(isExpanded: appState.$isFeaturesListExpanded) {
+        GroupBox(label: Text("Features")) {
             VStack(alignment: .leading) {
-                ForEach(appState.features.keys.lazy.compactMap { $0 }.sorted { $0 < $1 }, id: \.self) { feature in
+                ForEach(features.sorted { $0 < $1 }, id: \.self) { feature in
                     Toggle(feature.description, isOn: appState.bindingForFeature(feature))
+                        .lineLimit(2)
+                    if feature == .customSubredditBar && appState.bindingForFeature(feature).wrappedValue {
+                        FavoriteSubredditsSectionView()
+                            .environmentObject(appState)
+                    }
                 }
-            }.padding(.bottom)
-        } label: {
-            HStack {
-                Text("Features")
-                    .bold()
-                Spacer()
             }
-            .padding(5)
-            .contentShape(Rectangle())
-            .onTapGesture {
-                appState.isFeaturesListExpanded.toggle()
-            }
+            .padding(10)
         }
     }
 

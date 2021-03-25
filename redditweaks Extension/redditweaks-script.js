@@ -196,6 +196,7 @@ let showNewComments = () => {
             let comments = (precomments == null) ? 0 : precomments.groups.numComments
             let saved = getThreadComments(threadId)
             if (saved != null) {
+                $(this).parent().parent().parent().parent().parent().css("opacity", 0.5) // TODO
                 if (saved <= comments) {
                     let diff = comments - saved
                     $(this).after(` <b>[${diff} NEW]</b>`)

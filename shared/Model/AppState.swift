@@ -11,6 +11,8 @@ import Combine
 
 final class AppState: ObservableObject {
 
+    private(set) var isFromMacAppStore = false
+
     // MARK: - task storage
 
     private var cancellables = [URLSessionDataTask]()
@@ -50,6 +52,10 @@ final class AppState: ObservableObject {
             Redditweaks.defaults.setValue(bool, forKey: feature.key)
             self.features = copy
         })
+    }
+
+    final func setFromMacAppStore() {
+        isFromMacAppStore = true
     }
 
 }

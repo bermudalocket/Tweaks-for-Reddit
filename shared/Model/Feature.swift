@@ -40,7 +40,7 @@ extension Feature {
         .oldRedditRedirect,
     ]
 
-    static let showNewComments = Feature(key: "showNewComments", description: "Show new comments on visited threads")
+    static let showNewComments = Feature(key: "showNewComments", description: "Show number of new comments on visited threads")
 
     static let rememberUserVotes = Feature(key: "rememberUserVotes", description: "Remember up/downvoting users")
 

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>redditweaks Extension</string>
+	<string>Tweaks for Reddit Extension</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,6 +22,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>MAC_APP_STORE</key>
+	<string>$(MAC_APP_STORE)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>
@@ -46,7 +48,7 @@
 			<key>Identifier</key>
 			<string>redditweaks</string>
 			<key>Image</key>
-			<string>new-toolbar.pdf</string>
+			<string>toolbar.pdf</string>
 			<key>Label</key>
 			<string>redditweaks</string>
 		</dict>
@@ -65,5 +67,7 @@
 	<string>Copyright © 2019 - 2021 bermudalocket. All rights reserved.</string>
 	<key>NSHumanReadableDescription</key>
 	<string>An extension to make Reddit suck a little less in Safari 13+.</string>
+	<key>TOOLBAR_IMAGE</key>
+	<string>$(TOOLBAR_IMAGE)</string>
 </dict>
 </plist>

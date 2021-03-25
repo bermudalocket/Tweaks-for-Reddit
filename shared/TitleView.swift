@@ -10,30 +10,28 @@ import SwiftUI
 
 struct TitleView: View {
 
-    private var version: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A"
-    }
-    
     var body: some View {
         HStack {
             Spacer()
             VStack(alignment: .center) {
-                Text("redditweaks")
+                Text("Tweaks for Reddit")
                     .font(.system(.largeTitle, design: .rounded))
                     .fontWeight(.heavy)
                 HStack {
-                    Text("Version \(self.version)")
+                    Text("Version \(Redditweaks.version)")
                         .font(.subheadline)
-                    Text("Report a bug")
-                        .foregroundColor(Color(.linkColor))
-                        .underline()
-                        .font(.subheadline)
-                        .onTapGesture {
-                            NSWorkspace.shared.open(Redditweaks.repoURL)
-                        }
-                        .onHover {
-                            $0 ? NSCursor.pointingHand.push() : NSCursor.pop()
-                        }
+                    if !Redditweaks.isFromMacAppStore {
+                        Text("Report a bug")
+                            .foregroundColor(Color(.linkColor))
+                            .underline()
+                            .font(.subheadline)
+                            .onTapGesture {
+                                NSWorkspace.shared.open(Redditweaks.repoURL)
+                            }
+                            .onHover {
+                                $0 ? NSCursor.pointingHand.push() : NSCursor.pop()
+                            }
+                    }
                 }
             }
             Spacer()

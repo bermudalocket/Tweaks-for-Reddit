@@ -12,27 +12,19 @@ struct SettingsView: View {
 
     @EnvironmentObject private var appState: AppState
 
+    private var chevron: Image {
+        Image(systemName: "chevron.\(appState.isSettingsExpanded ? "down" : "right")")
+    }
+
     var body: some View {
-        DisclosureGroup(isExpanded: appState.$isSettingsExpanded) {
+        GroupBox(label: Text("Settings")) {
             VStack(alignment: .leading) {
-                if appState.features[.customSubredditBar] ?? false {
-                    Toggle("Verify favorite subreddits exist when typing", isOn: $appState.doSubredditVerification)
-                }
+                Toggle("Verify favorite subreddits exist when typing", isOn: $appState.doSubredditVerification)
+                    .disabled(!(appState.features[.customSubredditBar] ?? false))
             }
-            .padding(.bottom)
-        } label: {
-            HStack {
-                Text("Settings")
-                    .bold()
-                Spacer()
-            }
-            .padding(5)
-            .contentShape(Rectangle())
-            .onTapGesture {
-                appState.isSettingsExpanded.toggle()
-            }
+            .padding(10)
+            .frame(minWidth: 0, maxWidth: .infinity)
         }
-        .frame(height: appState.isSettingsExpanded ? CGFloat(100) : CGFloat(35)) // TODO: weird compiler error here w/o CGFloat casts
     }
 }
 

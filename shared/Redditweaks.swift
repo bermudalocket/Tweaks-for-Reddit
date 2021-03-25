@@ -15,10 +15,10 @@ struct Redditweaks {
 
     public static let repoURL = URL(string: "https://www.github.com/bermudalocket/redditweaks/issues/new/choose")!
 
-    public static let defaults = UserDefaults(suiteName: "com.bermudalocket.redditweaks") ?? UserDefaults.standard
+    public static let defaults = UserDefaults(suiteName: "group.com.bermudalocket.redditweaks") ?? UserDefaults.standard
 
-    public static var version: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A"
-    }
+    public static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A"
+
+    public static let isFromMacAppStore = Bundle.main.object(forInfoDictionaryKey: "MAC_APP_STORE") as? Bool ?? false
 
 }

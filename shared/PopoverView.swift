@@ -23,21 +23,12 @@ struct PopoverView: View {
 
             FeaturesListView()
                 .environmentObject(appState)
-                .padding(.horizontal)
-                .background(SectionBackgroundView())
-                .frame(alignment: .top)
-
-            if appState.features[.customSubredditBar] ?? false {
-                FavoriteSubredditsSectionView()
-                    .padding()
-                    .background(SectionBackgroundView())
-            }
 
             SettingsView()
-                .padding(.horizontal)
-                .background(SectionBackgroundView())
 
-            UpdateView()
+            if !appState.isFromMacAppStore {
+                UpdateView()
+            }
         }
         .padding(10)
         .frame(width: 300, alignment: .top)
