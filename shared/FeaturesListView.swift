@@ -14,7 +14,7 @@ struct FeaturesListView: View {
 
     private var features: [Feature] {
         appState.features.keys.lazy.compactMap {
-            ($0 == .nsfwFilter && appState.isFromMacAppStore) ? nil : $0
+            ($0 == .nsfwFilter && Redditweaks.isFromMacAppStore) ? nil : $0
         }
     }
 

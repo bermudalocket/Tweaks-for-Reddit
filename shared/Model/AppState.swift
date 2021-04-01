@@ -11,16 +11,12 @@ import Combine
 
 final class AppState: ObservableObject {
 
-    private(set) var isFromMacAppStore = false
-
     // MARK: - task storage
 
     private var cancellables = [URLSessionDataTask]()
 
     // MARK: - saved GUI state
 
-    @AppStorage("isSettingsExpanded") var isSettingsExpanded = false
-    @AppStorage("isFeaturesListExpanded") var isFeaturesListExpanded = true
     @AppStorage("verifySubreddits") var doSubredditVerification = true
 
     // MARK: - features
@@ -36,11 +32,7 @@ final class AppState: ObservableObject {
 
     // MARK: - preview
 
-    public static let preview: AppState = {
-        let state = AppState()
-        state.favoriteSubreddits = [ "politics", "apple", "math", "PhasmophobiaGame" ]
-        return state
-    }()
+    public static let preview = AppState()
 
     final func bindingForFeature(_ feature: Feature) -> Binding<Bool> {
         .init(get: {
@@ -52,10 +44,6 @@ final class AppState: ObservableObject {
             Redditweaks.defaults.setValue(bool, forKey: feature.key)
             self.features = copy
         })
-    }
-
-    final func setFromMacAppStore() {
-        isFromMacAppStore = true
     }
 
 }

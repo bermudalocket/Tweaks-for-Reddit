@@ -12,10 +12,6 @@ struct SettingsView: View {
 
     @EnvironmentObject private var appState: AppState
 
-    private var chevron: Image {
-        Image(systemName: "chevron.\(appState.isSettingsExpanded ? "down" : "right")")
-    }
-
     var body: some View {
         GroupBox(label: Text("Settings")) {
             VStack(alignment: .leading) {
@@ -32,9 +28,6 @@ struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
             .environmentObject(AppState.preview)
-            .onAppear {
-                AppState.preview.isSettingsExpanded = true
-            }
             .frame(width: 300)
     }
 }

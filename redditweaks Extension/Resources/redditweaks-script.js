@@ -2,17 +2,11 @@ $(document).ready(function() {
     if (window.top === window) {
         safari.self.addEventListener("message", event => {
             if (event.name === "script") {
+                let func = event.message["function"]
                 let start = performance.now()
-                event.message["functions"].forEach(f => {
-                    let start1 = performance.now()
-                    eval(f)
-                    let end1 = performance.now()
-                    console.log("--> " + f + " took " + (end1 - start1) + " ms")
-                })
+                eval(func)
                 let end = performance.now()
-                safari.extension.dispatchMessage("finished", { "time": end, "token": event.message["token"] })
-                let duration = end - start
-                console.log("--> Total: " + duration + " ms")
+                console.log(`--> ${func} took ${end - start} ms`)
             }
         });
         safari.extension.dispatchMessage("begin", {

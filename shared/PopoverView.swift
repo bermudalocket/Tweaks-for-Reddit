@@ -26,7 +26,7 @@ struct PopoverView: View {
 
             SettingsView()
 
-            if !appState.isFromMacAppStore {
+            if !Redditweaks.isFromMacAppStore {
                 UpdateView()
             }
         }
