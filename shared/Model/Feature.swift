@@ -13,6 +13,10 @@ struct Feature: Hashable, Comparable {
     /// Description shown in popover
     let description: String
 
+    var isEnabled: Bool {
+        Redditweaks.defaults.bool(forKey: key)
+    }
+
     /// Comparable alphabetically
     static func < (lhs: Feature, rhs: Feature) -> Bool {
         lhs.description < rhs.description

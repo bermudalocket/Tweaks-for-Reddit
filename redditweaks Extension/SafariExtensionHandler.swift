@@ -6,69 +6,26 @@
 //  Copyright © 2020 bermudalocket. All rights reserved.
 //
 
+import CoreData
 import Foundation
 import SafariServices
+import SwiftUI
 
-enum Message: CaseIterable {
-    case addFavoriteSub
-    case begin
-    case domLoaded
-    case removeFavoriteSub
-    case script
+final class SafariExtensionHandler: SFSafariExtensionHandler {
 
-    var key: String {
-        "\(self)".lowercased()
+    let persistence: PersistenceController
+
+    override init() {
+        self.persistence = PersistenceController.shared
+        super.init()
     }
 
-    static func fromString(_ string: String) -> Message? {
-        Message.allCases.first { "\($0)" == string }
+    init(persistence: PersistenceController = .shared) {
+        self.persistence = persistence
     }
-}
-
-extension SFSafariPage {
-    func dispatchMessageToScript(message: Message, userInfo: [String: Any]? = nil) {
-        dispatchMessageToScript(withName: message.key, userInfo: userInfo)
-    }
-}
-
-enum RedditPageType {
-    case feed, subreddit, post, user
-
-    var features: [Feature] {
-        let base: [Feature] = [.customSubredditBar, .hideNewRedditButton, .hideUsername, .noChat, .oldRedditRedirect, .showKarma, .showNewComments, .rememberUserVotes]
-        switch self {
-            case .feed:
-                return base + [.hideAds, .hideRedditPremiumBanner, .noHappeningNowBanners, .nsfwFilter, .removePromotedPosts]
-
-            case .post:
-                return base + [.collapseAutoModerator, .collapseChildComments]
-
-            case .subreddit:
-                return base + [.nsfwFilter]
-
-            case .user:
-                return base
-        }
-    }
-
-    public static func forURL(_ url: URL) -> RedditPageType {
-        let urlStr = url.absoluteString
-        if urlStr.contains("/r/") {
-            return urlStr.contains("/comments/") ? .post : .subreddit
-        }
-        if urlStr.contains("/user/") {
-            return .user
-        }
-        return .feed
-    }
-}
-
-class SafariExtensionHandler: SFSafariExtensionHandler {
-
-    static let viewWrapper = PopoverViewWrapper()
 
     override func popoverViewController() -> SFSafariExtensionViewController {
-        SafariExtensionHandler.viewWrapper
+        PopoverViewWrapper()
     }
 
     /**
@@ -78,49 +35,40 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
      - Parameter page: The page from which the message was sent.
      - Parameter userInfo: An optional dictionary containing extra information relevant to the message.
      */
-    func messageReceived(message: Message, from page: SFSafariPage, userInfo: [String: Any]? = nil) {
-        let state = AppState()
+    final func messageReceived(message: Message, from page: SFSafariPage, userInfo: [String: Any]? = nil) {
         switch message {
             case .begin:
                 guard let userInfo = userInfo,
                       let urlStr = userInfo["url"] as? String,
-                      let url = URL(string: urlStr)
+                      let url = URL(string: urlStr),
+                      let pageType = RedditPageType.forURL(url)
                 else {
                     return
                 }
-                let features = RedditPageType.forURL(url)
-                    .features
-                    .filter { feature in
-                        Redditweaks.defaults.bool(forKey: feature.key)
-                    }
-                    .map { feature -> String in
-                        switch feature {
-                            case .customSubredditBar:
-                                let subs = state.favoriteSubreddits.map { "'\($0)'" }.joined(separator: ",")
-                                return "customSubredditBar([\(subs)])"
-
-                            default:
-                                return feature.key + "()"
-                        }
-                    }
-                page.dispatchMessageToScript(message: .script, userInfo: [
-                    "functions": features
-                ])
-
-            case .addFavoriteSub:
-                guard let userInfo = userInfo, let sub = userInfo["subreddit"] as? String else {
-                    return
-                }
-                state.addFavoriteSubreddit(subreddit: sub)
-
-            case .removeFavoriteSub:
-                guard let userInfo = userInfo, let sub = userInfo["subreddit"] as? String else {
-                    return
-                }
-                state.removeFavoriteSubreddit(subreddit: sub)
+                pageType.features
+                    .filter(\.isEnabled)
+                    .map(buildJavascriptFunction(for:))
+                    .forEach(page.executeJavascript(_:))
 
             default:
                 print("Received a weird message: \(message)")
+        }
+    }
+
+    final func buildJavascriptFunction(for feature: Feature) -> String {
+        switch feature {
+            case .customSubredditBar:
+                guard let subs = self.persistence
+                        .getFavoriteSubreddits()?
+                        .compactMap({ "'\($0)'" })
+                        .joined(separator: ",")
+                else {
+                    return ""
+                }
+                return "customSubredditBar([\(subs)])"
+
+            default:
+                return feature.key + "()"
         }
     }
 

@@ -48,6 +48,16 @@
                ReferencedContainer = "container:redditweaks.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "891CE4792612B65400268E76"
+               BuildableName = "Tweaks for Reddit Tests.xctest"
+               BlueprintName = "Tweaks for Reddit Tests"
+               ReferencedContainer = "container:redditweaks.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

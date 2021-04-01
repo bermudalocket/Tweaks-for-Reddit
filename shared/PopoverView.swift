@@ -13,6 +13,8 @@ import SwiftUI
 
 struct PopoverView: View {
 
+    @Environment(\.managedObjectContext) private var viewContext
+
     @EnvironmentObject private var appState: AppState
 
     var body: some View {
@@ -32,6 +34,15 @@ struct PopoverView: View {
         }
         .padding(10)
         .frame(width: 300, alignment: .top)
+        .onDisappear {
+            do {
+                print("- Saving to CoreData...")
+                try PersistenceController.shared.container.viewContext.save()
+                print("- Saved!")
+            } catch {
+                print("- Error saving to CoreData store: \(error)")
+            }
+        }
     }
 }
 

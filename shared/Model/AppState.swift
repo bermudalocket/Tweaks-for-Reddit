@@ -28,7 +28,6 @@ final class AppState: ObservableObject {
         }
         return map
     }()
-    @AppStorage("favoriteSubreddits") var favoriteSubreddits = FavoriteSubreddits()
 
     // MARK: - preview
 
@@ -49,13 +48,6 @@ final class AppState: ObservableObject {
 }
 
 extension AppState {
-    func addFavoriteSubreddit(subreddit: String) {
-        favoriteSubreddits.append(subreddit)
-    }
-
-    func removeFavoriteSubreddit(subreddit: String) {
-        favoriteSubreddits.removeAll { $0 == subreddit }
-    }
 
     func verifySubreddit(subreddit: String, isValid: Binding<Bool>, isSearching: Binding<Bool>) {
         if !doSubredditVerification {

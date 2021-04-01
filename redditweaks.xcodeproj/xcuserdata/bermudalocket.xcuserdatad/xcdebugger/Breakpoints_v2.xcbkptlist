@@ -7,20 +7,28 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
          <BreakpointContent
-            uuid = "0769AF24-7965-41F8-807B-C58825E1392D"
+            uuid = "B7EA638F-4DB3-452B-B9BA-13035BFED2BB"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            symbolName = "_NSUserDefaults_Log_Nonsensical_Suites"
-            moduleName = "">
+            continueAfterRunningActions = "Yes"
+            symbolName = "_main"
+            moduleName = "dyld">
+            <Actions>
+               <BreakpointActionProxy
+                  ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
+                  <ActionContent
+                     consoleCommand = "process handle -n false -s false SIGCONT">
+                  </ActionContent>
+               </BreakpointActionProxy>
+            </Actions>
             <Locations>
                <Location
-                  uuid = "0769AF24-7965-41F8-807B-C58825E1392D - fc042817dce1b397"
+                  uuid = "B7EA638F-4DB3-452B-B9BA-13035BFED2BB - 13d56743671e8b83"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "_NSUserDefaults_Log_Nonsensical_Suites"
-                  moduleName = "Foundation"
+                  symbolName = "dyld::_main(macho_header const*, unsigned long, int, char const**, char const**, char const**, unsigned long*)"
+                  moduleName = "dyld"
                   usesParentBreakpointCondition = "Yes"
                   offsetFromSymbolStart = "0">
                </Location>

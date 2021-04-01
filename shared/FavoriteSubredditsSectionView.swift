@@ -24,11 +24,28 @@ extension NSTableView {
 
 struct FavoriteSubredditsSectionView: View {
 
+    @Environment(\.managedObjectContext) private var viewContext
+
     @EnvironmentObject private var appState: AppState
 
     @State private var favoriteSubredditField = ""
     @State private var isSearching = false
     @State private var isSubredditValid = false
+
+    @FetchRequest(entity: FavoriteSubreddit.entity(), sortDescriptors: [
+        NSSortDescriptor(keyPath: \FavoriteSubreddit.name, ascending: true)
+    ], predicate: nil) private var favoriteSubreddits: FetchedResults<FavoriteSubreddit>
+
+    func addFavoriteSub() {
+        print("- Adding favorite sub: \(favoriteSubredditField)")
+        guard favoriteSubredditField.count > 0, !favoriteSubreddits.compactMap(\.name).contains(favoriteSubredditField) else {
+            print("- Exiting: already exists.")
+            return
+        }
+        let sub = FavoriteSubreddit(context: viewContext)
+        sub.name = favoriteSubredditField
+        print("- Done")
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -37,34 +54,31 @@ struct FavoriteSubredditsSectionView: View {
                     appState.verifySubreddit(subreddit: favoriteSubredditField,
                                              isValid: $isSubredditValid,
                                              isSearching: $isSearching)
+                } onCommit: {
+                    addFavoriteSub()
                 }
                 .foregroundColor(isSubredditValid ? .black : .red)
                 if isSearching {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
                         .scaleEffect(0.5)
-                } else {
-                    Button("Add") {
-                        appState.addFavoriteSubreddit(subreddit: favoriteSubredditField)
-                    }
-                    .keyboardShortcut(.return)
-                    .disabled(!isSubredditValid)
                 }
             }
             List {
-                ForEach(appState.favoriteSubreddits, id: \.self) {
+                ForEach(favoriteSubreddits, id: \.self) {
                     FavoriteSubredditView(subreddit: $0)
                 }
                 .onMove(perform: onMove)
             }
             .listStyle(PlainListStyle())
             .focusable()
-            .frame(height: 25 * CGFloat(appState.favoriteSubreddits.count))
+            .frame(height: 25 * CGFloat(favoriteSubreddits.count))
         }
     }
 
     private func onMove(indices: IndexSet, newOffset: Int) {
-        appState.favoriteSubreddits.move(fromOffsets: indices, toOffset: newOffset)
+        // TODO
+//        favoriteSubreddits.move(fromOffsets: indices, toOffset: newOffset)
     }
 }
 

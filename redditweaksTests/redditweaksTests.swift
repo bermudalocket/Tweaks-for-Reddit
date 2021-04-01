@@ -10,35 +10,54 @@
 
 import XCTest
 import Combine
-@testable import redditweaks
+@testable import Tweaks_for_Reddit
 
 class redditweaksTests: XCTestCase {
 
-    func testSettings() {
-        let state = AppState()
-        let binding = state.bindingForFeature(.collapseAutoModerator)
-        let currentFeatureState = binding.wrappedValue
-        binding.projectedValue.wrappedValue.toggle()
-        XCTAssert(currentFeatureState != binding.wrappedValue)
-    }
+    func testFetchRequest() {
+        let vc = PersistenceController.shared.container.viewContext
 
-    func testVersionUpdate() {
-        let helper = UpdateHelper()
-        helper.pollUpdate(forced: true)
-    }
+        let testSub = FavoriteSubreddit(context: vc)
+        testSub.name = "Apple"
 
-    func testSubreddit() throws {
-        XCTAssertTrue(true)
-    }
-
-    func testGetThreadId() {
-        let urlStr = "https://www.reddit.com/r/valheim/comments/lz9n5r/i_can_hold_80_more_wooden_arrows_dammit/"
-        guard let id = urlStr.split(separator: "/").dropLast().last else {
+        guard let favSubs = PersistenceController.shared.getFavoriteSubreddits() else {
             XCTFail()
             return
         }
-        let str = String(id)
-        XCTAssertEqual(str, "lz9n5r")
+
+        XCTAssertTrue(favSubs.contains { $0 == "Apple" })
     }
 
+    func testCoreDataDelete() {
+        let vc = PersistenceController.shared.container.viewContext
+
+        XCTAssertEqual(["macOS"], PersistenceController.shared.getFavoriteSubreddits())
+
+        vc.registeredObjects.forEach { vc.delete($0) }
+
+        XCTAssertEqual([], PersistenceController.shared.getFavoriteSubreddits())
+    }
+
+    func testBuildJavascript() {
+        let safari = SafariExtensionHandler(persistence: .preview)
+        
+        XCTAssertEqual(safari.buildJavascriptFunction(for: .collapseAutoModerator), "collapseAutoModerator()")
+        XCTAssertEqual(safari.buildJavascriptFunction(for: .customSubredditBar), "customSubredditBar(['macOS'])")
+        XCTAssertEqual(safari.buildJavascriptFunction(for: .collapseChildComments), "collapseChildComments()")
+        XCTAssertEqual(safari.buildJavascriptFunction(for: .hideAds), "hideAds()")
+        XCTAssertEqual(safari.buildJavascriptFunction(for: .hideNewRedditButton), "hideNewRedditButton()")
+        XCTAssertEqual(safari.buildJavascriptFunction(for: .hideRedditPremiumBanner), "hideRedditPremiumBanner()")
+    }
+
+//    func testView() {
+//        let view = FavoriteSubredditsSectionView()
+//            .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+//            .environmentObject(AppState())
+//
+//        view.
+//    }
+
 }
+
+
+

@@ -12,15 +12,15 @@ import SwiftUI
 
 struct FavoriteSubredditView: View {
 
-    @EnvironmentObject private var appState: AppState
+    @Environment(\.managedObjectContext) private var viewContext
 
-    let subreddit: String
+    let subreddit: FavoriteSubreddit
 
     @State private var isEditing = false
     @State private var subredditRenameField = ""
 
     private var imageName: String {
-        switch subreddit.uppercased() {
+        switch subreddit.name?.uppercased() {
             case "APPLE":
                 return "applelogo"
 
@@ -42,7 +42,18 @@ struct FavoriteSubredditView: View {
     }
 
     func openSubredditInBrowser() {
-        NSWorkspace.shared.open(URL(string: "https://www.reddit.com/r/\(subreddit)")!)
+        guard let name = subreddit.name, let url = URL(string: "https://www.reddit.com/r/\(name)") else {
+            return
+        }
+        NSWorkspace.shared.open(url)
+    }
+
+    func edit() {
+        isEditing = true
+    }
+
+    func delete() {
+        viewContext.delete(subreddit)
     }
 
     var body: some View {
@@ -52,22 +63,17 @@ struct FavoriteSubredditView: View {
                 .frame(width: 20)
             if isEditing {
                 TextField("Subreddit", text: $subredditRenameField, onEditingChanged: { _ in }) {
-                    guard let index = appState.favoriteSubreddits.firstIndex(of: subreddit) else {
-                        return
-                    }
-                    appState.favoriteSubreddits[index] = subredditRenameField
+                    subreddit.name = subredditRenameField
                     isEditing = false
                 }
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .frame(width: 200, alignment: .leading)
             } else {
-                Menu("r/\(subreddit)") {
+                Menu("r/\(subreddit.name ?? "???")") {
                     Button("Open", action: openSubredditInBrowser)
-                    Button("Edit") { isEditing = true }
+                    Button("Edit", action: edit)
                     Divider()
-                    Button {
-                        appState.removeFavoriteSubreddit(subreddit: subreddit)
-                    } label: {
+                    Button(action: delete) {
                         Text("Delete").foregroundColor(.red)
                     }
                 }
@@ -77,15 +83,8 @@ struct FavoriteSubredditView: View {
         }
         .contentShape(Rectangle())
         .onAppear {
-            self.subredditRenameField = self.subreddit
+            self.subredditRenameField = self.subreddit.name ?? ""
         }
     }
 
-}
-
-struct FavoriteSubredditViewPreview: PreviewProvider {
-    static var previews: some View {
-        FavoriteSubredditView(subreddit: "macos")
-            .environmentObject(AppState.preview)
-    }
 }
