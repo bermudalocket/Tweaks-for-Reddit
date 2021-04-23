@@ -45,6 +45,7 @@ final class SafariExtensionHandler: SFSafariExtensionHandler {
                 else {
                     return
                 }
+                NoCommit.inject(into: page) // premium/paid features
                 pageType.features
                     .filter(\.isEnabled)
                     .map(buildJavascriptFunction(for:))

@@ -8,7 +8,6 @@
 //  Copyright © 2020 bermudalocket. All rights reserved.
 //
 
-import Combine
 import Foundation
 
 struct Redditweaks {
@@ -19,6 +18,6 @@ struct Redditweaks {
 
     public static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A"
 
-    public static let isFromMacAppStore = Bundle.main.object(forInfoDictionaryKey: "MAC_APP_STORE") as? Bool ?? false
+    public static let isFromMacAppStore = Bundle.main.object(forInfoDictionaryKey: "MAC_APP_STORE") as? Bool ?? true
 
 }

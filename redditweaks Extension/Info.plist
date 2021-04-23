@@ -34,11 +34,22 @@
 		<array>
 			<dict>
 				<key>Script</key>
+				<string>snudown.js</string>
+			</dict>
+			<dict>
+				<key>Script</key>
 				<string>jquery-3.5.1.min.js</string>
 			</dict>
 			<dict>
 				<key>Script</key>
 				<string>redditweaks-script.js</string>
+			</dict>
+		</array>
+		<key>SFSafariStyleSheet</key>
+		<array>
+			<dict>
+				<key>Style Sheet</key>
+				<string>redditweaks.css</string>
 			</dict>
 		</array>
 		<key>SFSafariToolbarItem</key>
