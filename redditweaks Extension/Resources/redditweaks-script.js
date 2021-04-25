@@ -3,10 +3,7 @@ $(document).ready(function() {
         safari.self.addEventListener("message", event => {
             if (event.name === "script") {
                 let func = event.message["function"]
-                let start = performance.now()
                 eval(func)
-                let end = performance.now()
-                console.log(`--> ${func} took ${end - start} ms`)
             }
         });
         safari.extension.dispatchMessage("begin", {
@@ -16,6 +13,32 @@ $(document).ready(function() {
 })
 
 // ============================================================
+
+let endlessScroll = () => {
+
+    var isLoading = false;
+
+    const progressView = $("<div id='rtwks-progressview'><b>Loading...</b></div>");
+
+    window.onscroll = () => {
+        if (!isLoading && (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - (window.innerHeight/6)) {
+            const table = $('.sitetable').last();
+            const nextButton = $(".next-button");
+            let url = nextButton.children().first().attr("href");
+            isLoading = true;
+            table.after(progressView);
+            $.get(url, data => {
+                let container = $(data).find('.sitetable');
+                if (container) {
+                    nextButton.parent().remove();
+                    $('.sitetable').last().after(container);
+                    progressView.remove();
+                }
+                isLoading = false;
+            });
+        }
+    }
+}
 
 let oldReddit = () => {
     if (window.location.href.startsWith("https://www.reddit")) {
