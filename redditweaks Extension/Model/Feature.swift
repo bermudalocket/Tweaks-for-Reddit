@@ -13,6 +13,15 @@ struct Feature: Hashable, Comparable {
     /// Description shown in popover
     let description: String
 
+    /// Whether or not this is an in-app purchase
+    let premium: Bool
+
+    init(key: String, description: String, premium: Bool = false) {
+        self.key = key
+        self.description = description
+        self.premium = premium
+    }
+
     var isEnabled: Bool {
         Redditweaks.defaults.bool(forKey: key)
     }
@@ -39,12 +48,16 @@ extension Feature {
         .collapseAutoModerator,
         .hideNewRedditButton,
         .hideRedditPremiumBanner,
-        .nsfwFilter,
         .noHappeningNowBanners,
         .oldRedditRedirect,
     ]
 
-    static let showNewComments = Feature(key: "showNewComments", description: "Show number of new comments on visited threads")
+    // in-app purchase
+    static let liveCommentPreview = Feature(key: "liveCommentPreview",
+                                            description: "Preview comments in markdown",
+                                            premium: true)
+
+    static let showNewComments = Feature(key: "showNewComments", description: "New comments on visited posts")
 
     static let rememberUserVotes = Feature(key: "rememberUserVotes", description: "Remember up/downvoting users")
 
@@ -54,7 +67,7 @@ extension Feature {
 
     static let noChat = Feature(key: "noChat", description: "Remove chat")
 
-    static let showKarma = Feature(key: "showKarma", description: "Show karma")
+    static let showKarma = Feature(key: "showKarma", description: "Show comment and post karma")
 
     static let customSubredditBar = Feature(key: "customSubredditBar", description: "Custom subreddit bar")
 
@@ -66,12 +79,10 @@ extension Feature {
 
     static let collapseAutoModerator = Feature(key: "collapseAutoModerator", description: "Collapse AutoModerator")
 
-    static let collapseChildComments = Feature(key: "collapseChildComments", description: "Collapse replies to top-level comments")
+    static let collapseChildComments = Feature(key: "collapseChildComments", description: "Collapse top-level replies")
 
     static let hideRedditPremiumBanner = Feature(key: "hideRedditPremiumBanner", description: "Hide Reddit Premium banner")
 
     static let hideNewRedditButton = Feature(key: "hideNewRedditButton", description: "Hide New Reddit button")
-
-    static let nsfwFilter = Feature(key: "nsfwFilter", description: "Filter NSFW posts")
 
 }
