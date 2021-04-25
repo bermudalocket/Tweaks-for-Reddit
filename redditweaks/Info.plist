@@ -22,11 +22,13 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>None</string>
+			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string></string>
+			<string>rdtwks</string>
 			<key>CFBundleURLSchemes</key>
-			<array/>
+			<array>
+				<string>rdtwks</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>

@@ -8,17 +8,12 @@
 //  Copyright © 2020 bermudalocket. All rights reserved.
 //
 
-import Combine
 import Foundation
 
-struct Redditweaks {
+enum Redditweaks {
 
-    public static let repoURL = URL(string: "https://www.github.com/bermudalocket/redditweaks/issues/new/choose")!
-
-    public static let defaults = UserDefaults(suiteName: "group.com.bermudalocket.redditweaks") ?? UserDefaults.standard
+    public static let defaults = UserDefaults(suiteName: "group.com.bermudalocket.redditweaks")!
 
     public static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A"
-
-    public static let isFromMacAppStore = Bundle.main.object(forInfoDictionaryKey: "MAC_APP_STORE") as? Bool ?? false
 
 }

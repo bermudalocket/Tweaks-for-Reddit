@@ -28,19 +28,21 @@ class redditweaksTests: XCTestCase {
         XCTAssertTrue(favSubs.contains { $0 == "Apple" })
     }
 
-    func testCoreDataDelete() {
+    func testCoreDataAddDelete() {
         let vc = PersistenceController.shared.container.viewContext
 
+        // add
+        let sub = FavoriteSubreddit(context: vc)
+        sub.name = "macOS"
         XCTAssertEqual(["macOS"], PersistenceController.shared.getFavoriteSubreddits())
 
-        vc.registeredObjects.forEach { vc.delete($0) }
-
+        // delete
+        vc.delete(sub)
         XCTAssertEqual([], PersistenceController.shared.getFavoriteSubreddits())
     }
 
     func testBuildJavascript() {
         let safari = SafariExtensionHandler(persistence: .preview)
-        
         XCTAssertEqual(safari.buildJavascriptFunction(for: .collapseAutoModerator), "collapseAutoModerator()")
         XCTAssertEqual(safari.buildJavascriptFunction(for: .customSubredditBar), "customSubredditBar(['macOS'])")
         XCTAssertEqual(safari.buildJavascriptFunction(for: .collapseChildComments), "collapseChildComments()")
@@ -49,13 +51,15 @@ class redditweaksTests: XCTestCase {
         XCTAssertEqual(safari.buildJavascriptFunction(for: .hideRedditPremiumBanner), "hideRedditPremiumBanner()")
     }
 
-//    func testView() {
-//        let view = FavoriteSubredditsSectionView()
-//            .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
-//            .environmentObject(AppState())
-//
-//        view.
-//    }
+    func testStoreKit() {
+        let sk = IAPHelper.shared
+        XCTAssert(sk.canMakePayments)
+        XCTAssert(sk.products.count > 0)
+
+        let product = sk.products.first!
+        XCTAssertEqual(product.localizedTitle, "Comment Markdown Live Preview")
+        XCTAssertEqual(product.price, NSDecimalNumber(floatLiteral: 0.99))
+    }
 
 }
 
