@@ -36,6 +36,7 @@ struct Feature: Hashable, Comparable {
 extension Feature {
 
     static let features: [Feature] = [
+        .endlessScroll,
         .showNewComments,
         .rememberUserVotes,
         .noChat,
@@ -56,6 +57,8 @@ extension Feature {
     static let liveCommentPreview = Feature(key: "liveCommentPreview",
                                             description: "Preview comments in markdown",
                                             premium: true)
+
+    static let endlessScroll = Feature(key: "endlessScroll", description: "Endless scrolling")
 
     static let showNewComments = Feature(key: "showNewComments", description: "New comments on visited posts")
 
