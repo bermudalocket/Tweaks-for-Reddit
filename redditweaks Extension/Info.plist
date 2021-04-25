@@ -22,8 +22,6 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
-	<key>MAC_APP_STORE</key>
-	<string>$(MAC_APP_STORE)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>
@@ -78,7 +76,5 @@
 	<string>Copyright © 2019 - 2021 bermudalocket. All rights reserved.</string>
 	<key>NSHumanReadableDescription</key>
 	<string>An extension to make Reddit suck a little less in Safari 13+.</string>
-	<key>TOOLBAR_IMAGE</key>
-	<string>$(TOOLBAR_IMAGE)</string>
 </dict>
 </plist>

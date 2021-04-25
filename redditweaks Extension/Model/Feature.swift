@@ -48,7 +48,6 @@ extension Feature {
         .collapseAutoModerator,
         .hideNewRedditButton,
         .hideRedditPremiumBanner,
-        .nsfwFilter,
         .noHappeningNowBanners,
         .oldRedditRedirect,
     ]
@@ -85,7 +84,5 @@ extension Feature {
     static let hideRedditPremiumBanner = Feature(key: "hideRedditPremiumBanner", description: "Hide Reddit Premium banner")
 
     static let hideNewRedditButton = Feature(key: "hideNewRedditButton", description: "Hide New Reddit button")
-
-    static let nsfwFilter = Feature(key: "nsfwFilter", description: "Filter NSFW posts")
 
 }

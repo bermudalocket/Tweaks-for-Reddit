@@ -13,9 +13,7 @@ struct FeaturesListView: View {
     @EnvironmentObject private var appState: AppState
 
     private var features: [Feature] {
-        appState.features.keys.lazy.compactMap {
-            ($0 == .nsfwFilter && Redditweaks.isFromMacAppStore) ? nil : $0
-        }.filter {
+        appState.features.keys.lazy.filter {
             !$0.premium
         }.sorted {
             $0 < $1
@@ -44,6 +42,6 @@ struct FeaturesListView: View {
 struct FeaturesListView_Previews: PreviewProvider {
     static var previews: some View {
         FeaturesListView()
-            .environmentObject(AppState())
+            .environmentObject(AppState.preview)
     }
 }

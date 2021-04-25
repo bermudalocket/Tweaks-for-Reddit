@@ -37,14 +37,11 @@ struct FavoriteSubredditsSectionView: View {
     ], predicate: nil) private var favoriteSubreddits: FetchedResults<FavoriteSubreddit>
 
     func addFavoriteSub() {
-        print("- Adding favorite sub: \(favoriteSubredditField)")
-        guard favoriteSubredditField.count > 0, !favoriteSubreddits.compactMap(\.name).contains(favoriteSubredditField) else {
-            print("- Exiting: already exists.")
+        guard !favoriteSubreddits.compactMap(\.name).contains(favoriteSubredditField) else {
             return
         }
         let sub = FavoriteSubreddit(context: viewContext)
         sub.name = favoriteSubredditField
-        print("- Done")
     }
 
     var body: some View {

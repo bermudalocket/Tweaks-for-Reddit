@@ -28,6 +28,10 @@ class IAPHelper: NSObject, SKPaymentTransactionObserver, SKProductsRequestDelega
         }.count == 1
     }
 
+    public var liveCommentPreviewProduct: SKProduct? {
+        products.filter { $0.productIdentifier == "livecommentpreview" }.first
+    }
+
     // MARK: - StoreKit reference storage
     private var productRequest: SKProductsRequest?
 

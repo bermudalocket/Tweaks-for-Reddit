@@ -12,25 +12,23 @@ import StoreKit
 @main
 struct RedditweaksApp: App {
 
+    // periphery:ignore
     @NSApplicationDelegateAdaptor private var appDelegate: RedditweaksAppDelegate
 
-    private let defaults = UserDefaults(suiteName: "group.com.bermudalocket.redditweaks")!
-
-    @StateObject private var mainViewState = MainViewState()
+    @StateObject private var appState = AppState()
 
     var body: some Scene {
         WindowGroup {
             MainView()
-                .environmentObject(mainViewState)
+                .environmentObject(appState)
                 .onOpenURL { url in
-                    print(url.absoluteString)
                     guard url.absoluteString.starts(with: "rdtwks://") else {
                         return
                     }
-                    mainViewState.selectedTab = .liveCommentPreview
+                    appState.selectedTab = .liveCommentPreview
                 }
         }
-        .defaultAppStorage(defaults)
+        .defaultAppStorage(Redditweaks.defaults)
         .windowStyle(HiddenTitleBarWindowStyle())
     }
 

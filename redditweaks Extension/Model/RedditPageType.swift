@@ -16,13 +16,13 @@ enum RedditPageType {
         let base: [Feature] = [.customSubredditBar, .hideNewRedditButton, .hideUsername, .noChat, .oldRedditRedirect, .showKarma, .showNewComments, .rememberUserVotes]
         switch self {
             case .feed:
-                return base + [.hideAds, .hideRedditPremiumBanner, .noHappeningNowBanners, .nsfwFilter, .removePromotedPosts]
+                return base + [.hideAds, .hideRedditPremiumBanner, .noHappeningNowBanners, .removePromotedPosts]
 
             case .post:
                 return base + [.collapseAutoModerator, .collapseChildComments]
 
             case .subreddit:
-                return base + [.nsfwFilter]
+                return base
 
             default:
                 return base

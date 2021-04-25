@@ -12,6 +12,7 @@ import StoreKit
 struct InAppPurchases: View {
 
     @Environment(\.calendar) private var calendar
+    @Environment(\.locale) private var locale
 
     @State private var isShowingRestoredPurchasesAlert = false
 
@@ -20,6 +21,13 @@ struct InAppPurchases: View {
         formatter.dateStyle = .medium
         formatter.timeStyle = .medium
         formatter.calendar = calendar
+        return formatter
+    }
+
+    private var priceFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = locale
         return formatter
     }
 
@@ -40,29 +48,37 @@ struct InAppPurchases: View {
                 HStack {
                     Image(systemName: "rectangle.and.pencil.and.ellipsis")
                         .font(.system(size: 20))
-                        .padding(.trailing, 10)
                         .frame(width: 50)
                         .foregroundColor(.blue)
-                    Text("Live Previews\n").bold() + Text("See your comments rendered in\nmarkdown in real time")
+                    VStack(alignment: .leading) {
+                        Text("Live Previews").bold()
+                        Text("See your comments rendered in markdown in real time.")
+                    }
                 }
                 HStack {
                     Image(systemName: "laptopcomputer")
                         .font(.system(size: 20))
-                        .padding(.trailing, 10)
                         .frame(width: 50)
                         .foregroundColor(.blue)
-                    Text("Family Sharing\n").bold() + Text("Use on all of your macOS devices")
+                    VStack(alignment: .leading) {
+                        Text("Family Sharing")
+                            .bold()
+                        Text("Buy it on this macOS device, use it on all the rest.")
+                    }
                 }
                 HStack {
                     Image(systemName: "hand.thumbsup")
                         .font(.system(size: 20))
-                        .padding(.trailing, 10)
                         .frame(width: 50)
                         .foregroundColor(.blue)
-                    Text("Support Development\n").bold() + Text("Tweaks for Reddit is written by a\nsingle developer")
+                    VStack(alignment: .leading) {
+                        Text("Support Development").bold()
+                        Text("Tweaks for Reddit is written by one guy!")
+                    }
                 }
             }
             Spacer()
+                .frame(height: 50)
             if IAPHelper.shared.canMakePayments {
                 if IAPHelper.shared.purchases.count > 0 {
                         (Text("Thank you for your support!\n")
@@ -79,12 +95,12 @@ struct InAppPurchases: View {
                             let payment = SKPayment(product: IAPHelper.shared.products.first!)
                             SKPaymentQueue.default().add(payment)
                         } label: {
-                            Text("Unlock now for $0.99")
+                            Text("Unlock now for \(IAPHelper.shared.liveCommentPreviewProduct?.price ?? 0.99, formatter: priceFormatter)")
                                 .foregroundColor(.blue)
                                 .bold()
                                 .animation(.spring())
                         }
-                        .buttonStyle(RedditweaksButtonStyle())
+                            .buttonStyle(RedditweaksButtonStyle())
                         Button {
                             SKPaymentQueue.default().restoreCompletedTransactions()
                             isShowingRestoredPurchasesAlert = true
@@ -94,10 +110,10 @@ struct InAppPurchases: View {
                                 .bold()
                                 .animation(.spring())
                         }
-                        .buttonStyle(RedditweaksButtonStyle())
-                        .alert(isPresented: $isShowingRestoredPurchasesAlert) {
-                            Alert(title: Text("Success!"), message: Text("If you had any previous purchases, they have been restored."), dismissButton: .default(Text("OK")))
-                        }
+                            .buttonStyle(RedditweaksButtonStyle())
+                            .alert(isPresented: $isShowingRestoredPurchasesAlert) {
+                                Alert(title: Text("Success!"), message: Text("If you had any previous purchases, they have been restored."), dismissButton: .default(Text("OK")))
+                            }
                     }
                 }
             } else {
@@ -109,26 +125,12 @@ struct InAppPurchases: View {
 
 }
 
-struct RedditweaksButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.system(.headline))
-            .foregroundColor(.blue)
-            .padding(20)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.white)
-                    .foregroundColor(.primary)
-                    .scaleEffect(configuration.isPressed ? 0.95 : 1)
-                    .animation(.spring())
-            )
-    }
-}
-
 struct InAppPurchases_Previews: PreviewProvider {
     static var previews: some View {
         InAppPurchases()
+            .padding()
         InAppPurchases()
             .environment(\.colorScheme, .dark)
+            .padding()
     }
 }

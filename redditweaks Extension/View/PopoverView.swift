@@ -48,17 +48,12 @@ struct PopoverView: View {
 
             SettingsView()
 
-            if !Redditweaks.isFromMacAppStore {
-                UpdateView()
-            }
         }
         .padding(10)
         .frame(width: 300, alignment: .top)
         .onDisappear {
             do {
-                print("- Saving to CoreData...")
-                try PersistenceController.shared.container.viewContext.save()
-                print("- Saved!")
+                try viewContext.save()
             } catch {
                 print("- Error saving to CoreData store: \(error)")
             }

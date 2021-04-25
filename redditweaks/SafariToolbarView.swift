@@ -12,12 +12,12 @@ struct SafariToolbarView: View {
 
     @Environment(\.colorScheme) private var colorScheme
 
-    @State private var isAnimating = false
-
     private var background: Color {
         switch colorScheme {
             case .light: return Color(red: 0.933, green: 0.913, blue: 0.918, opacity: 1.0)
             case .dark: return Color(red: 0.213, green: 0.179, blue: 0.188, opacity: 1.0)
+            @unknown default:
+                return Color(red: 0.933, green: 0.913, blue: 0.918, opacity: 1.0)
         }
     }
 
@@ -25,6 +25,8 @@ struct SafariToolbarView: View {
         switch colorScheme {
             case .light: return Color(red: 0.882, green: 0.862, blue: 0.867, opacity: 1.0)
             case .dark: return Color(red: 0.264, green: 0.23, blue: 0.239, opacity: 1.0)
+            @unknown default:
+                return Color(red: 0.882, green: 0.862, blue: 0.867, opacity: 1.0)
         }
     }
 
@@ -32,6 +34,8 @@ struct SafariToolbarView: View {
         switch colorScheme {
             case .light: return Color(red: 0.449, green: 0.439, blue: 0.443, opacity: 1.0)
             case .dark: return Color(red: 0.891, green: 0.886, blue: 0.886, opacity: 1.0)
+            @unknown default:
+                return Color(red: 0.449, green: 0.439, blue: 0.443, opacity: 1.0)
         }
     }
 
@@ -59,7 +63,6 @@ struct SafariToolbarView: View {
             }
             .frame(height: 28)
             .offset(x: -250, y: 0)
-            .onAppear { isAnimating = true }
         }
     }
 }

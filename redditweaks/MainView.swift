@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class MainViewState: ObservableObject {
+class AppState: ObservableObject {
     @Published var selectedTab: SelectedTab?
 
     init(tab: SelectedTab = .welcome) {
@@ -18,7 +18,7 @@ class MainViewState: ObservableObject {
 
 struct MainView: View {
 
-    @EnvironmentObject private var state: MainViewState
+    @EnvironmentObject private var state: AppState
 
     var body: some View {
         NavigationView {
@@ -35,8 +35,8 @@ struct MainView: View {
                             label: { tab.label })
                     }
                 }
-                    .listStyle(SidebarListStyle())
-                    .frame(width: 240)
+                .listStyle(SidebarListStyle())
+                .frame(width: 240)
             }
         }
         .navigationViewStyle(DoubleColumnNavigationViewStyle())
@@ -48,67 +48,6 @@ struct MainView: View {
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
-    }
-}
-
-enum SelectedTab: String, CaseIterable {
-    case welcome = "Welcome"
-    case connectToSafari = "Connect to Safari"
-    case toolbar = "The Toolbar Popover"
-    case liveCommentPreview = "Live Comment Previews"
-
-    var name: String {
-        self.rawValue
-    }
-
-    var icon: String {
-        switch self {
-            case .welcome: return "1.circle"
-            case .connectToSafari: return "2.circle"
-            case .toolbar: return "3.circle"
-            case .liveCommentPreview: return "star.fill"
-        }
-    }
-
-    var label: Label<Text, Image> {
-        Label {
-            Text(self.name)
-        } icon: {
-            Image(systemName: self.icon)
-        }
-    }
-
-    var view: some View {
-        Group {
-            switch self {
-                case .connectToSafari:
-                    ConnectToSafariView()
-                        .environmentObject(OnboardingEnvironment())
-
-                case .liveCommentPreview:
-                    InAppPurchases()
-
-                case .welcome:
-                    VStack {
-                        Spacer()
-                        Text("Welcome to ")
-                        Text("Tweaks for Reddit")
-                            .font(.system(size: 28, weight: .heavy, design: .rounded))
-                            .padding(.bottom)
-                        Text("Use the menu to the left to set up Tweaks for Reddit\nand explore some of its features.")
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 25)
-                        Spacer()
-                    }
-
-                case .toolbar:
-                    VStack {
-                        PageView(icon: "bubble.middle.top",
-                                 title: "The Popover",
-                                 text: "The extension can be accessed in Safari via the toolbar.")
-                        SafariToolbarView()
-                    }
-            }
-        }
+            .environmentObject(AppState())
     }
 }

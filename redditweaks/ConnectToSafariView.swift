@@ -11,6 +11,7 @@ import SafariServices.SFSafariApplication
 
 struct ConnectToSafariView: View {
 
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var onboardingEnvironment: OnboardingEnvironment
 
     var body: some View {
@@ -24,13 +25,13 @@ struct ConnectToSafariView: View {
             }
             .padding()
 
-            if onboardingEnvironment.isSafariExtensionEnabled {
-                Text("Success!")
-                    .bold()
-            } else {
-                VStack(spacing: 12) {
-                    Text("Connecting to Safari is simple.\n\nYou have to manually activate the extension in Safari,\notherwise we can't work our magic on Reddit.")
-                        .multilineTextAlignment(.center)
+            VStack(spacing: 10) {
+                Text("Connecting to Safari is easy")
+                    .font(.headline) + Text(".")
+                Text("All you have to do is click a checkbox in Safari's preferences. Click the button below to have Safari open to the right spot in its preferences.")
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom)
+                HStack {
                     Button("Open in Safari") {
                         SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") {
                             if let error = $0 {
@@ -39,8 +40,11 @@ struct ConnectToSafariView: View {
                         }
                     }
                     .disabled(onboardingEnvironment.isSafariExtensionEnabled)
-                    .buttonStyle(RedditweaksButtonStyle())
+                    Button("Next") {
+                        appState.selectedTab = .toolbar
+                    }
                 }
+                .buttonStyle(RedditweaksButtonStyle())
             }
         }
         .padding()
@@ -52,5 +56,7 @@ struct ConnectToSafariView_Previews: PreviewProvider {
     static var previews: some View {
         ConnectToSafariView()
             .environmentObject(OnboardingEnvironment())
+            .environmentObject(AppState())
+            .frame(width: 510)
     }
 }
