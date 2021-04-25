@@ -13,24 +13,27 @@ struct FeaturesListView: View {
     @EnvironmentObject private var appState: AppState
 
     private var features: [Feature] {
-        appState.features.keys.lazy.compactMap {
-            ($0 == .nsfwFilter && Redditweaks.isFromMacAppStore) ? nil : $0
+        appState.features.keys.lazy.filter {
+            !$0.premium
+        }.sorted {
+            $0 < $1
         }
     }
 
     var body: some View {
         GroupBox(label: Text("Features")) {
             VStack(alignment: .leading) {
-                ForEach(features.sorted { $0 < $1 }, id: \.self) { feature in
-                    Toggle(feature.description, isOn: appState.bindingForFeature(feature))
-                        .lineLimit(2)
+                ForEach(features, id: \.self) { feature in
+                    Toggle(feature.description,
+                           isOn: appState.bindingForFeature(feature))
                     if feature == .customSubredditBar && appState.bindingForFeature(feature).wrappedValue {
                         FavoriteSubredditsSectionView()
                             .environmentObject(appState)
                     }
                 }
             }
-            .padding(10)
+            .padding([.top, .bottom, .leading], 10)
+            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -39,7 +42,6 @@ struct FeaturesListView: View {
 struct FeaturesListView_Previews: PreviewProvider {
     static var previews: some View {
         FeaturesListView()
-            .environmentObject(AppState())
-            .frame(width: 300)
+            .environmentObject(AppState.preview)
     }
 }

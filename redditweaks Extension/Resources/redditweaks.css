@@ -1,0 +1,13 @@
+
+.rtwks-livepreview {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    margin-bottom: -7.5px !important;
+    margin-left: 0px !important;
+    position: relative;
+    width: 100%;
+}
+
+.rtwks-livepreview div {
+    padding: 7.5px !important;
+}

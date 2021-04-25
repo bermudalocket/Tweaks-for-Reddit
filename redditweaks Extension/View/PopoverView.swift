@@ -17,6 +17,10 @@ struct PopoverView: View {
 
     @EnvironmentObject private var appState: AppState
 
+    private var binding: Binding<Bool> {
+        appState.bindingForFeature(.liveCommentPreview)
+    }
+
     var body: some View {
         VStack(spacing: 10) {
             TitleView()
@@ -26,19 +30,30 @@ struct PopoverView: View {
             FeaturesListView()
                 .environmentObject(appState)
 
+            if IAPHelper.shared.canMakePayments {
+                GroupBox(label: Text("In-App Purchases")) {
+                    Toggle("Live preview comments in markdown",
+                           isOn: appState.bindingForFeature(.liveCommentPreview))
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .padding(10)
+                        .onChange(of: binding.wrappedValue) { value in
+                            if value && !IAPHelper.shared.purchasedLiveCommentPreviews {
+                                NSWorkspace.shared.open(URL(string: "rdtwks://iap")!)
+                                binding.wrappedValue = false
+                            }
+                        }
+                }
+
+            }
+
             SettingsView()
 
-            if !Redditweaks.isFromMacAppStore {
-                UpdateView()
-            }
         }
         .padding(10)
         .frame(width: 300, alignment: .top)
         .onDisappear {
             do {
-                print("- Saving to CoreData...")
-                try PersistenceController.shared.container.viewContext.save()
-                print("- Saved!")
+                try viewContext.save()
             } catch {
                 print("- Error saving to CoreData store: \(error)")
             }

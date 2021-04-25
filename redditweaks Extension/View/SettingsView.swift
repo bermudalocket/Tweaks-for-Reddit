@@ -14,12 +14,11 @@ struct SettingsView: View {
 
     var body: some View {
         GroupBox(label: Text("Settings")) {
-            VStack(alignment: .leading) {
-                Toggle("Verify favorite subreddits exist when typing", isOn: $appState.doSubredditVerification)
-                    .disabled(!(appState.features[.customSubredditBar] ?? false))
-            }
-            .padding(10)
-            .frame(minWidth: 0, maxWidth: .infinity)
+            Toggle("Verify favorite subreddits exist when typing",
+                   isOn: $appState.doSubredditVerification)
+                .disabled(!(appState.features[.customSubredditBar] ?? false))
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .padding(10)
         }
     }
 }
