@@ -22,9 +22,11 @@ struct WelcomeView: View {
             Button {
                 appState.selectedTab = .connectToSafari
             } label: {
-                Text("Next")
-                    .font(.headline)
-                    .padding(.horizontal)
+                HStack {
+                    Text("Next")
+                        .font(.headline)
+                    Image(systemName: "chevron.right")
+                }
             }
             .buttonStyle(RedditweaksButtonStyle())
             Spacer()

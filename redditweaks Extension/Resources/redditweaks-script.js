@@ -16,26 +16,21 @@ $(document).ready(function() {
 
 let endlessScroll = () => {
 
-    var isLoading = false;
+    var isLoading = false
 
-    const progressView = $("<div id='rtwks-progressview'><b>Loading...</b></div>");
+    const getNextPageURL = () => $(".next-button").children().first().attr("href")
 
-    window.onscroll = () => {
-        if (!isLoading && (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - (window.innerHeight/6)) {
-            const table = $('.sitetable').last();
-            const nextButton = $(".next-button");
-            let url = nextButton.children().first().attr("href");
-            isLoading = true;
-            table.after(progressView);
-            $.get(url, data => {
-                let container = $(data).find('.sitetable');
-                if (container) {
-                    nextButton.parent().remove();
-                    $('.sitetable').last().after(container);
-                    progressView.remove();
-                }
-                isLoading = false;
-            });
+    let preloadedData
+
+    const preloadData = async () => $.get(getNextPageURL(), data => preloadedData = $(data).find('.sitetable'))
+
+    $(document).ready(preloadData)
+
+    window.onscroll = async () => {
+        if (!isLoading && (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - (window.innerHeight/3)) {
+            $(".next-button").parent().remove()
+            $('.sitetable').last().after($(preloadedData))
+            preloadData()
         }
     }
 }
@@ -83,34 +78,7 @@ let customSubredditBar = (subs) => {
         }
         bar.append(html)
     }
-//    $('.sr-bar').last().children().each(i => {
-//        if (i >= subs.length) {
-//            $(this).hide();
-//            return;
-//        }
-//        let sub = subs[i];
-//        let html = `<a class='choice' href='https://www.reddit.com/r/${sub}'>${sub}</a>`;
-//        if (i < subs.length - 1) {
-//            html = `${html}<span class='separator'>-</span>`
-//        }
-//        $(this).html(html);
-//
-////        let remove = $('<div style="display: inline-block" title="Remove ' + sub + ' from favorites">&nbsp;[-]</div>')
-////        remove.click(() => {
-////            safari.extension.dispatchMessage("removeFavoriteSub", { "subreddit": sub })
-////            location.reload()
-////        })
-////        $(this).hover(() => {
-////            if (i < subs.length - 1) {
-////                $(this).children().last().before(remove)
-////            } else {
-////                $(this).append(remove)
-////            }
-////        }, () => {
-////            remove.remove()
-////        });
-//    });
-    $('.drop-choices .choice').each(ele => {
+    $('.drop-choices .choice').each(function(ele) {
         var presubreddit = String(ele).match(subredditMatcher)
         if (presubreddit == null) { return }
         let subreddit = presubreddit.groups.subreddit
@@ -172,15 +140,12 @@ let rememberUserVotes = () => {
 
         let upvote = $(e).find(".arrow.up").first()
         upvote.click(() => {
-            console.log($(upvote))
             let isAlreadyUpvoted = $(upvote).hasClass("upmod")
             if (isAlreadyUpvoted) {
                 rememberVote(false, author)
-                //alert("removing remembered upvote")
                 safari.extension.dispatchMessage("removeupvote", { "user": author })
             } else {
                 rememberVote(true, author)
-                //alert("upvoted " + author)
                 safari.extension.dispatchMessage("rememberupvote", { "user": author })
             }
         })
@@ -190,11 +155,9 @@ let rememberUserVotes = () => {
             let isAlreadyDownvoted = $(downvote).hasClass("downmod")
             if (isAlreadyDownvoted) {
                 rememberVote(true, author)
-                //alert("removing remembered downvote")
                 safari.extension.dispatchMessage("removedownvote", { "user": author })
             } else {
                 rememberVote(false, author)
-                //alert("downvoted " + author)
                 safari.extension.dispatchMessage("rememberdownvote", { "user": author })
             }
         })

@@ -31,18 +31,31 @@ struct InAppPurchases: View {
         return formatter
     }
 
+    @State private var isShowingScreenshot = false
+
     var body: some View {
         VStack {
             Spacer()
             VStack(spacing: 10) {
                 Image(systemName: "keyboard")
-                    .font(.system(size: 72))
+                    .font(.system(size: 68))
                     .foregroundColor(.blue)
                 Text("Live Comment Previews")
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.system(size: 28, weight: .bold))
             }
 
-            Spacer().frame(height: 25)
+            Button {
+                isShowingScreenshot.toggle()
+            } label: {
+                Text("See a screenshot")
+                    .foregroundColor(.blue)
+            }
+            .padding(.bottom)
+            .popover(isPresented: $isShowingScreenshot) {
+                Image("livecommentpreviews")
+                    .resizable()
+                    .scaledToFit()
+            }
 
             VStack(alignment: .leading, spacing: 20) {
                 HStack {
@@ -78,7 +91,7 @@ struct InAppPurchases: View {
                 }
             }
             Spacer()
-                .frame(height: 50)
+                .frame(height: 30)
             if IAPHelper.shared.canMakePayments {
                 if IAPHelper.shared.purchases.count > 0 {
                         (Text("Thank you for your support!\n")
@@ -97,23 +110,17 @@ struct InAppPurchases: View {
                         } label: {
                             Text("Unlock now for \(IAPHelper.shared.liveCommentPreviewProduct?.price ?? 0.99, formatter: priceFormatter)")
                                 .foregroundColor(.blue)
-                                .bold()
-                                .animation(.spring())
                         }
-                            .buttonStyle(RedditweaksButtonStyle())
                         Button {
                             SKPaymentQueue.default().restoreCompletedTransactions()
                             isShowingRestoredPurchasesAlert = true
                         } label: {
                             Text("Restore Purchases")
                                 .foregroundColor(.blue)
-                                .bold()
-                                .animation(.spring())
                         }
-                            .buttonStyle(RedditweaksButtonStyle())
-                            .alert(isPresented: $isShowingRestoredPurchasesAlert) {
-                                Alert(title: Text("Success!"), message: Text("If you had any previous purchases, they have been restored."), dismissButton: .default(Text("OK")))
-                            }
+                        .alert(isPresented: $isShowingRestoredPurchasesAlert) {
+                            Alert(title: Text("Success!"), message: Text("If you had any previous purchases, they have been restored."), dismissButton: .default(Text("OK")))
+                        }
                     }
                 }
             } else {

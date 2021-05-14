@@ -39,6 +39,8 @@ struct SafariToolbarView: View {
         }
     }
 
+    @State private var isShowingPopover = false
+
     var body: some View {
         ZStack {
             Rectangle()
@@ -60,6 +62,12 @@ struct SafariToolbarView: View {
                     .resizable()
                     .frame(width: 26, height: 26)
                     .padding(.leading, 10)
+                    .onTapGesture {
+                        isShowingPopover.toggle()
+                    }
+                    .popover(isPresented: $isShowingPopover) {
+                        ArtPopoverView()
+                    }
             }
             .frame(height: 28)
             .offset(x: -250, y: 0)
