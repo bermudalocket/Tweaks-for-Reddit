@@ -260,16 +260,9 @@
 			children = (
 				99C7C2F9235D81AA00ABA6EA /* Assets.xcassets */,
 				8914CDA924B776150015E4C4 /* Redditweaks.swift */,
-			);
-			path = shared;
-			sourceTree = "<group>";
-		};
-		89B4B08225FFCEEC002E5A1B /* Helper */ = {
-			isa = PBXGroup;
-			children = (
 				8918F73A262F770200268E76 /* IAPHelper.swift */,
 			);
-			path = Helper;
+			path = shared;
 			sourceTree = "<group>";
 		};
 		89EC30C02610FFFE00268E76 /* Persistence */ = {
@@ -310,7 +303,6 @@
 		99C7C2EF235D81A700ABA6EA /* redditweaks */ = {
 			isa = PBXGroup;
 			children = (
-				89B4B08225FFCEEC002E5A1B /* Helper */,
 				99C7C2FB235D81AA00ABA6EA /* Info.plist */,
 				99C7C2F0235D81A700ABA6EA /* redditweaks.entitlements */,
 				99C7C2F7235D81A700ABA6EA /* Main.swift */,
@@ -385,6 +377,7 @@
 				99C7C2EB235D81A700ABA6EA /* Resources */,
 				99C7C31A235D81AA00ABA6EA /* Embed App Extensions */,
 				89A10A5B262CE5C400268E76 /* Embed Frameworks */,
+				89F56CAD264E1EC900F90BE2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -520,6 +513,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "periphery scan \\\n  --project \"/Users/bermudalocket/git/redditweaks/redditweaks.xcodeproj/\" \\\n  --schemes \"redditweaks\",\"redditweaks Extension\",\"redditweaksTests\" \\\n  --targets \"Tweaks for Reddit\",\"Tweaks for Reddit Extension\",\"redditweaksTests\" \\\n  --retain-objc-accessible \\\n  --format xcode\n";
+		};
+		89F56CAD264E1EC900F90BE2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -779,7 +789,7 @@
 				CODE_SIGN_ENTITLEMENTS = "redditweaks Extension/redditweaks_Extension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 235;
+				CURRENT_PROJECT_VERSION = 420;
 				DEVELOPMENT_TEAM = 2VZ489BR9H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "redditweaks Extension/Info.plist";
@@ -789,7 +799,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 1.10;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks.extension;
@@ -806,7 +816,7 @@
 				CODE_SIGN_ENTITLEMENTS = "redditweaks Extension/redditweaks_Extension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 235;
+				CURRENT_PROJECT_VERSION = 420;
 				DEVELOPMENT_TEAM = 2VZ489BR9H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "redditweaks Extension/Info.plist";
@@ -816,7 +826,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 1.10;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks.extension;
@@ -836,7 +846,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 235;
+				CURRENT_PROJECT_VERSION = 420;
 				DEVELOPMENT_TEAM = 2VZ489BR9H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = redditweaks/Info.plist;
@@ -845,7 +855,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 1.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -862,7 +872,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 235;
+				CURRENT_PROJECT_VERSION = 420;
 				DEVELOPMENT_TEAM = 2VZ489BR9H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = redditweaks/Info.plist;
@@ -871,7 +881,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 1.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -9,6 +9,18 @@
 import SwiftUI
 import Combine
 
+enum FavoriteSubredditListHeight: Int, CaseIterable {
+    case small = 125, medium = 200, large = 320
+
+    var displayName: String {
+        switch self {
+            case .small: return "Small"
+            case .medium: return "Medium"
+            case .large: return "Large"
+        }
+    }
+}
+
 final class AppState: ObservableObject {
 
     // MARK: - task storage
@@ -18,6 +30,7 @@ final class AppState: ObservableObject {
     // MARK: - saved GUI state
 
     @AppStorage("verifySubreddits") var doSubredditVerification = true
+    @AppStorage("favoriteSubredditListHeight") var favoriteSubredditListHeight = FavoriteSubredditListHeight.medium
 
     // MARK: - features
 

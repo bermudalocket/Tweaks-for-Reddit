@@ -26,6 +26,7 @@ struct FeaturesListView: View {
                 ForEach(features, id: \.self) { feature in
                     Toggle(feature.description,
                            isOn: appState.bindingForFeature(feature))
+                        .help(feature.help)
                     if feature == .customSubredditBar && appState.bindingForFeature(feature).wrappedValue {
                         FavoriteSubredditsSectionView()
                             .environmentObject(appState)

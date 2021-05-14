@@ -20,23 +20,40 @@ struct MainView: View {
 
     @EnvironmentObject private var state: AppState
 
+    @State private var isIconAnimating = false
+
     var body: some View {
         NavigationView {
             VStack {
-                Text("Tweaks for Reddit")
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .padding(.top)
+                VStack {
+                    Image("Icon")
+//                        .rotation3DEffect(
+//                            .init(degrees: isIconAnimating ? 45 : -20),
+//                            axis: (x: isIconAnimating ? -1 : 1,
+//                                   y: isIconAnimating ? 1 : -1,
+//                                   z: isIconAnimating ? 1 : 0)
+//                        )
+//                        .onAppear {
+//                            withAnimation(.easeInOut(duration: 5).repeatForever(autoreverses: true)) {
+//                                isIconAnimating.toggle()
+//                            }
+//                        }
+                    Text("Tweaks for Reddit")
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                }.padding(.top, 30)
                 List {
                     ForEach(SelectedTab.allCases, id: \.self) { tab in
                         NavigationLink(
                             destination: tab.view,
                             tag: tab,
                             selection: $state.selectedTab,
-                            label: { tab.label })
+                            label: { Text(tab.name).font(.title3) })
+                            .padding(10)
                     }
                 }
                 .listStyle(SidebarListStyle())
                 .frame(width: 240)
+                .animation(nil)
             }
         }
         .navigationViewStyle(DoubleColumnNavigationViewStyle())
