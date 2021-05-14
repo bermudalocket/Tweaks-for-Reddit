@@ -14,11 +14,32 @@ struct SettingsView: View {
 
     var body: some View {
         GroupBox(label: Text("Settings")) {
-            Toggle("Verify favorite subreddits exist when typing",
-                   isOn: $appState.doSubredditVerification)
-                .disabled(!(appState.features[.customSubredditBar] ?? false))
-                .frame(minWidth: 0, maxWidth: .infinity)
-                .padding(10)
+            VStack(alignment: .leading) {
+                Toggle("Verify favorite subreddits exist",
+                       isOn: $appState.doSubredditVerification)
+                    .disabled(!(appState.features[.customSubredditBar] ?? false))
+                    .padding(5)
+                    .help("Tweaks for Reddit will make a request to https://www.reddit.com/r/(sub) to check if it exists")
+                HStack {
+                    Text("Favorites display size")
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                    Menu(appState.favoriteSubredditListHeight.displayName) {
+                        Button("Small") {
+                            appState.favoriteSubredditListHeight = .small
+                        }
+                        Button("Medium") {
+                            appState.favoriteSubredditListHeight = .medium
+                        }
+                        Button("Large") {
+                            appState.favoriteSubredditListHeight = .large
+                        }
+                    }
+                }
+                .contentShape(Rectangle())
+                .help("Determines how many subreddits are visible in the Favorite Subreddits list")
+            }
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .padding(5)
         }
     }
 }

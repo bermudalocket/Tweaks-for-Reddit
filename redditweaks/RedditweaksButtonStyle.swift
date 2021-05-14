@@ -11,20 +11,8 @@ import SwiftUI
 struct RedditweaksButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
-        configuration
-            .label
-            .font(.system(.headline))
+        configuration.label
             .foregroundColor(.blue)
-            .padding(.horizontal, 20)
-            .padding(.vertical)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.white)
-                    .foregroundColor(.primary)
-                    .scaleEffect(configuration.isPressed ? 0.95 : 1)
-                    .animation(.easeInOut)
-                    .shadow(color: .black.opacity(0.25), radius: 10, x: 0, y: 0)
-            )
     }
 
 }
