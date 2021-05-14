@@ -31,7 +31,7 @@ struct ConnectToSafariView: View {
                 Text("All you have to do is click a checkbox in Safari's preferences. Click the button below to have Safari open to the right spot in its preferences.")
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
-                HStack {
+                HStack(spacing: 100) {
                     Button("Open in Safari") {
                         SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") {
                             if let error = $0 {
@@ -40,8 +40,14 @@ struct ConnectToSafariView: View {
                         }
                     }
                     .disabled(onboardingEnvironment.isSafariExtensionEnabled)
-                    Button("Next") {
+                    Button {
                         appState.selectedTab = .toolbar
+                    } label: {
+                        HStack {
+                            Text("Next")
+                                .font(.headline)
+                            Image(systemName: "chevron.right")
+                        }
                     }
                 }
                 .buttonStyle(RedditweaksButtonStyle())

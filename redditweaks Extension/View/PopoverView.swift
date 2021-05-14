@@ -32,8 +32,7 @@ struct PopoverView: View {
 
             if IAPHelper.shared.canMakePayments {
                 GroupBox(label: Text("In-App Purchases")) {
-                    Toggle("Live preview comments in markdown",
-                           isOn: appState.bindingForFeature(.liveCommentPreview))
+                    Toggle("Live preview comments in markdown", isOn: binding)
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                         .padding(10)
                         .onChange(of: binding.wrappedValue) { value in
@@ -50,10 +49,12 @@ struct PopoverView: View {
 
         }
         .padding(10)
-        .frame(width: 300, alignment: .top)
+        .frame(width: 325, alignment: .top)
         .onDisappear {
             do {
-                try viewContext.save()
+                if viewContext.hasChanges {
+                    try viewContext.save()
+                }
             } catch {
                 print("- Error saving to CoreData store: \(error)")
             }

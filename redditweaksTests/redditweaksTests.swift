@@ -10,7 +10,7 @@
 
 import XCTest
 import Combine
-@testable import Tweaks_for_Reddit
+@testable import Tweaks_for_Reddit_Extension
 
 class redditweaksTests: XCTestCase {
 
