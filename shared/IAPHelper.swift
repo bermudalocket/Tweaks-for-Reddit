@@ -7,60 +7,69 @@
 //
 
 import StoreKit
+import SwiftUI
 
-class IAPHelper: NSObject {
+class IAPHelper: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver, ObservableObject {
+
+    enum Product: String, CaseIterable {
+        case liveCommentPreviews = "livecommentpreview"
+    }
+
+    @Published var canMakePayments = SKPaymentQueue.canMakePayments()
+    @Published var products = [SKProduct]()
+    @Published var purchases = [SKPaymentTransaction]()
+
+    private var productRequestStorage = [SKProductsRequest]()
 
     public static let shared = IAPHelper()
 
-    override private init() {
+    override init() {
         super.init()
-        DispatchQueue.main.async { [self] in
-            let productIdentifiers = Set(["livecommentpreview"])
-            productRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
-            productRequest?.delegate = self
-            productRequest?.start()
+
+        let productRequest = SKProductsRequest(productIdentifiers: Set(Product.allCases.map(\.rawValue)))
+        productRequest.delegate = self
+        productRequest.start()
+        productRequestStorage.append(productRequest)
+
+        self.purchasedLiveCommentPreviews = PersistenceController.shared.iapState.livecommentpreviews
+    }
+
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        DispatchQueue.main.async {
+            self.products = response.products
         }
     }
 
-    public let canMakePayments = SKPaymentQueue.canMakePayments()
-    public var products = [SKProduct]()
-    public var purchases = [SKPaymentTransaction]()
-
-    public var purchasedLiveCommentPreviews: Bool {
-        #if DEBUG
-            return true
-        #else
-            purchases.filter { purchase in
-                purchase.transactionState == .purchased && purchase.payment.productIdentifier == "livecommentpreview"
-            }.count == 1
-        #endif
+    func product(_ product: Product) -> SKProduct? {
+        products.filter { $0.productIdentifier == product.rawValue }.first
     }
+
+    @Published var purchasedLiveCommentPreviews = false
 
     public var liveCommentPreviewProduct: SKProduct? {
         products.filter { $0.productIdentifier == "livecommentpreview" }.first
     }
 
-    // strong reference storage
-    private var productRequest: SKProductsRequest?
-
-}
-
-extension IAPHelper: SKPaymentTransactionObserver {
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         transactions.forEach { transaction in
-            switch transaction.transactionState {
-                case .purchased:
-                    purchases.append(transaction)
+            if transaction.payment.productIdentifier == "livecommentpreview" {
+                switch transaction.transactionState {
+                    case .purchased, .restored:
+                        let newIAPState = IAPState(context: PersistenceController.shared.container.viewContext)
+                        newIAPState.timestamp = Date()
+                        newIAPState.livecommentpreviews = true
+                        try? PersistenceController.shared.container.viewContext.save()
+                        
+                        self.purchasedLiveCommentPreviews = true
+                        purchases.append(transaction)
+                        SKPaymentQueue.default().finishTransaction(transaction)
 
-                default:
-                    return
+                    default:
+                        return
+                }
             }
         }
     }
+
 }
 
-extension IAPHelper: SKProductsRequestDelegate {
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        self.products = response.products
-    }
-}

@@ -12,7 +12,28 @@ import XCTest
 import Combine
 @testable import Tweaks_for_Reddit_Extension
 
+class Desc: NSEntityDescription {
+}
+
+class MockFavoriteSubreddit: FavoriteSubreddit {
+
+    init(name: String) {
+        super.init(entity: Desc(), insertInto: nil)
+    }
+
+}
+
 class redditweaksTests: XCTestCase {
+
+    func testNoDuplicateDictionaryKeys() {
+        let view = FavoriteSubredditView(subreddit: MockFavoriteSubreddit(name: "macOS"))
+        view.emojiMap.keys.forEach { key in
+            XCTAssertTrue(view.emojiMap.keys.filter { $0 == key }.count == 1)
+        }
+        view.sfSymbolsMap.keys.forEach { key in
+            XCTAssertTrue(view.sfSymbolsMap.keys.filter { $0 == key }.count == 1)
+        }
+    }
 
     func testFetchRequest() {
         let vc = PersistenceController.shared.container.viewContext

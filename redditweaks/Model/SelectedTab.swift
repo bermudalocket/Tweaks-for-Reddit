@@ -14,7 +14,9 @@ enum SelectedTab: String, CaseIterable {
     case welcome = "Welcome"
     case connectToSafari = "Connect to Safari"
     case toolbar = "The Toolbar Popover"
+    case iCloud = "iCloud"
     case liveCommentPreview = "Live Comment Previews"
+    case debug = "Debug"
 
     var name: String {
         self.rawValue
@@ -28,21 +30,23 @@ enum SelectedTab: String, CaseIterable {
                         .environmentObject(OnboardingEnvironment())
 
                 case .liveCommentPreview:
-                    InAppPurchases()
+                    InAppPurchasesView()
 
                 case .welcome:
                     WelcomeView()
+                    
+                case .iCloud:
+                    iCloudView()
 
                 case .toolbar:
-                    VStack {
-                        PageView(icon: "bubble.middle.top",
-                                 title: "The Popover",
-                                 text: "The extension can be accessed in Safari via the toolbar.")
-                        Text("From there, you can enable individual features via their checkboxes.")
-                        SafariToolbarView()
-                            .padding(.vertical)
-                    }
+                    PopoverView()
+
+                case .debug:
+                    DebugView()
+                        .environmentObject(IAPHelper.shared)
+
             }
         }
+        .transition(.opacity.animation(.linear))
     }
 }

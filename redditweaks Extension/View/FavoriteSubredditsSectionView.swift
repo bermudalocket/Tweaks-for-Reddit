@@ -47,8 +47,12 @@ class SubredditVerifier: ObservableObject {
                 isSearching = false
                 isValid = result
                 if result {
-                    let sub = FavoriteSubreddit(context: PersistenceController.shared.container.viewContext)
+                    let vc = PersistenceController.shared.container.viewContext
+                    let fetch = NSFetchRequest<FavoriteSubreddit>(entityName: "FavoriteSubreddit")
+                    let count = (try? vc.fetch(fetch))?.count ?? 0
+                    let sub = FavoriteSubreddit(context: vc)
                     sub.name = subreddit
+                    sub.position = Int16(count)
                     subreddit = ""
                 }
             }
@@ -68,6 +72,7 @@ struct FavoriteSubredditsSectionView: View {
     @State private var favoriteSubredditField = ""
 
     @FetchRequest(sortDescriptors: [
+        NSSortDescriptor(keyPath: \FavoriteSubreddit.position, ascending: true),
         NSSortDescriptor(keyPath: \FavoriteSubreddit.name, ascending: true)
     ]) private var favoriteSubreddits: FetchedResults<FavoriteSubreddit>
 
@@ -102,9 +107,13 @@ struct FavoriteSubredditsSectionView: View {
     }
 
     private func onMove(indices: IndexSet, newOffset: Int) {
-        // TODO
-//        favoriteSubreddits.move(fromOffsets: indices, toOffset: newOffset)
+        guard let oldOffset = indices.first else {
+            return
+        }
+        let sub = favoriteSubreddits[oldOffset]
+        sub.position = Int16(newOffset)
     }
+
 }
 
 struct FavoriteSubredditsSectionView_Previews: PreviewProvider {

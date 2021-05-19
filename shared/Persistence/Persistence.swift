@@ -7,18 +7,32 @@
 
 import CoreData
 
+class PersistenceControllerState: ObservableObject {
+    @Published var isReady = false
+}
+
 struct PersistenceController {
 
     let container: NSPersistentCloudKitContainer
+
+    let state = PersistenceControllerState()
 
     init(inMemory: Bool = false) {
         container = NSPersistentCloudKitContainer(name: "Tweaks for Reddit")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
-        container.loadPersistentStores { storeDescription, error in
+        container.persistentStoreDescriptions.forEach {
+            $0.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.bermudalocket.redditweaks")
+        }
+        container.loadPersistentStores { [self] storeDescription, error in
             if let error = error as NSError? {
                 fatalError("- Unresolved error loading persistent store: \(error), \(error.userInfo)")
+            }
+            container.viewContext.automaticallyMergesChangesFromParent = true
+            try? container.initializeCloudKitSchema(options: .printSchema)
+            DispatchQueue.main.async {
+                self.state.isReady = true
             }
         }
     }
@@ -29,6 +43,21 @@ struct PersistenceController {
             .fetch(request)
             .compactMap(\.name)
             .sorted()
+    }
+
+    var iapState: IAPState {
+        let request = NSFetchRequest<IAPState>(entityName: "IAPState")
+        request.sortDescriptors = [
+            NSSortDescriptor(keyPath: \IAPState.timestamp, ascending: false)
+        ]
+        guard let results = try? self.container.viewContext.fetch(request), let result = results.first else {
+            let initialState = IAPState(context: self.container.viewContext)
+            initialState.timestamp = Date()
+            initialState.livecommentpreviews = false
+            try? self.container.viewContext.save()
+            return initialState
+        }
+        return result
     }
 
 }

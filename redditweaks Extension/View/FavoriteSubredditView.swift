@@ -25,25 +25,25 @@ struct FavoriteSubredditView: View {
     @State private var isEditing = false
     @State private var subredditRenameField = ""
 
-    private let sfSymbolsMap: [String: String] = [
+    public let sfSymbolsMap: [String: String] = [
         "apple": "applelogo",
-        "math": "function",
-        "gaming": "gamecontroller.fill",
-        "news": "newspaper.fill",
-        "worldnews": "newspaper.fill",
-        "music": "music.quarternote.3",
-        "pics": "photo.fill",
-        "photography": "photo.fill",
-        "todayilearned": "lightbulb.fill",
-        "movies": "film.fill",
+        "art": "paintbrush.fill",
+        "books": "books.vertical.fill",
+        "consulting": "rectangle.3.offgrid.bubble.left.fill",
         "earthporn": "globe",
         "explainlikeimfive": "questionmark.circle.fill",
-        "books": "books.vertical.fill",
-        "art": "paintbrush.fill",
-        "sports": "sportscourt.fill",
+        "gaming": "gamecontroller.fill",
+        "math": "function",
+        "movies": "film.fill",
+        "music": "music.quarternote.3",
+        "news": "newspaper.fill",
+        "pics": "photo.fill",
+        "photography": "photo.fill",
         "space": "moon.stars.fill",
-        "consulting": "rectangle.3.offgrid.bubble.left.fill",
+        "sports": "sportscourt.fill",
         "television": "tv.fill",
+        "todayilearned": "lightbulb.fill",
+        "worldnews": "newspaper.fill",
 
         // apple products
         "iphone": "iphone",
@@ -57,8 +57,7 @@ struct FavoriteSubredditView: View {
         "homepod": "homepod.fill",
     ]
 
-    private let emojiMap: [String: String] = [
-        "funny": "😂",
+    public let emojiMap: [String: String] = [
         "jokes": "😂",
         "phasmophobiagame": "👻",
         "science": "🔬",

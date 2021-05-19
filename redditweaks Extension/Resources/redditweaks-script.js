@@ -14,6 +14,15 @@ $(document).ready(function() {
 
 // ============================================================
 
+let autoExpandImages = () => {
+    const expandableDomains = [ "i.redd.it", "reddit.com", "i.imgur.com" ]
+    document.querySelectorAll(".thing").forEach(e => {
+        if (expandableDomains.includes(e.getAttribute("data-domain"))) {
+            e.querySelector(".expando-button").click()
+        }
+    })
+}
+
 let endlessScroll = () => {
 
     var isLoading = false
@@ -29,7 +38,7 @@ let endlessScroll = () => {
     window.onscroll = async () => {
         if (!isLoading && (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - (window.innerHeight/3)) {
             $(".next-button").parent().remove()
-            $('.sitetable').last().after($(preloadedData))
+            $(preloadedData).children().each(function() { $('.sitetable').append($(this)) })
             preloadData()
         }
     }

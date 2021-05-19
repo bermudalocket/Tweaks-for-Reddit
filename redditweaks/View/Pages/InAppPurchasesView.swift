@@ -9,7 +9,7 @@
 import SwiftUI
 import StoreKit
 
-struct InAppPurchases: View {
+struct InAppPurchasesView: View {
 
     @Environment(\.calendar) private var calendar
     @Environment(\.locale) private var locale
@@ -34,35 +34,22 @@ struct InAppPurchases: View {
     @State private var isShowingScreenshot = false
 
     var body: some View {
-        VStack {
-            Spacer()
+        VStack(spacing: 30) {
             VStack(spacing: 10) {
                 Image(systemName: "keyboard")
                     .font(.system(size: 68))
-                    .foregroundColor(.blue)
+                    .foregroundColor(.accentColor)
                 Text("Live Comment Previews")
                     .font(.system(size: 28, weight: .bold))
             }
-
-            Button {
-                isShowingScreenshot.toggle()
-            } label: {
-                Text("See a screenshot")
-                    .foregroundColor(.blue)
-            }
-            .padding(.bottom)
-            .popover(isPresented: $isShowingScreenshot) {
-                Image("livecommentpreviews")
-                    .resizable()
-                    .scaledToFit()
-            }
+            .padding(.horizontal)
 
             VStack(alignment: .leading, spacing: 20) {
                 HStack {
                     Image(systemName: "rectangle.and.pencil.and.ellipsis")
                         .font(.system(size: 20))
                         .frame(width: 50)
-                        .foregroundColor(.blue)
+                        .foregroundColor(.accentColor)
                     VStack(alignment: .leading) {
                         Text("Live Previews").bold()
                         Text("See your comments rendered in markdown in real time.")
@@ -72,7 +59,7 @@ struct InAppPurchases: View {
                     Image(systemName: "laptopcomputer")
                         .font(.system(size: 20))
                         .frame(width: 50)
-                        .foregroundColor(.blue)
+                        .foregroundColor(.accentColor)
                     VStack(alignment: .leading) {
                         Text("Family Sharing")
                             .bold()
@@ -83,50 +70,55 @@ struct InAppPurchases: View {
                     Image(systemName: "hand.thumbsup")
                         .font(.system(size: 20))
                         .frame(width: 50)
-                        .foregroundColor(.blue)
+                        .foregroundColor(.accentColor)
                     VStack(alignment: .leading) {
                         Text("Support Development").bold()
                         Text("Tweaks for Reddit is written by one guy!")
                     }
                 }
             }
-            Spacer()
-                .frame(height: 30)
+
             if IAPHelper.shared.canMakePayments {
-                if IAPHelper.shared.purchases.count > 0 {
-                        (Text("Thank you for your support!\n")
-                            .bold() +
-                        Text("Purchased on \(IAPHelper.shared.purchases.first!.transactionDate!, formatter: dateFormatter)")
-                            .font(.caption)
-                            .foregroundColor(.gray))
+                if PersistenceController.shared.iapState.livecommentpreviews {
+                    Text("Thank you for your support!\n")
+                        .font(.title2)
+                        .bold()
                         .multilineTextAlignment(.center)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
-                } else {
-                    HStack {
-                        Button {
+                }
+
+                HStack {
+                    if !PersistenceController.shared.iapState.livecommentpreviews {
+                        Button("Unlock now for \(IAPHelper.shared.liveCommentPreviewProduct?.price ?? 0.99, formatter: priceFormatter)") {
                             let payment = SKPayment(product: IAPHelper.shared.products.first!)
                             SKPaymentQueue.default().add(payment)
-                        } label: {
-                            Text("Unlock now for \(IAPHelper.shared.liveCommentPreviewProduct?.price ?? 0.99, formatter: priceFormatter)")
-                                .foregroundColor(.blue)
                         }
-                        Button {
-                            SKPaymentQueue.default().restoreCompletedTransactions()
-                            isShowingRestoredPurchasesAlert = true
-                        } label: {
-                            Text("Restore Purchases")
-                                .foregroundColor(.blue)
-                        }
-                        .alert(isPresented: $isShowingRestoredPurchasesAlert) {
-                            Alert(title: Text("Success!"), message: Text("If you had any previous purchases, they have been restored."), dismissButton: .default(Text("OK")))
-                        }
+                        .buttonStyle(RedditweaksButtonStyle())
+                    }
+                    Button {
+                        isShowingScreenshot.toggle()
+                    } label: {
+                        Text("See a screenshot")
+                    }
+                    .buttonStyle(RedditweaksButtonStyle())
+                    .popover(isPresented: $isShowingScreenshot) {
+                        Image("livecommentpreviews")
+                            .resizable()
+                            .scaledToFit()
+                    }
+                    Button("Restore Purchases") {
+                        SKPaymentQueue.default().restoreCompletedTransactions()
+                        isShowingRestoredPurchasesAlert = true
+                    }
+                    .buttonStyle(RedditweaksButtonStyle())
+                    .alert(isPresented: $isShowingRestoredPurchasesAlert) {
+                        Alert(title: Text("Success!"), message: Text("If you had any previous purchases, they have been restored."), dismissButton: .default(Text("OK")))
                     }
                 }
             } else {
                 Text("Payments aren't available on your device.")
+                    .font(.title2)
+                    .bold()
             }
-            Spacer()
         }
     }
 
@@ -134,9 +126,9 @@ struct InAppPurchases: View {
 
 struct InAppPurchases_Previews: PreviewProvider {
     static var previews: some View {
-        InAppPurchases()
+        InAppPurchasesView()
             .padding()
-        InAppPurchases()
+        InAppPurchasesView()
             .environment(\.colorScheme, .dark)
             .padding()
     }

@@ -39,6 +39,7 @@ final class AppState: ObservableObject {
         Feature.features.forEach { feature in
             map[feature] = Redditweaks.defaults.bool(forKey: feature.key)
         }
+        map[.liveCommentPreview] = PersistenceController.shared.iapState.livecommentpreviews
         return map
     }()
 
