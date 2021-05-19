@@ -21,6 +21,7 @@ class PopoverViewWrapper: SFSafariExtensionViewController {
 
         let view = PopoverView()
             .environmentObject(AppState())
+            .environmentObject(IAPHelper())
             .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
 
         self.view = NSHostingView(rootView: view)

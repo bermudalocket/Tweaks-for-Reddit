@@ -15,20 +15,10 @@ struct WelcomeView: View {
     var body: some View {
         VStack {
             Spacer()
-            Text("Welcome to ")
+            Text("Welcome to")
+                .font(.title2)
             Text("Tweaks for Reddit")
-                .font(.system(size: 28, weight: .heavy, design: .rounded))
-                .padding(.bottom)
-            Button {
-                appState.selectedTab = .connectToSafari
-            } label: {
-                HStack {
-                    Text("Next")
-                        .font(.headline)
-                    Image(systemName: "chevron.right")
-                }
-            }
-            .buttonStyle(RedditweaksButtonStyle())
+                .font(.system(size: 32, weight: .heavy, design: .rounded))
             Spacer()
         }
     }

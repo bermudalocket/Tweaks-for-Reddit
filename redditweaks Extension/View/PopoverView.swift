@@ -15,7 +15,11 @@ struct PopoverView: View {
 
     @Environment(\.managedObjectContext) private var viewContext
 
+    @EnvironmentObject private var iapHelper: IAPHelper
+
     @EnvironmentObject private var appState: AppState
+
+    @State private var isCheckingInAppPurchase = false
 
     private var binding: Binding<Bool> {
         appState.bindingForFeature(.liveCommentPreview)
@@ -30,17 +34,29 @@ struct PopoverView: View {
             FeaturesListView()
                 .environmentObject(appState)
 
-            if IAPHelper.shared.canMakePayments {
+            if iapHelper.canMakePayments {
                 GroupBox(label: Text("In-App Purchases")) {
-                    Toggle("Live preview comments in markdown", isOn: binding)
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                        .padding(10)
-                        .onChange(of: binding.wrappedValue) { value in
-                            if value && !IAPHelper.shared.purchasedLiveCommentPreviews {
-                                NSWorkspace.shared.open(URL(string: "rdtwks://iap")!)
-                                binding.wrappedValue = false
+                    if isCheckingInAppPurchase {
+                        ProgressView()
+                            .scaleEffect(0.5)
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+
+                    } else {
+                        Toggle("Live preview comments in markdown", isOn: binding)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                            .padding(10)
+                            .onChange(of: appState.bindingForFeature(.liveCommentPreview).wrappedValue) { value in
+                                isCheckingInAppPurchase = true
+                                DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(1))) {
+                                    if value && !PersistenceController.shared.iapState.livecommentpreviews {
+                                        NSWorkspace.shared.open(URL(string: "rdtwks://iap")!)
+                                        binding.wrappedValue = false
+                                    }
+                                    isCheckingInAppPurchase = false
+                                }
                             }
-                        }
+                    }
                 }
 
             }

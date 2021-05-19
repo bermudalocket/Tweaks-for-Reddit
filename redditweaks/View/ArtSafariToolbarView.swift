@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct SafariToolbarView: View {
+struct ArtSafariToolbarView: View {
 
     @Environment(\.colorScheme) private var colorScheme
 
@@ -77,7 +77,7 @@ struct SafariToolbarView: View {
 
 struct SafariToolbarView_Previews: PreviewProvider {
     static var previews: some View {
-        SafariToolbarView()
+        ArtSafariToolbarView()
             .frame(width: 700, height: 400)
     }
 }

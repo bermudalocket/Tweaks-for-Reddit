@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+    <entity name="FavoriteSubreddit" representedClassName="FavoriteSubreddit" syncable="YES" codeGenerationType="class">
+        <attribute name="name" attributeType="String" minValueString="1" defaultValueString=""/>
+        <attribute name="position" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="IAPState" representedClassName="IAPState" syncable="YES" codeGenerationType="class">
+        <attribute name="livecommentpreviews" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="timestamp" attributeType="Date" defaultDateTimeInterval="643069260" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="KarmaMemory" representedClassName="KarmaMemory" syncable="YES" codeGenerationType="class">
+        <attribute name="karma" attributeType="Integer 64" minValueString="-1" maxValueString="1" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="user" attributeType="String" minValueString="1" defaultValueString=""/>
+    </entity>
+    <entity name="SeenPermalink" representedClassName="SeenPermalink" syncable="YES" codeGenerationType="class">
+        <attribute name="bias" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="count" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="threadId" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="Transformable" valueTransformerName="TFRCoreDataDecryptor" customClassName="String"/>
+    </entity>
+    <elements>
+        <element name="FavoriteSubreddit" positionX="-52.944580078125" positionY="66.17877197265625" width="160.4896240234375" height="59"/>
+        <element name="KarmaMemory" positionX="-63" positionY="-18" width="128" height="59"/>
+        <element name="SeenPermalink" positionX="-45" positionY="36" width="128" height="89"/>
+        <element name="IAPState" positionX="-45" positionY="36" width="128" height="59"/>
+    </elements>
+</model>

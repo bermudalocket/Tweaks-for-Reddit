@@ -27,6 +27,7 @@ struct RedditweaksApp: App {
                     }
                     appState.selectedTab = .liveCommentPreview
                 }
+                .accentColor(.redditOrange)
         }
         .defaultAppStorage(Redditweaks.defaults)
         .windowStyle(HiddenTitleBarWindowStyle())

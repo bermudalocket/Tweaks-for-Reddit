@@ -18,42 +18,30 @@ struct ConnectToSafariView: View {
         VStack {
             VStack(spacing: 10) {
                 Image(systemName: "safari")
-                    .font(.system(size: 72))
-                    .foregroundColor(.blue)
+                    .font(.system(size: 68))
+                    .foregroundColor(.accentColor)
                 Text("Connect to Safari")
                     .font(.system(size: 32, weight: .bold))
             }
-            .padding()
+            .padding([.horizontal, .bottom])
 
             VStack(spacing: 10) {
                 Text("Connecting to Safari is easy")
                     .font(.headline) + Text(".")
-                Text("All you have to do is click a checkbox in Safari's preferences. Click the button below to have Safari open to the right spot in its preferences.")
+                Text("All you have to do is click a checkbox in Safari's preferences.\nClick the button below to have Safari open to the right spot.")
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
-                HStack(spacing: 100) {
-                    Button("Open in Safari") {
-                        SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") {
-                            if let error = $0 {
-                                NSLog("Error opening Safari: \(error).")
-                            }
-                        }
-                    }
-                    .disabled(onboardingEnvironment.isSafariExtensionEnabled)
-                    Button {
-                        appState.selectedTab = .toolbar
-                    } label: {
-                        HStack {
-                            Text("Next")
-                                .font(.headline)
-                            Image(systemName: "chevron.right")
+                Button("Open in Safari") {
+                    SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") {
+                        if let error = $0 {
+                            NSLog("Error opening Safari: \(error).")
                         }
                     }
                 }
+                .disabled(onboardingEnvironment.isSafariExtensionEnabled)
                 .buttonStyle(RedditweaksButtonStyle())
             }
         }
-        .padding()
     }
 
 }
