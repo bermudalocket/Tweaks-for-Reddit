@@ -23,27 +23,17 @@ enum FavoriteSubredditListHeight: Int, CaseIterable {
 
 final class AppState: ObservableObject {
 
-    // MARK: - task storage
-
-    private var cancellables = [URLSessionDataTask]()
-
-    // MARK: - saved GUI state
-
     @AppStorage("verifySubreddits") var doSubredditVerification = true
     @AppStorage("favoriteSubredditListHeight") var favoriteSubredditListHeight = FavoriteSubredditListHeight.medium
-
-    // MARK: - features
 
     @Published var features: [Feature: Bool] = {
         var map = [Feature: Bool]()
         Feature.features.forEach { feature in
             map[feature] = Redditweaks.defaults.bool(forKey: feature.key)
         }
-        map[.liveCommentPreview] = PersistenceController.shared.iapState.livecommentpreviews
+        map[.liveCommentPreview] = Redditweaks.defaults.bool(forKey: "liveCommentPreview")
         return map
     }()
-
-    // MARK: - preview
 
     public static let preview = AppState()
 
@@ -59,35 +49,4 @@ final class AppState: ObservableObject {
         })
     }
 
-}
-
-extension AppState {
-
-    func verifySubreddit(subreddit: String, isValid: Binding<Bool>, isSearching: Binding<Bool>) {
-        if !doSubredditVerification {
-            isValid.projectedValue.wrappedValue = true
-            return
-        }
-        isSearching.projectedValue.wrappedValue = true
-        cancellables.forEach { $0.cancel() }
-        cancellables.removeAll()
-        let url = URL(string: "https://www.reddit.com/r/\(subreddit)")!
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard error == nil,
-                  let res = response as? HTTPURLResponse,
-                  res.statusCode == 200,
-                  let data = data,
-                  let result = String(data: data, encoding: .utf8)
-            else {
-                isValid.projectedValue.wrappedValue = false
-                isSearching.projectedValue.wrappedValue = false
-                return
-            }
-            let outcome = !result.contains("there doesn't seem to be anything here")
-            isValid.projectedValue.wrappedValue = outcome
-            isSearching.projectedValue.wrappedValue = false
-        }
-        cancellables.append(task)
-        task.resume()
-    }
 }

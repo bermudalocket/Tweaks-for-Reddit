@@ -17,8 +17,6 @@ extension NSManagedObjectModel {
 
 struct DebugView: View {
 
-    @EnvironmentObject private var iapHelper: IAPHelper
-
     private var coreDataModelId: String {
         PersistenceController.shared.container.managedObjectModel.versionIdentifiers.first as? String ?? "N/A"
     }
@@ -35,14 +33,6 @@ struct DebugView: View {
         return paths.joined()
     }
 
-    private var numberOfPermalinks: Int {
-        let req = NSFetchRequest<SeenPermalink>(entityName: "SeenPermalink")
-        guard let results = try? PersistenceController.shared.container.viewContext.fetch(req) else {
-            return -2
-        }
-        return results.count
-    }
-
     private var numberOfFavoriteSubreddits: Int {
         let req = NSFetchRequest<FavoriteSubreddit>(entityName: "FavoriteSubreddit")
         guard let results = try? PersistenceController.shared.container.viewContext.fetch(req) else {
@@ -52,17 +42,16 @@ struct DebugView: View {
     }
 
     private var columns: [GridItem] = [
-        .init(GridItem.Size.fixed(150), spacing: 10, alignment: .leading),
+        .init(GridItem.Size.fixed(175), spacing: 10, alignment: .leading),
         .init(GridItem.Size.flexible(minimum: 10, maximum: 250), alignment: .leading)
     ]
 
-    @State private var iCloudAvailable = false
-    @State private var isLiveCommentPreviewsAvailable = false
+    @AppStorage("didPurchaseLiveCommentPreviews") private var didPurchaseLiveCommentPreviews = false
 
     var body: some View {
         LazyVGrid(columns: columns) {
             Text("iCloud Connected").bold()
-            Text(iCloudAvailable ? "Yes" : "No")
+            Text("Yes") // always, apparently
 
             Text("CoreData Model ID").bold()
             Text(coreDataModelId)
@@ -71,14 +60,10 @@ struct DebugView: View {
             Text(coreDataModelName)
 
             Text("Live Comment Previews").bold()
-            Text("\(isLiveCommentPreviewsAvailable ? "Yes" : "No")")
+            Text("\(didPurchaseLiveCommentPreviews ? "Yes" : "No")")
 
             Text("Favorite Subreddits").bold()
             Text("\(numberOfFavoriteSubreddits)")
-        }.onReceive(PersistenceController.shared.state.$isReady) { ready in
-            self.iCloudAvailable = ready
-        }.onReceive(iapHelper.$purchasedLiveCommentPreviews) { state in
-            self.isLiveCommentPreviewsAvailable = state
         }
     }
 

@@ -9,8 +9,8 @@
 import Foundation
 import SwiftUI
 
-class AppState: ObservableObject {
+class MainAppState: ObservableObject {
 
-    @Published var selectedTab: SelectedTab? = .welcome
+    @AppStorage("selectedTab") var selectedTab: SelectedTab = .welcome
 
 }

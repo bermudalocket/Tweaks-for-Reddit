@@ -8,10 +8,10 @@
 
 import SwiftUI
 
-struct PopoverView: View {
+struct SafariPopoverView: View {
     
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             VStack(spacing: 10) {
                 Image(systemName: "bubble.middle.top")
                     .font(.system(size: 68))
