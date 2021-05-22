@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum RedditPageType {
+enum RedditPageType: CaseIterable {
 
     case feed, subreddit, post, user
 
@@ -16,13 +16,13 @@ enum RedditPageType {
         let base: [Feature] = [.customSubredditBar, .hideNewRedditButton, .hideUsername, .noChat, .oldRedditRedirect, .showKarma, .showNewComments, .rememberUserVotes]
         switch self {
             case .feed:
-                return base + [.hideAds, .hideRedditPremiumBanner, .noHappeningNowBanners, .removePromotedPosts, .endlessScroll]
+                return base + [.autoExpandImages, .hideAds, .hideRedditPremiumBanner, .noHappeningNowBanners, .removePromotedPosts, .endlessScroll]
 
             case .post:
                 return base + [.collapseAutoModerator, .collapseChildComments, .liveCommentPreview]
 
             case .subreddit:
-                return base + [.endlessScroll]
+                return base + [.autoExpandImages, .endlessScroll]
 
             default:
                 return base

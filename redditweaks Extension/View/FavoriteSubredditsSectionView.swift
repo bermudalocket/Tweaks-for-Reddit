@@ -91,6 +91,7 @@ struct FavoriteSubredditsSectionView: View {
                             subVerifier.verify()
                         }
                     }
+                    .focusable(false)
                     .foregroundColor(subVerifier.isValid ? .black : .red)
                     .onReceive(subVerifier.$subreddit) { favoriteSubredditField = $0 }
                 }

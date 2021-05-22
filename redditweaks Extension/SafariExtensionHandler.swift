@@ -13,28 +13,10 @@ import SwiftUI
 
 final class SafariExtensionHandler: SFSafariExtensionHandler {
 
-    let persistence: PersistenceController
-
-    override init() {
-        self.persistence = PersistenceController.shared
-        super.init()
-    }
-
-    init(persistence: PersistenceController = .shared) {
-        self.persistence = persistence
-    }
-
     override func popoverViewController() -> SFSafariExtensionViewController {
         PopoverViewWrapper()
     }
 
-    /**
-     Receives a wrapped message from the extension.
-
-     - Parameter message: The type of message being received.
-     - Parameter page: The page from which the message was sent.
-     - Parameter userInfo: An optional dictionary containing extra information relevant to the message.
-     */
     final func messageReceived(message: Message, from page: SFSafariPage, userInfo: [String: Any]? = nil) {
         switch message {
             case .begin:
@@ -45,7 +27,7 @@ final class SafariExtensionHandler: SFSafariExtensionHandler {
                 else {
                     return
                 }
-                if IAPHelper.shared.purchasedLiveCommentPreviews {
+                if IAPHelper.shared.didPurchaseLiveCommentPreviews {
                     NoCommit.inject(into: page) // premium/paid features
                 }
                 pageType.features
@@ -61,13 +43,10 @@ final class SafariExtensionHandler: SFSafariExtensionHandler {
     final func buildJavascriptFunction(for feature: Feature) -> String {
         switch feature {
             case .customSubredditBar:
-                guard let subs = self.persistence
-                        .getFavoriteSubreddits()?
+                let subs = PersistenceController.shared
+                        .favoriteSubreddits
                         .compactMap({ "'\($0)'" })
                         .joined(separator: ",")
-                else {
-                    return ""
-                }
                 return "customSubredditBar([\(subs)])"
 
             default:

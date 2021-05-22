@@ -16,10 +16,7 @@ struct PopoverView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @EnvironmentObject private var iapHelper: IAPHelper
-
     @EnvironmentObject private var appState: AppState
-
-    @State private var isCheckingInAppPurchase = false
 
     private var binding: Binding<Bool> {
         appState.bindingForFeature(.liveCommentPreview)
@@ -36,27 +33,15 @@ struct PopoverView: View {
 
             if iapHelper.canMakePayments {
                 GroupBox(label: Text("In-App Purchases")) {
-                    if isCheckingInAppPurchase {
-                        ProgressView()
-                            .scaleEffect(0.5)
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-
-                    } else {
-                        Toggle("Live preview comments in markdown", isOn: binding)
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                            .padding(10)
-                            .onChange(of: appState.bindingForFeature(.liveCommentPreview).wrappedValue) { value in
-                                isCheckingInAppPurchase = true
-                                DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(1))) {
-                                    if value && !PersistenceController.shared.iapState.livecommentpreviews {
-                                        NSWorkspace.shared.open(URL(string: "rdtwks://iap")!)
-                                        binding.wrappedValue = false
-                                    }
-                                    isCheckingInAppPurchase = false
-                                }
+                    Toggle("Live preview comments in markdown", isOn: binding)
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .padding(10)
+                        .onChange(of: binding.wrappedValue) { value in
+                            if value && !iapHelper.didPurchaseLiveCommentPreviews {
+                                NSWorkspace.shared.open(URL(string: "rdtwks://iap")!)
+                                binding.wrappedValue = false
                             }
-                    }
+                        }
                 }
 
             }
@@ -67,12 +52,8 @@ struct PopoverView: View {
         .padding(10)
         .frame(width: 325, alignment: .top)
         .onDisappear {
-            do {
-                if viewContext.hasChanges {
-                    try viewContext.save()
-                }
-            } catch {
-                print("- Error saving to CoreData store: \(error)")
+            if viewContext.hasChanges {
+                try? viewContext.save()
             }
         }
     }

@@ -33,8 +33,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "895233BE24A6AC0300B72CE8"
-               BuildableName = "redditweaksTests.xctest"
-               BlueprintName = "redditweaksTests"
+               BuildableName = "Tweaks for Reddit Tests.xctest"
+               BlueprintName = "Tweaks for Reddit Tests"
                ReferencedContainer = "container:redditweaks.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -52,7 +52,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "891CE4792612B65400268E76"
+               BlueprintIdentifier = "895233BE24A6AC0300B72CE8"
                BuildableName = "Tweaks for Reddit Tests.xctest"
                BlueprintName = "Tweaks for Reddit Tests"
                ReferencedContainer = "container:redditweaks.xcodeproj">
@@ -80,6 +80,24 @@
             ReferencedContainer = "container:redditweaks.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.MigrationDebug 0"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.ConcurrencyDebug 0"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.Logging.stderr 0 "
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.SQLDebug 0"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

@@ -21,8 +21,10 @@ class PopoverViewWrapper: SFSafariExtensionViewController {
 
         let view = PopoverView()
             .environmentObject(AppState())
-            .environmentObject(IAPHelper())
+            .environmentObject(IAPHelper.shared)
             .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+            .defaultAppStorage(Redditweaks.defaults)
+            .accentColor(.redditOrange)
 
         self.view = NSHostingView(rootView: view)
     }

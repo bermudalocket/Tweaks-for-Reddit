@@ -8,15 +8,20 @@
 
 import SwiftUI
 
-extension Color {
-    public static let redditOrange = Color(red: 1, green: 86.0/255.0, blue: 0.0)
-}
-
 struct RedditweaksButtonStyle: ButtonStyle {
 
-    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.isEnabled) private var isEnabled
 
     @State private var isHovering = false
+
+    private func calculateScale(with configuration: Configuration) -> CGFloat {
+        var scale: CGFloat = 1.0
+        if isEnabled {
+            if configuration.isPressed { scale -= 0.4 }
+            if isHovering { scale -= 0.05 }
+        }
+        return scale
+    }
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -28,7 +33,7 @@ struct RedditweaksButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(.accentColor)
             )
-            .scaleEffect(configuration.isPressed || isHovering ? 0.9 : 1.0)
+            .scaleEffect(calculateScale(with: configuration))
             .animation(.linear)
             .contentShape(Rectangle())
             .onHover { self.isHovering = $0 }

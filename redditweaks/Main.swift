@@ -15,7 +15,9 @@ struct RedditweaksApp: App {
     // periphery:ignore
     @NSApplicationDelegateAdaptor private var appDelegate: RedditweaksAppDelegate
 
-    @StateObject private var appState = AppState()
+    @Environment(\.scenePhase) private var scenePhase
+
+    @StateObject private var appState = MainAppState()
 
     var body: some Scene {
         WindowGroup {
@@ -28,6 +30,17 @@ struct RedditweaksApp: App {
                     appState.selectedTab = .liveCommentPreview
                 }
                 .accentColor(.redditOrange)
+                .onChange(of: scenePhase) { phase in
+                    switch phase {
+                        case .active:
+                            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(1))) {
+                                NSApp!.mainWindow!.isMovableByWindowBackground = true
+                            }
+
+                        default:
+                            return
+                    }
+                }
         }
         .defaultAppStorage(Redditweaks.defaults)
         .windowStyle(HiddenTitleBarWindowStyle())
@@ -38,11 +51,11 @@ struct RedditweaksApp: App {
 class RedditweaksAppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        SKPaymentQueue.default().add(IAPHelper.shared)
+        SKPaymentQueue.default().add(IAPHelper.shared.transactionPublisher)
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        SKPaymentQueue.default().remove(IAPHelper.shared)
+        SKPaymentQueue.default().remove(IAPHelper.shared.transactionPublisher)
     }
 
 }

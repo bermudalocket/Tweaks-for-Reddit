@@ -7,15 +7,11 @@
 
 import CoreData
 
-class PersistenceControllerState: ObservableObject {
-    @Published var isReady = false
-}
-
 struct PersistenceController {
 
-    let container: NSPersistentCloudKitContainer
+    static let shared = PersistenceController()
 
-    let state = PersistenceControllerState()
+    let container: NSPersistentCloudKitContainer
 
     init(inMemory: Bool = false) {
         container = NSPersistentCloudKitContainer(name: "Tweaks for Reddit")
@@ -30,19 +26,15 @@ struct PersistenceController {
                 fatalError("- Unresolved error loading persistent store: \(error), \(error.userInfo)")
             }
             container.viewContext.automaticallyMergesChangesFromParent = true
-            try? container.initializeCloudKitSchema(options: .printSchema)
-            DispatchQueue.main.async {
-                self.state.isReady = true
-            }
         }
     }
 
-    func getFavoriteSubreddits() -> [String]? {
+    var favoriteSubreddits: [String] {
         let request = NSFetchRequest<FavoriteSubreddit>(entityName: "FavoriteSubreddit")
-        return try? container.viewContext
+        return (try? container.viewContext
             .fetch(request)
             .compactMap(\.name)
-            .sorted()
+            .sorted()) ?? []
     }
 
     var iapState: IAPState {
@@ -59,29 +51,5 @@ struct PersistenceController {
         }
         return result
     }
-
-}
-
-extension PersistenceController {
-
-    static let shared = PersistenceController()
-
-    static var preview: PersistenceController = {
-        let result = PersistenceController(inMemory: true)
-        let viewContext = result.container.viewContext
-
-        let favoriteSub = FavoriteSubreddit(context: viewContext)
-        favoriteSub.name = "macOS"
-
-        do {
-            try viewContext.save()
-        } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
-        return result
-    }()
 
 }

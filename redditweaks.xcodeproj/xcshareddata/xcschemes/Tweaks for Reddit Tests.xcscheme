@@ -14,8 +14,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "895233BE24A6AC0300B72CE8"
-               BuildableName = "redditweaksTests.xctest"
-               BlueprintName = "redditweaksTests"
+               BuildableName = "Tweaks for Reddit Tests.xctest"
+               BlueprintName = "Tweaks for Reddit Tests"
                ReferencedContainer = "container:redditweaks.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,8 +32,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "895233BE24A6AC0300B72CE8"
-               BuildableName = "redditweaksTests.xctest"
-               BlueprintName = "redditweaksTests"
+               BuildableName = "Tweaks for Reddit Tests.xctest"
+               BlueprintName = "Tweaks for Reddit Tests"
                ReferencedContainer = "container:redditweaks.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -60,8 +60,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "895233BE24A6AC0300B72CE8"
-            BuildableName = "redditweaksTests.xctest"
-            BlueprintName = "redditweaksTests"
+            BuildableName = "Tweaks for Reddit Tests.xctest"
+            BlueprintName = "Tweaks for Reddit Tests"
             ReferencedContainer = "container:redditweaks.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

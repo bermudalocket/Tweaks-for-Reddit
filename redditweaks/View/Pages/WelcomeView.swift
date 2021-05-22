@@ -10,8 +10,6 @@ import SwiftUI
 
 struct WelcomeView: View {
 
-    @EnvironmentObject private var appState: AppState
-
     var body: some View {
         VStack {
             Spacer()
@@ -27,6 +25,5 @@ struct WelcomeView: View {
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView()
-            .environmentObject(AppState())
     }
 }

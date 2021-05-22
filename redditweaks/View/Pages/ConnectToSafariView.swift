@@ -11,8 +11,7 @@ import SafariServices.SFSafariApplication
 
 struct ConnectToSafariView: View {
 
-    @EnvironmentObject private var appState: AppState
-    @EnvironmentObject private var onboardingEnvironment: OnboardingEnvironment
+    @State private var isSafariExtensionEnabled = false
 
     var body: some View {
         VStack {
@@ -31,15 +30,25 @@ struct ConnectToSafariView: View {
                 Text("All you have to do is click a checkbox in Safari's preferences.\nClick the button below to have Safari open to the right spot.")
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
-                Button("Open in Safari") {
-                    SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") {
-                        if let error = $0 {
-                            NSLog("Error opening Safari: \(error).")
+                if isSafariExtensionEnabled {
+                    Text("The extension is enabled!")
+                        .font(.title2)
+                        .bold()
+                } else {
+                    Button("Open in Safari") {
+                        SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") {
+                            if let error = $0 {
+                                NSLog("Error opening Safari: \(error).")
+                            }
                         }
                     }
+                    .buttonStyle(RedditweaksButtonStyle())
                 }
-                .disabled(onboardingEnvironment.isSafariExtensionEnabled)
-                .buttonStyle(RedditweaksButtonStyle())
+            }
+        }
+        .onAppear {
+            SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") { state, error in
+                self.isSafariExtensionEnabled = state?.isEnabled ?? false
             }
         }
     }
@@ -50,7 +59,7 @@ struct ConnectToSafariView_Previews: PreviewProvider {
     static var previews: some View {
         ConnectToSafariView()
             .environmentObject(OnboardingEnvironment())
-            .environmentObject(AppState())
+            .environmentObject(MainAppState())
             .frame(width: 510)
     }
 }
