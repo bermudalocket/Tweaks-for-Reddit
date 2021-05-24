@@ -54,7 +54,7 @@ extension Feature {
         .collapseAutoModerator,
         .hideNewRedditButton,
         .hideRedditPremiumBanner,
-        .noHappeningNowBanners,
+        .hideHappeningNowBanners,
         .oldRedditRedirect,
     ]
 
@@ -82,7 +82,7 @@ extension Feature {
     static let oldRedditRedirect = Feature(key: "oldReddit", description: "Always use old.reddit.com",
                                            help: "Tweaks for Reddit will attempt to bring you to the Old Reddit version of a page if it detects New Reddit")
 
-    static let noHappeningNowBanners = Feature(key: "noHappeningNowBanners",
+    static let hideHappeningNowBanners = Feature(key: "hideHappeningNowBanners",
                                                description: "Remove Happening Now banners")
 
     static let noChat = Feature(key: "noChat", description: "Remove chat")
