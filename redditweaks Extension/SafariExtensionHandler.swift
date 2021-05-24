@@ -18,10 +18,12 @@ final class SafariExtensionHandler: SFSafariExtensionHandler {
     }
 
     final func messageReceived(message: Message, from page: SFSafariPage, userInfo: [String: Any]? = nil) {
+        guard let userInfo = userInfo else {
+            return
+        }
         switch message {
             case .begin:
-                guard let userInfo = userInfo,
-                      let urlStr = userInfo["url"] as? String,
+                guard let urlStr = userInfo["url"] as? String,
                       let url = URL(string: urlStr),
                       let pageType = RedditPageType.forURL(url)
                 else {
@@ -32,7 +34,7 @@ final class SafariExtensionHandler: SFSafariExtensionHandler {
                 }
                 pageType.features
                     .filter(\.isEnabled)
-                    .map(buildJavascriptFunction(for:))
+                    .map { buildJavascriptFunction(for: $0, on: pageType) }
                     .forEach(page.executeJavascript(_:))
 
             default:
@@ -40,8 +42,17 @@ final class SafariExtensionHandler: SFSafariExtensionHandler {
         }
     }
 
-    final func buildJavascriptFunction(for feature: Feature) -> String {
+    final func buildJavascriptFunction(for feature: Feature, on pageType: RedditPageType) -> String {
         switch feature {
+            case .showNewComments:
+                switch pageType {
+                    case .feed, .subreddit, .user:
+                        return "showNewComments('parseAndLoad')"
+
+                    case .post:
+                        return "showNewComments('parseAndSave')"
+                }
+
             case .customSubredditBar:
                 let subs = PersistenceController.shared
                         .favoriteSubreddits

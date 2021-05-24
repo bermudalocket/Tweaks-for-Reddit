@@ -13,10 +13,10 @@ enum RedditPageType: CaseIterable {
     case feed, subreddit, post, user
 
     var features: [Feature] {
-        let base: [Feature] = [.customSubredditBar, .hideNewRedditButton, .hideUsername, .noChat, .oldRedditRedirect, .showKarma, .showNewComments, .rememberUserVotes]
+        let base: [Feature] = [.customSubredditBar, .hideNewRedditButton, .hideRedditPremiumBanner, .hideUsername, .noChat, .oldRedditRedirect, .showKarma, .showNewComments, .rememberUserVotes]
         switch self {
             case .feed:
-                return base + [.autoExpandImages, .hideAds, .hideRedditPremiumBanner, .noHappeningNowBanners, .removePromotedPosts, .endlessScroll]
+                return base + [.autoExpandImages, .hideAds, .hideHappeningNowBanners, .removePromotedPosts, .endlessScroll]
 
             case .post:
                 return base + [.collapseAutoModerator, .collapseChildComments, .liveCommentPreview]

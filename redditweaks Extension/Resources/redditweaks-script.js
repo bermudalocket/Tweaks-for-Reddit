@@ -132,10 +132,6 @@ let collapseChildComments = () => document.querySelectorAll(".comment .noncollap
     }
 })
 
-let persistComments = () => {
-    let comments = $("a.bylink.comments").html().match(commentsMatcher).groups.numComments
-    persistThreadComments(getThreadId(), comments)
-}
 let nsfwFilter = () => removeAll(".over18")
 
 let rememberUserVotes = () => {
@@ -178,17 +174,19 @@ let rememberUserVotes = () => {
     })
 }
 
-let showNewComments = () => {
-    if (getPageType() == RedditPageType.THREAD) {
+let showNewComments = (context) => {
+    if (context === "parseAndSave") {
         let thisThread = getThreadId()
-        let comments = $("a.bylink.comments").html().match(commentsMatcher).groups.numComments
-        persistThreadComments(thisThread, comments)
-    } else {
+        let comments = document.querySelector("a.bylink.comments").textContent.split(" ")[0]
+        var map = getThreadCommentStorage()
+        map.set(thisThread, comments)
+        localStorage.threadCommentStorage = JSON.stringify(Array.from(map.entries()))
+    } else if (context === "parseAndLoad") {
         $("a.bylink.comments").each(function() {
             let threadId = String($(this).attr("href")).match(/\/comments\/(?<threadId>[a-zA-Z0-9]+)\//).groups.threadId
             let precomments = String($(this).html()).match(commentsMatcher)
             let comments = (precomments == null) ? 0 : precomments.groups.numComments
-            let saved = getThreadComments(threadId)
+            let saved = getThreadCommentStorage().get(threadId)
             if (saved != null) {
                 $(this).parent().parent().parent().parent().parent().css("opacity", 0.5) // TODO
                 if (saved <= comments) {
@@ -197,29 +195,6 @@ let showNewComments = () => {
                 }
             }
         })
-    }
-}
-
-// -----------------------------------
-
-let subredditMatcher = /https:\/\/www\.reddit\.com\/r\/(?<subreddit>.*)\//
-let commentsMatcher = /^(?<numComments>[0-9]+) comment[s]?$/
-
-var RedditPageType = {
-    THREAD: 1,
-    NOT_THREAD: 2,
-    properties: {
-        1: { "regex": /reddit.com\/r\/.*\/comments/ },
-        2: { }
-    }
-};
-
-let getPageType = () => {
-    let match = String(window.location).match(RedditPageType.properties[RedditPageType.THREAD].regex)
-    if (match == null) {
-        return RedditPageType.NOT_THREAD
-    } else {
-        return RedditPageType.THREAD
     }
 }
 
@@ -239,16 +214,6 @@ function getThreadCommentStorage() {
     } else {
         return new Map()
     }
-}
-
-function persistThreadComments(thread, comments) {
-    var map = getThreadCommentStorage()
-    map.set(thread, comments)
-    localStorage.threadCommentStorage = JSON.stringify(Array.from(map.entries()))
-}
-
-function getThreadComments(thread) {
-    return getThreadCommentStorage().get(thread)
 }
 
 //
