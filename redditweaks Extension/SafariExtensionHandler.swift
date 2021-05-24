@@ -1,9 +1,9 @@
 //
 //  SafariExtensionHandler.swift
-//  redditweaks Extension
+//  Tweaks for Reddit Extension
 //
 //  Created by Michael Rippe on 5/2/20.
-//  Copyright © 2020 bermudalocket. All rights reserved.
+//  Copyright © 2020 Michael Rippe. All rights reserved.
 //
 
 import CoreData
