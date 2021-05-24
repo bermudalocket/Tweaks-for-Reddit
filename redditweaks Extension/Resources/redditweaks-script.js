@@ -1,4 +1,9 @@
-$(document).ready(function() {
+const ready = (callback) => {
+    if (document.readyState != "loading") callback();
+    else document.addEventListener("DOMContentLoaded", callback);
+}
+
+ready(() => {
     if (window.top === window) {
         safari.self.addEventListener("message", event => {
             if (event.name === "script") {
@@ -13,6 +18,15 @@ $(document).ready(function() {
 })
 
 // ============================================================
+
+const removeAll = (selector) => document.querySelectorAll(selector).forEach(e => e.remove())
+
+let hideAds = () => removeAll('.ad-container, .ad-container, #ad_1')
+let hidePromotedPosts = () => removeAll(".promoted")
+let hideUsername = () => removeAll("#header-bottom-right .user a")
+let hideRedditPremiumBanner = () => removeAll(".premium-banner-outer")
+let hideNewRedditButton = () => removeAll(".redesign-beta-optin")
+let hideHappeningNowBanners = () => removeAll('.happening-now-wrap')
 
 let autoExpandImages = () => {
     const expandableDomains = [ "i.redd.it", "reddit.com", "i.imgur.com" ]
@@ -50,17 +64,18 @@ let oldReddit = () => {
     }
 }
 
-let noHappeningNowBanners = () => {
-    $('.happening-now-wrap').remove();
-}
-
 let noChat = () => {
-    watchForChildren(document.body, "script", e => {
-        if ((/^\/_chat/).test(new URL(e.src, location.origin).pathname)) {
-            e.remove();
-        }
-    });
-    watchForChildren(document.body, "#chat-app", e => e.remove());
+    let chat = document.querySelector("a#chat")
+    if (chat) {
+        chat.nextSibling.remove()
+        chat.remove();
+        document.querySelector("#chat-app").remove()
+        document.querySelectorAll("script").forEach(e => {
+            if ((/^\/_chat/).test(new URL(e.src, location.origin).pathname)) {
+                e.remove()
+            }
+        })
+    }
 }
 
 let showKarma = () => {
@@ -100,38 +115,28 @@ let customSubredditBar = (subs) => {
     })
 }
 
-let hideAds = () => $('.ad-container, .ad-container, #ad_1').each(() => $(this).remove());
-
-let hidePromotedPosts = () => $(".promoted").each(() => $(this).remove());
-
-let hideUsername = () => $("#header-bottom-right .user a").first().remove();
-
 let collapseAutoModerator = () => {
-    $('div[data-author=AutoModerator]').each(function() {
-        $(this).removeClass('noncollapsed');
-        $(this).addClass('collapsed');
-        $(this).find('.expand').html('[+]');
-    });
+    document.querySelectorAll('div[data-author=AutoModerator]').forEach(e => {
+        e.classList.remove('noncollapsed')
+        e.classList.add('collapsed')
+        e.querySelectorAll('.expand').textContent = "[+]"
+    })
 }
 
-let collapseChildComments = () => {
-    $('.comment .noncollapsed').each(function() {
-        $(this).removeClass('noncollapsed');
-        $(this).addClass('collapsed');
-        $(this).find('.expand').html('[+]');
-    });
-}
-
-let hideRedditPremiumBanner = () => $(".premium-banner-outer").remove();
-
-let hideNewRedditButton = () => $(".redesign-beta-optin").remove();
-
-let nsfwFilter = () => $(".over18").each(() => $(this).remove());
+let collapseChildComments = () => document.querySelectorAll(".comment .noncollapsed").forEach(e => {
+    e.classList.remove('noncollapsed')
+    e.classList.add('collapsed')
+    let child = e.querySelector(".expand")
+    if (child) {
+        child.textContent = "[+]"
+    }
+})
 
 let persistComments = () => {
     let comments = $("a.bylink.comments").html().match(commentsMatcher).groups.numComments
     persistThreadComments(getThreadId(), comments)
 }
+let nsfwFilter = () => removeAll(".over18")
 
 let rememberUserVotes = () => {
     $(".comment").each((i, e) => {
@@ -193,30 +198,6 @@ let showNewComments = () => {
             }
         })
     }
-}
-
-// ==================================================
-// UTILITIES
-// ==================================================
-
-// https://github.com/honestbleeps/Reddit-Enhancement-Suite/blob/6faae61fb5193ae49d3ba91f4c0f04d4aa974534/lib/utils/dom.js#L40
-function watchForChildren(ele, selector, callback) {
-    for (const child of Array.from(ele.children).filter(child => child.matches(selector))) {
-        callback(child);
-    }
-}
-
-// https://github.com/honestbleeps/Reddit-Enhancement-Suite/blob/6faae61fb5193ae49d3ba91f4c0f04d4aa974534/lib/utils/dom.js#L48
-function watchForFutureChildren(ele, selector, callback) {
-    new MutationObserver(mutations => {
-        for (const mutation of mutations) {
-            for (const node of mutation.addedNodes) {
-                if (node.nodeType === Node.ELEMENT_NODE && node.matches(selector)) {
-                    callback(node);
-                }
-            }
-        }
-    }).observe(ele, { childList: true });
 }
 
 // -----------------------------------
