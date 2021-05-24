@@ -1,9 +1,9 @@
 //
 //  AppState.swift
-//  redditweaks
+//  Tweaks for Reddit
 //
 //  Created by Michael Rippe on 2/25/21.
-//  Copyright © 2021 bermudalocket. All rights reserved.
+//  Copyright © 2021 Michael Rippe. All rights reserved.
 //
 
 import SwiftUI

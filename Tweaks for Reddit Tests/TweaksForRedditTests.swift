@@ -1,11 +1,11 @@
 //
-//  redditweaksTests.swift
-//  redditweaksTests
+//  Tweaks for RedditTests.swift
+//  Tweaks for RedditTests
 //  5.0
 //  10.16
 //
-//  Created by bermudalocket on 6/26/20.
-//  Copyright © 2020 bermudalocket. All rights reserved.
+//  Created by Michael Rippe on 6/26/20.
+//  Copyright © 2020 Michael Rippe. All rights reserved.
 //
 
 import XCTest

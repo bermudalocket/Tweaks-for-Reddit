@@ -1,6 +1,6 @@
 //
-// Created by bermudalocket on 1/25/20.
-// Copyright (c) 2020 bermudalocket. All rights reserved.
+// Created by Michael Rippe on 1/25/20.
+// Copyright (c) 2020 Michael Rippe. All rights reserved.
 //
 
 import Foundation

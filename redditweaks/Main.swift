@@ -1,9 +1,9 @@
 //
-//  ViewController.swift
-//  redditweaks2
+//  Main.swift
+//  Tweaks for Reddit
 //
-//  Created by bermudalocket on 10/21/19.
-//  Copyright © 2019 bermudalocket. All rights reserved.
+//  Created by Michael Rippe on 10/21/19.
+//  Copyright © 2019 Michael Rippe. All rights reserved.
 //
 
 import SwiftUI

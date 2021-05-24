@@ -1,11 +1,11 @@
 //
 //  FavoriteSubredditsSectionView.swift
-//  redditweaks Extension
+//  Tweaks for Reddit Extension
 //  5.0
 //  10.16
 //
-//  Created by bermudalocket on 7/9/20.
-//  Copyright © 2020 bermudalocket. All rights reserved.
+//  Created by Michael Rippe on 7/9/20.
+//  Copyright © 2020 Michael Rippe. All rights reserved.
 //
 
 import Combine
