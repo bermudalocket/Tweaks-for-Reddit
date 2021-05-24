@@ -11,3 +11,27 @@
 .rdtwks-livepreview div {
     padding: 7.5px !important;
 }
+
+.rdtwks-downvotes {
+    font-size: large;
+    font-weight: bold;
+    color: tomato;
+    padding: 0px 0px 5px 5px !important;
+}
+
+.rdtwks-upvotes {
+    font-size: large;
+    font-weight: bold;
+    color: mediumseagreen;
+    padding: 5px 0px 0px 5px !important;
+}
+
+.rdtwks-negativeKarmaMemory {
+    font-weight: bold;
+    color: tomato;
+}
+
+.rdtwks-positiveKarmaMemory {
+    font-weight: bold;
+    color: mediumseagreen;
+}

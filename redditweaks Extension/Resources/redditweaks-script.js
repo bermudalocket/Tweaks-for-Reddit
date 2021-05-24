@@ -9,6 +9,19 @@ ready(() => {
             if (event.name === "script") {
                 let func = event.message["function"]
                 eval(func)
+            } else if (event.name === "userKarmaFetchRequestResponse") {
+                const user = event.message["user"]
+                const karma = event.message["karma"]
+                document.querySelectorAll(".comment").forEach(comment => {
+                    const author = comment.getAttribute("data-author")
+                    if (author === user) {
+                        let karmaDiv = document.createElement("span")
+                        karmaDiv.textContent = `[${karma}] `
+                        karmaDiv.classList.add(karma < 0 ? "rdtwks-negativeKarmaMemory" : "rdtwks-positiveKarmaMemory")
+                        const authorElement = comment.querySelector(".author")
+                        authorElement.parentNode.insertBefore(karmaDiv, authorElement.nextSibling)
+                    }
+                })
             }
         });
         safari.extension.dispatchMessage("begin", {
@@ -135,41 +148,22 @@ let collapseChildComments = () => document.querySelectorAll(".comment .noncollap
 let nsfwFilter = () => removeAll(".over18")
 
 let rememberUserVotes = () => {
-    $(".comment").each((i, e) => {
-        let author = $(e).data("author")
-        let count = votesForUser(author)
-
-        if (count) {
-            let authorLabel = $(e).find(".author").first()
-            if (count > 0) {
-                authorLabel.after(" | <font color=green>[+" + count + "]</font> ")
-            } else {
-                authorLabel.after(" | <font color=red>[-" + count + "]</font> ")
-            }
-        }
-
-        let upvote = $(e).find(".arrow.up").first()
-        upvote.click(() => {
-            let isAlreadyUpvoted = $(upvote).hasClass("upmod")
-            if (isAlreadyUpvoted) {
-                rememberVote(false, author)
-                safari.extension.dispatchMessage("removeupvote", { "user": author })
-            } else {
-                rememberVote(true, author)
-                safari.extension.dispatchMessage("rememberupvote", { "user": author })
-            }
+    document.querySelectorAll(".comment").forEach(comment => {
+        const author = comment.getAttribute("data-author")
+        safari.extension.dispatchMessage("userKarmaFetchRequest", {
+            "user": author
         })
-
-        let downvote = $(e).find(".arrow.down").first()
-        downvote.click(() => {
-            let isAlreadyDownvoted = $(downvote).hasClass("downmod")
-            if (isAlreadyDownvoted) {
-                rememberVote(true, author)
-                safari.extension.dispatchMessage("removedownvote", { "user": author })
-            } else {
-                rememberVote(false, author)
-                safari.extension.dispatchMessage("rememberdownvote", { "user": author })
-            }
+        comment.querySelector(".arrow.up").addEventListener("click", event => {
+            safari.extension.dispatchMessage("userKarmaSaveRequest", {
+                "user": author,
+                "karma": 1
+            })
+        })
+        comment.querySelector(".arrow.down").addEventListener("click", event => {
+            safari.extension.dispatchMessage("userKarmaSaveRequest", {
+                "user": author,
+                "karma": -1
+            })
         })
     })
 }

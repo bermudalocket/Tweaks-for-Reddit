@@ -37,6 +37,23 @@ struct PersistenceController {
             .sorted()) ?? []
     }
 
+    func userKarma(for user: String) -> Int? {
+        let request = NSFetchRequest<KarmaMemory>(entityName: "KarmaMemory")
+        request.predicate = NSPredicate(format: "user = %@", user)
+        return try? container.viewContext
+            .fetch(request)
+            .map(\.karma)
+            .compactMap { Int($0) }
+            .reduce(into: 0) { agg, next in agg += next }
+    }
+
+    func saveUserKarma(for user: String, karma: Int) {
+        let newKarma = KarmaMemory(context: container.viewContext)
+        newKarma.user = user
+        newKarma.karma = Int64(karma)
+        try? container.viewContext.save()
+    }
+
     var iapState: IAPState {
         let request = NSFetchRequest<IAPState>(entityName: "IAPState")
         request.sortDescriptors = [
