@@ -37,6 +37,24 @@ final class SafariExtensionHandler: SFSafariExtensionHandler {
                     .map { buildJavascriptFunction(for: $0, on: pageType) }
                     .forEach(page.executeJavascript(_:))
 
+            case .userKarmaFetchRequest:
+                guard let user = userInfo["user"] as? String,
+                      let karma = PersistenceController.shared.userKarma(for: user),
+                      karma != 0 else {
+                    return
+                }
+                page.dispatchMessageToScript(message: .userKarmaFetchRequestResponse, userInfo: [
+                    "user": user,
+                    "karma": karma
+                ])
+
+            case .userKarmaSaveRequest:
+                guard let user = userInfo["user"] as? String,
+                      let karma = userInfo["karma"] as? Int else {
+                    return
+                }
+                PersistenceController.shared.saveUserKarma(for: user, karma: karma)
+
             default:
                 print("Received a weird message: \(message)")
         }

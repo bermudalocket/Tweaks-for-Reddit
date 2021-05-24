@@ -11,6 +11,7 @@ import Foundation
 enum Message: CaseIterable {
     case begin
     case script
+    case userKarmaFetchRequest, userKarmaSaveRequest, userKarmaFetchRequestResponse
 
     var key: String {
         "\(self)"
