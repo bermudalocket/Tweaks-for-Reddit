@@ -45,7 +45,6 @@ struct MainView: View {
         }
         .navigationViewStyle(DoubleColumnNavigationViewStyle())
         .frame(width: 825, height: 450)
-        .transition(.slide.animation(.linear))
         .onAppear {
             self.selectedTab = state.selectedTab
         }
