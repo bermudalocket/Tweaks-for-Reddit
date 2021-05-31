@@ -89,7 +89,7 @@ struct InAppPurchasesView: View {
                     HStack {
                         if !iapHelper.didPurchaseLiveCommentPreviews && !isRestoring {
                             Button(action: iapHelper.purchaseLiveCommentPreviews) {
-								Text("Unlock now for \(IAPHelper.shared.products.first?.price ?? 0.99, formatter: priceFormatter)")
+								Text("Unlock now for \(IAPHelper.shared.products.first?.localizedPrice ?? "$0.99")")
                             }
                         }
                         Button("See a screenshot") {
@@ -162,4 +162,13 @@ struct InAppPurchases_Previews: PreviewProvider {
             .environment(\.colorScheme, .dark)
             .padding()
     }
+}
+
+extension SKProduct {
+	var localizedPrice: String {
+		let formatter = NumberFormatter()
+		formatter.numberStyle = .currency
+		formatter.locale = priceLocale
+		return formatter.string(from: price)!
+	}
 }
