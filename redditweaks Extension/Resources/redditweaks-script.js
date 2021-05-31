@@ -22,6 +22,9 @@ ready(() => {
                         authorElement.parentNode.insertBefore(karmaDiv, authorElement.nextSibling)
                     }
                 })
+            } else if (event.name == "threadCommentCountFetchRequestResponse") {
+                debug("threadCommentCountFetchRequestResponse in: " + event.message["thread"] + " -> " + event.message["count"])
+                showNewComments("fulfillRequest", event.message)
             }
         });
         safari.extension.dispatchMessage("begin", {
@@ -194,48 +197,41 @@ let rememberUserVotes = () => {
     })
 }
 
-let showNewComments = (context) => {
+// MARK: showNewComments
+let showNewComments = (context, userInfo) => {
     if (context === "parseAndSave") {
-        let thisThread = getThreadId()
+        const id = String(window.location).match(/\/comments\/([a-zA-Z0-9]+)\//)[1]
         let comments = document.querySelector("a.bylink.comments").textContent.split(" ")[0]
-        var map = getThreadCommentStorage()
-        map.set(thisThread, comments)
-        localStorage.threadCommentStorage = JSON.stringify(Array.from(map.entries()))
+        safari.extension.dispatchMessage("threadCommentCountSaveRequest", {
+            "thread": id,
+            "count": comments
+        })
     } else if (context === "parseAndLoad") {
-        $("a.bylink.comments").each(function() {
-            let threadId = String($(this).attr("href")).match(/\/comments\/(?<threadId>[a-zA-Z0-9]+)\//).groups.threadId
-            let precomments = String($(this).html()).match(commentsMatcher)
-            let comments = (precomments == null) ? 0 : precomments.groups.numComments
-            let saved = getThreadCommentStorage().get(threadId)
-            if (saved != null) {
-                $(this).parent().parent().parent().parent().parent().css("opacity", 0.5) // TODO
-                if (saved <= comments) {
-                    let diff = comments - saved
-                    $(this).after(` <b>[${diff} NEW]</b>`)
+        document.querySelectorAll("a.bylink.comments").forEach(node => {
+            let id = node.getAttribute("href").match(/\/comments\/([a-zA-Z0-9]+)\//)[1]
+            safari.extension.dispatchMessage("threadCommentCountFetchRequest", {
+                "thread": id
+            })
+        })
+    } else if (context === "fulfillRequest") {
+        debug("showNewComments('fulfillRequest')")
+        document.querySelectorAll("a.bylink.comments[href*='" + userInfo["thread"] + "']").forEach(node => {
+            const currentCount = node.textContent.replace(" comments", "").replace(" comment", "")
+            const saved = userInfo["count"]
+            console.log("saved = " + saved)
+            if (saved && saved > 0) {
+                console.log("saved > 0")
+                node.closest(".thing").style.opacity = 0.55
+                if (saved <= currentCount) {
+                    const diff = currentCount - saved
+                    if (!isNaN(diff)) {
+                        node.append(` [${diff} NEW]`)
+                    }
                 }
             }
         })
     }
 }
-
-function getThreadId() {
-    let thisThread = String(window.location).match(/\/comments\/(?<threadId>[a-zA-Z0-9]+)\//)
-    if (thisThread == null) {
-        return null
-    } else {
-        return thisThread.groups.threadId
-    }
-}
-
-function getThreadCommentStorage() {
-    let map = localStorage.threadCommentStorage
-    if (map != null) {
-        return new Map(JSON.parse(map))
-    } else {
-        return new Map()
-    }
-}
-
 //
 
 let voteMemory = () => {

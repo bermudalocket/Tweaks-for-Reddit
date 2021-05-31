@@ -54,6 +54,28 @@ struct PersistenceController {
         try? container.viewContext.save()
     }
 
+    func commentCount(for thread: String) -> Int? {
+        let request = NSFetchRequest<ThreadCommentCount>(entityName: "ThreadCommentCount")
+        request.predicate = NSPredicate(format: "thread = %@", thread)
+        request.sortDescriptors = [
+            .init(keyPath: \ThreadCommentCount.timestamp, ascending: false)
+        ]
+        request.fetchLimit = 1
+        return try? container.viewContext.fetch(request).map(\.count).first
+    }
+
+    func saveCommentCount(for thread: String, count: Int) {
+        let threadCommentCount = ThreadCommentCount(context: container.viewContext)
+        threadCommentCount.thread = thread
+        threadCommentCount.count = count
+        threadCommentCount.timestamp = Date()
+        do {
+            try container.viewContext.save()
+        } catch {
+            print("Error: \(error)")
+        }
+    }
+
     var iapState: IAPState {
         let request = NSFetchRequest<IAPState>(entityName: "IAPState")
         request.sortDescriptors = [
