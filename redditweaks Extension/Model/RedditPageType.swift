@@ -19,7 +19,7 @@ enum RedditPageType: CaseIterable {
                 return base + [.autoExpandImages, .hideAds, .hideHappeningNowBanners, .removePromotedPosts, .endlessScroll]
 
             case .post:
-                return base + [.collapseAutoModerator, .collapseChildComments, .liveCommentPreview]
+                return base + [.collapseAutoModerator, .collapseChildComments, .liveCommentPreview, .showEstimatedDownvotes]
 
             case .subreddit:
                 return base + [.autoExpandImages, .endlessScroll]
