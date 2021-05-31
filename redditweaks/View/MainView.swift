@@ -8,39 +8,6 @@
 
 import SwiftUI
 
-struct DestinationView: View {
-
-    let tab: SelectedTab
-
-    var body: some View {
-        Group {
-            switch tab {
-                case .connectToSafari:
-                    ConnectToSafariView()
-                        .environmentObject(OnboardingEnvironment())
-
-                case .liveCommentPreview:
-                    InAppPurchasesView()
-                        .environmentObject(IAPHelper.shared)
-
-                case .welcome:
-                    WelcomeView()
-
-                case .iCloud:
-                    iCloudView()
-
-                case .toolbar:
-                    SafariPopoverView()
-
-                case .debug:
-                    DebugView()
-                        .environmentObject(IAPHelper.shared)
-            }
-        }
-        .transition(.slide.animation(.linear))
-    }
-}
-
 struct MainView: View {
 
     @EnvironmentObject private var state: MainAppState
@@ -56,7 +23,7 @@ struct MainView: View {
                     ForEach(SelectedTab.allCases.indices, id: \.self) { i in
                         let tab = SelectedTab.allCases[i]
                         NavigationLink(
-                            destination: DestinationView(tab: tab),
+                            destination: RoutingView(tab: tab),
                             tag: tab,
                             selection: $selectedTab,
                             label: {
