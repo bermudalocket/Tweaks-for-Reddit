@@ -12,9 +12,22 @@ import SafariServices
 import SwiftUI
 
 final class SafariExtensionHandler: SFSafariExtensionHandler {
+class SafariExtensionHandler: SFSafariExtensionHandler {
+
+    private let injectedPersistenceController: PersistenceController
 
     override func popoverViewController() -> SFSafariExtensionViewController {
         PopoverViewWrapper()
+    }
+
+    override init() {
+        self.injectedPersistenceController = .shared
+        super.init()
+    }
+
+    init(persistenceController: PersistenceController = .shared) {
+        self.injectedPersistenceController = persistenceController
+        super.init()
     }
 
     final func messageReceived(message: Message, from page: SFSafariPage, userInfo: [String: Any]? = nil) {
@@ -37,9 +50,27 @@ final class SafariExtensionHandler: SFSafariExtensionHandler {
                     .map { buildJavascriptFunction(for: $0, on: pageType) }
                     .forEach(page.executeJavascript(_:))
 
+            case .threadCommentCountSaveRequest:
+                guard let thread = userInfo["thread"] as? String,
+                      let countStr = userInfo["count"] as? String,
+                      let count = Int(countStr) else {
+                    return
+                }
+                injectedPersistenceController.saveCommentCount(for: thread, count: count)
+
+            case .threadCommentCountFetchRequest:
+                guard let thread = userInfo["thread"] as? String else {
+                    return
+                }
+                let count = injectedPersistenceController.commentCount(for: thread) ?? -1
+                page.dispatchMessageToScript(message: .threadCommentCountFetchRequestResponse, userInfo: [
+                    "thread": thread,
+                    "count": count
+                ])
+
             case .userKarmaFetchRequest:
                 guard let user = userInfo["user"] as? String,
-                      let karma = PersistenceController.shared.userKarma(for: user),
+                      let karma = injectedPersistenceController.userKarma(for: user),
                       karma != 0 else {
                     return
                 }
@@ -53,10 +84,10 @@ final class SafariExtensionHandler: SFSafariExtensionHandler {
                       let karma = userInfo["karma"] as? Int else {
                     return
                 }
-                PersistenceController.shared.saveUserKarma(for: user, karma: karma)
+                injectedPersistenceController.saveUserKarma(for: user, karma: karma)
 
             default:
-                print("Received a weird message: \(message)")
+                print("Received message not meant for this handler: \(message) \(userInfo)")
         }
     }
 

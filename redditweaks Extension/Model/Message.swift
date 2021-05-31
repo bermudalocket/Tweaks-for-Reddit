@@ -12,6 +12,7 @@ enum Message: CaseIterable {
     case begin
     case script
     case userKarmaFetchRequest, userKarmaSaveRequest, userKarmaFetchRequestResponse
+    case threadCommentCountFetchRequest, threadCommentCountSaveRequest, threadCommentCountFetchRequestResponse
 
     var key: String {
         "\(self)"
