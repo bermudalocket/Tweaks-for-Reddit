@@ -34,7 +34,7 @@ struct RedditweaksApp: App {
                     switch phase {
                         case .active:
                             DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(1))) {
-                                NSApp!.mainWindow!.isMovableByWindowBackground = true
+                                NSApp.mainWindow?.isMovableByWindowBackground = true
                             }
 
                         default:
