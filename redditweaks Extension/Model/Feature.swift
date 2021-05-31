@@ -40,6 +40,7 @@ struct Feature: Hashable, Comparable {
 extension Feature {
 
     static let features: [Feature] = [
+        .showEstimatedDownvotes,
         .autoExpandImages,
         .endlessScroll,
         .showNewComments,
@@ -62,6 +63,10 @@ extension Feature {
     static let liveCommentPreview = Feature(key: "liveCommentPreview",
                                             description: "Preview reply in markdown",
                                             premium: true)
+
+    static let showEstimatedDownvotes = Feature(key: "showEstimatedDownvotes",
+                                                description: "Show estimated downvotes",
+                                                help: "When viewing a post, Tweaks for Reddit will estimate and display the number of downvotes")
 
     static let autoExpandImages = Feature(key: "autoExpandImages",
                                           description: "Automatically expand images",

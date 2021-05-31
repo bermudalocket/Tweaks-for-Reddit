@@ -71,6 +71,32 @@ let endlessScroll = () => {
     }
 }
 
+
+// MARK: showEstimatedDownvotes
+const showEstimatedDownvotes = () => {
+    const scoreDiv = document.querySelector("div.score")
+    const scoreInfo = scoreDiv.textContent.split(" ")
+    if (scoreInfo.length >= 3) {
+        // 0 -> points, 1 -> "points", 2 -> percent
+        const points = scoreInfo[0].replace(",", "")
+        const percent = scoreInfo[2].replace("(", "").replace("%","")
+        const downvotes = Math.round((points*100)/percent) - points
+
+        let upvoteDiv = document.createElement("div")
+        upvoteDiv.classList.add("rdtwks-upvotes")
+        upvoteDiv.textContent = `▲ ${Number(points).toLocaleString()}`
+
+        let downvoteDiv = document.createElement("div")
+        downvoteDiv.classList.add("rdtwks-downvotes")
+        downvoteDiv.textContent = `▼ ${Number(downvotes).toLocaleString()}`
+
+        scoreDiv.childNodes.forEach(e => scoreDiv.removeChild(e))
+        scoreDiv.textContent = ""
+        scoreDiv.append(upvoteDiv)
+        scoreDiv.append(downvoteDiv)
+    }
+}
+
 let oldReddit = () => {
     if (window.location.href.startsWith("https://www.reddit")) {
         window.location = window.location.href.replace("www", "old");
