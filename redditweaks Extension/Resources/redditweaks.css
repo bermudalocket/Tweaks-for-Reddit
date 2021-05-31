@@ -1,15 +1,20 @@
 
-.rdtwks-livepreview {
+.tweaksForRedditLivePreviewContainer {
     background: rgba(0, 0, 0, 0.05);
     border-radius: 5px;
-    margin-bottom: -7.5px !important;
-    margin-left: 0px !important;
     position: relative;
-    width: 100%;
 }
 
-.rdtwks-livepreview div {
-    padding: 7.5px !important;
+.tweaksForRedditLivePreviewContainer div {
+    padding: 10px !important;
+}
+
+textarea {
+    padding: 10px;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #999;
 }
 
 .rdtwks-downvotes {

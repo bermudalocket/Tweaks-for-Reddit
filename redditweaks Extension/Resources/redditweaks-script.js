@@ -1,6 +1,16 @@
+const debug = (msg) => {
+    console.log(`[Tweaks for Reddit][DEBUG] ${msg}`)
+}
+
 const ready = (callback) => {
-    if (document.readyState != "loading") callback();
-    else document.addEventListener("DOMContentLoaded", callback);
+    if (document.readyState != "loading") callback()
+    else document.addEventListener("DOMContentLoaded", callback)
+}
+
+const uuidv4 = () => {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
 }
 
 ready(() => {
@@ -33,47 +43,119 @@ ready(() => {
     }
 })
 
-// ============================================================
+// MARK: - TFRFeature implementations
 
-const removeAll = (selector) => document.querySelectorAll(selector).forEach(e => e.remove())
+// MARK: liveCommentPreview
+// NoCommit.swift
 
-let hideAds = () => removeAll('.ad-container, .ad-container, #ad_1')
-let hidePromotedPosts = () => removeAll(".promoted")
-let hideUsername = () => removeAll("#header-bottom-right .user a")
-let hideRedditPremiumBanner = () => removeAll(".premium-banner-outer")
-let hideNewRedditButton = () => removeAll(".redesign-beta-optin")
-let hideHappeningNowBanners = () => removeAll('.happening-now-wrap')
-
-let autoExpandImages = () => {
-    const expandableDomains = [ "i.redd.it", "reddit.com", "i.imgur.com" ]
-    document.querySelectorAll(".thing").forEach(e => {
-        if (expandableDomains.includes(e.getAttribute("data-domain"))) {
-            e.querySelector(".expando-button").click()
-        }
-    })
-}
-
+// MARK: endlessScroll
 let endlessScroll = () => {
 
     var isLoading = false
 
-    const getNextPageURL = () => $(".next-button").children().first().attr("href")
+    const getNextPageURL = () => {
+        const nextButtons = document.querySelectorAll(".next-button > a")
+        if (nextButtons) {
+            const lastNextButton = nextButtons[nextButtons.length - 1]
+            return lastNextButton?.getAttribute("href")
+        }
+        return null
+    }
 
     let preloadedData
 
-    const preloadData = async () => $.get(getNextPageURL(), data => preloadedData = $(data).find('.sitetable'))
+    const preloadData = () => fetch(getNextPageURL())
+        .then(response => {
+            if (response.status === 200) {
+                return response.text()
+            } else {
+                debug("Endless scrolling: !!! bad response while preloading")
+            }
+        })
+        .then(text => {
+            debug("Endless scrolling: fetched preload data... parsing...")
+            const parser = new DOMParser()
+            const html = parser.parseFromString(text, "text/html")
+            preloadedData = html.documentElement.querySelector(".sitetable")
+            debug("Endless scrolling: preloading completed")
+        })
 
-    $(document).ready(preloadData)
+    ready(preloadData)
 
     window.onscroll = async () => {
         if (!isLoading && (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - (window.innerHeight/3)) {
-            $(".next-button").parent().remove()
-            $(preloadedData).children().each(function() { $('.sitetable').append($(this)) })
-            preloadData()
+            isLoading = true
+            debug("Endless scrolling: attempting to pull next page...")
+            const nextButton = document.querySelector(".next-button")
+            if (nextButton) {
+                debug("Endless scrolling: found .next-button")
+                const parentNode = nextButton.parentNode
+                if (parentNode) {
+                    parentNode.remove()
+                    debug("Endless scrolling: removed .next-button's parentNode")
+                }
+                const siteTable = document.querySelector(".sitetable")
+                if (siteTable) {
+                    if (preloadedData) {
+                        preloadedData.childNodes.forEach(node => siteTable.appendChild(node))
+                    } else {
+                        debug("Endless scrolling: there is no preloaded data")
+                    }
+                    preloadData()
+                } else {
+                    debug("Endless scrolling: could not find a .sitetable")
+                }
+            } else {
+                debug("Endless scrolling: could not find a .next-button")
+            }
+            isLoading = false
         }
     }
 }
 
+// MARK: showKarma
+let showKarma = () => {
+    let username = document.querySelector(".user a").textContent
+    let url = window.location.href.startsWith("https://old")
+        ? `https://old.reddit.com/user/${username}`
+        : `https://www.reddit.com/user/${username}`
+    let karmaArea = document.querySelector("span .userkarma")
+    let karma = karmaArea.textContent
+
+    let postKarmaLink = document.createElement("a")
+    postKarmaLink.href = `${url}/submitted/`
+    postKarmaLink.textContent = karma
+
+    let commentKarmaLink = document.createElement("a")
+    commentKarmaLink.href = `${url}/comments/`
+
+    fetch(url)
+        .then(response => response.text())
+        .then(text => {
+            const parser = new DOMParser()
+            const html = parser.parseFromString(text, "text/html")
+            const karma = html.documentElement.querySelector(".comment-karma").textContent
+            commentKarmaLink.textContent = karma
+            let span = document.querySelector("span.userkarma")
+            span.childNodes.forEach(e => e.remove())
+
+            let container = document.createElement("karmaContainer")
+            container.appendChild(postKarmaLink)
+            container.append(" | ")
+            container.appendChild(commentKarmaLink)
+
+            span.append(container)
+        })
+}
+
+// MARK: hide junk
+const removeAll = (selector) => document.querySelectorAll(selector).forEach(e => e.remove())
+const hideAds = () => removeAll('.ad-container, .ad-container, #ad_1')
+const hidePromotedPosts = () => removeAll(".promoted")
+const hideUsername = () => removeAll("#header-bottom-right .user a")
+const hideRedditPremiumBanner = () => removeAll(".premium-banner-outer")
+const hideNewRedditButton = () => removeAll(".redesign-beta-optin")
+const hideHappeningNowBanners = () => removeAll('.happening-now-wrap')
 
 // MARK: showEstimatedDownvotes
 const showEstimatedDownvotes = () => {
@@ -100,12 +182,31 @@ const showEstimatedDownvotes = () => {
     }
 }
 
+// MARK: autoExpandImages
+let autoExpandImages = () => {
+    const expandableDomains = [ "i.redd.it", "reddit.com", "i.imgur.com" ]
+    document.querySelectorAll(".thing").forEach(e => {
+        if (expandableDomains.includes(e.getAttribute("data-domain"))) {
+            e.querySelector(".expando-button").click()
+        }
+    })
+}
+
+// MARK: oldReddit
 let oldReddit = () => {
-    if (window.location.href.startsWith("https://www.reddit")) {
-        window.location = window.location.href.replace("www", "old");
+    const isOldReddit = document.querySelector("ul.sr-bar")
+    if (!isOldReddit) {
+        if (url.includes("/poll/")) {
+            return
+        } else if (url.startsWith("https://www.reddit")) {
+            window.location = window.location.href.replace("www", "old")
+        } else if (url.startsWith("https://reddit.com")) {
+            window.location = window.location.href.replace("reddit.com", "old.reddit.com")
+        }
     }
 }
 
+// MARK: noChat
 let noChat = () => {
     let chat = document.querySelector("a#chat")
     if (chat) {
@@ -120,43 +221,35 @@ let noChat = () => {
     }
 }
 
-let showKarma = () => {
-    let username = $('.user a').text();
-    let url = (window.location.href.startsWith("https://old")) ? `https://old.reddit.com/user/${username}` : `https://www.reddit.com/user/${username}`;
-    let karmaArea = $('span .userkarma');
-    let karma = karmaArea.text();
-    karmaArea.html(`<a href='${url}/submitted/'>${karma}</a>`);
-    $.get(url, data => {
-        let ck = $(data).find('.comment-karma').text();
-        let cmturl = `<a href='${url}/comments/'>${ck}</a>`;
-        $('span .userkarma').append(" | " + cmturl);
-    });
-}
-
+// MARK: customSubredditBar
 let customSubredditBar = (subs) => {
-    let bar = $("ul.sr-bar").last()
-    bar.children().remove()
-    for (i in subs) {
-        const sub = subs[i]
-        let html = `<li><a class='choice' href='https://www.reddit.com/r/${sub}'>${sub}</a></li>`
-        if (i < subs.length - 1) {
-            html = `${html}<span class='separator'>-</span>`
-        }
-        bar.append(html)
+    let bars = document.querySelectorAll("ul.sr-bar")
+
+    const firstBar = bars[0]
+    for (let i = 3; i < firstBar.childElementCount; i++) {
+        const node = firstBar.childNodes[i]
+        if (node) node.style.display = "none"
     }
-    $('.drop-choices .choice').each(function(ele) {
-        var presubreddit = String(ele).match(subredditMatcher)
-        if (presubreddit == null) { return }
-        let subreddit = presubreddit.groups.subreddit
-        let html = $('<a href="javascript:;" title="Add ' + subreddit + ' to favorites"> [+]</a>')
-        html.click(function() {
-            safari.extension.dispatchMessage("addFavoriteSub", { "subreddit": subreddit })
-            location.reload()
-        })
-        ele.append(html.get(0))
-    })
+
+    const subsBar = bars[1]
+    for (let i = 0; i < subsBar.childElementCount; i++) {
+        const node = subsBar.childNodes[i]
+        if (node && node.style) node.style.display = "none"
+    }
+
+    for (let i = 0; i < subs.length; i++) {
+        const sub = subs[i]
+        let subSpan = document.createElement("a")
+        subSpan.href = `https://www.reddit.com/r/${sub}`
+        subSpan.textContent = sub
+        subsBar.appendChild(subSpan)
+        if (i != subs.length - 1) {
+            subsBar.append(" - ")
+        }
+    }
 }
 
+// MARK: collapseAutoModerator
 let collapseAutoModerator = () => {
     document.querySelectorAll('div[data-author=AutoModerator]').forEach(e => {
         e.classList.remove('noncollapsed')
@@ -165,6 +258,7 @@ let collapseAutoModerator = () => {
     })
 }
 
+// MARK: collapseChildComments
 let collapseChildComments = () => document.querySelectorAll(".comment .noncollapsed").forEach(e => {
     e.classList.remove('noncollapsed')
     e.classList.add('collapsed')
@@ -174,25 +268,32 @@ let collapseChildComments = () => document.querySelectorAll(".comment .noncollap
     }
 })
 
+// MARK: nsfwFilter
 let nsfwFilter = () => removeAll(".over18")
 
+// MARK: rememberUserVotes
 let rememberUserVotes = () => {
+    let completedAuthors = []
     document.querySelectorAll(".comment").forEach(comment => {
         const author = comment.getAttribute("data-author")
-        safari.extension.dispatchMessage("userKarmaFetchRequest", {
-            "user": author
-        })
-        comment.querySelector(".arrow.up").addEventListener("click", event => {
+        comment.querySelector(".arrow.up")?.addEventListener("click", _ => {
             safari.extension.dispatchMessage("userKarmaSaveRequest", {
                 "user": author,
                 "karma": 1
             })
         })
-        comment.querySelector(".arrow.down").addEventListener("click", event => {
+        comment.querySelector(".arrow.down")?.addEventListener("click", _ => {
             safari.extension.dispatchMessage("userKarmaSaveRequest", {
                 "user": author,
                 "karma": -1
             })
+        })
+        if (completedAuthors.includes(author)) {
+            return
+        }
+        completedAuthors.push(author)
+        safari.extension.dispatchMessage("userKarmaFetchRequest", {
+            "user": author
         })
     })
 }
@@ -214,13 +315,10 @@ let showNewComments = (context, userInfo) => {
             })
         })
     } else if (context === "fulfillRequest") {
-        debug("showNewComments('fulfillRequest')")
         document.querySelectorAll("a.bylink.comments[href*='" + userInfo["thread"] + "']").forEach(node => {
             const currentCount = node.textContent.replace(" comments", "").replace(" comment", "")
             const saved = userInfo["count"]
-            console.log("saved = " + saved)
             if (saved && saved > 0) {
-                console.log("saved > 0")
                 node.closest(".thing").style.opacity = 0.55
                 if (saved <= currentCount) {
                     const diff = currentCount - saved
@@ -231,33 +329,4 @@ let showNewComments = (context, userInfo) => {
             }
         })
     }
-}
-//
-
-let voteMemory = () => {
-    let map = localStorage.voteMemory
-    if (map != null) {
-        return new Map(JSON.parse(map))
-    } else {
-        return new Map()
-    }
-}
-
-let rememberVote = (upOrDown, user) => {
-    var map = voteMemory()
-    let currentCount = map.get(user)
-    if (currentCount == null) {
-        currentCount = 0
-    }
-    if (upOrDown) {
-        currentCount += 1
-    } else {
-        currentCount -= 1
-    }
-    map.set(user, currentCount)
-    localStorage.voteMemory = JSON.stringify(Array.from(map.entries()))
-}
-
-let votesForUser = (user) => {
-    return voteMemory().get(user)
 }

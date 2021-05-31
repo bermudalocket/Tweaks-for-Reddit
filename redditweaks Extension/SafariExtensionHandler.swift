@@ -11,7 +11,6 @@ import Foundation
 import SafariServices
 import SwiftUI
 
-final class SafariExtensionHandler: SFSafariExtensionHandler {
 class SafariExtensionHandler: SFSafariExtensionHandler {
 
     private let injectedPersistenceController: PersistenceController

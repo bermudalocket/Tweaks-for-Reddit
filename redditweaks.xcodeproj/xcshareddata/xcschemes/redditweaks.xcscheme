@@ -42,16 +42,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "89DD691F24AA8AE800599B28"
-               BuildableName = "redditweaksUITests.xctest"
-               BlueprintName = "redditweaksUITests"
-               ReferencedContainer = "container:redditweaks.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "895233BE24A6AC0300B72CE8"
                BuildableName = "Tweaks for Reddit Tests.xctest"
                BlueprintName = "Tweaks for Reddit Tests"

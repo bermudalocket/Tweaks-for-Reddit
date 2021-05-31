@@ -26,6 +26,7 @@ struct PersistenceController {
                 fatalError("- Unresolved error loading persistent store: \(error), \(error.userInfo)")
             }
             container.viewContext.automaticallyMergesChangesFromParent = true
+//            try? container.initializeCloudKitSchema(options: .printSchema)
         }
     }
 

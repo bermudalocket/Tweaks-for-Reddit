@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>516</string>
+	<string>728</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSExtension</key>
@@ -33,10 +33,6 @@
 			<dict>
 				<key>Script</key>
 				<string>snudown.js</string>
-			</dict>
-			<dict>
-				<key>Script</key>
-				<string>jquery-3.5.1.min.js</string>
 			</dict>
 			<dict>
 				<key>Script</key>
