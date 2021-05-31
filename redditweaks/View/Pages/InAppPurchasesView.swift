@@ -89,7 +89,7 @@ struct InAppPurchasesView: View {
                     HStack {
                         if !iapHelper.didPurchaseLiveCommentPreviews && !isRestoring {
                             Button(action: iapHelper.purchaseLiveCommentPreviews) {
-                                Text("Unlock now for \(NSDecimalNumber(0.99), formatter: priceFormatter)")
+								Text("Unlock now for \(IAPHelper.shared.products.first?.price ?? 0.99, formatter: priceFormatter)")
                             }
                         }
                         Button("See a screenshot") {
