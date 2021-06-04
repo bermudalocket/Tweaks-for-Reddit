@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G5023d" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="FavoriteSubreddit" representedClassName="FavoriteSubreddit" syncable="YES" codeGenerationType="class">
+        <attribute name="internalPosition" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String" minValueString="1" defaultValueString=""/>
-        <attribute name="position" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="IAPState" representedClassName="IAPState" syncable="YES" codeGenerationType="class">
         <attribute name="livecommentpreviews" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>

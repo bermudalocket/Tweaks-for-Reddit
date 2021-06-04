@@ -17,17 +17,15 @@ struct RedditweaksApp: App {
 
     @Environment(\.scenePhase) private var scenePhase
 
-    @StateObject private var appState = MainAppState()
-
     var body: some Scene {
         WindowGroup {
             MainView()
-                .environmentObject(appState)
+                .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
                 .onOpenURL { url in
                     guard url.absoluteString.starts(with: "rdtwks://") else {
                         return
                     }
-                    appState.selectedTab = .liveCommentPreview
+                    Redditweaks.defaults.setValue(SelectedTab.liveCommentPreview, forKey: "selectedTab")
                 }
                 .accentColor(.redditOrange)
                 .onChange(of: scenePhase) { phase in

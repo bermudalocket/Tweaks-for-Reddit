@@ -23,9 +23,6 @@ enum FavoriteSubredditListHeight: Int, CaseIterable {
 
 final class AppState: ObservableObject {
 
-    @AppStorage("verifySubreddits") var doSubredditVerification = true
-    @AppStorage("favoriteSubredditListHeight") var favoriteSubredditListHeight = FavoriteSubredditListHeight.medium
-
     @Published var features: [Feature: Bool] = {
         var map = [Feature: Bool]()
         Feature.features.forEach { feature in

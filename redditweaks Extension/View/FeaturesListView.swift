@@ -21,21 +21,19 @@ struct FeaturesListView: View {
     }
 
     var body: some View {
-        GroupBox(label: Text("Features")) {
-            VStack(alignment: .leading) {
-                ForEach(features, id: \.self) { feature in
-                    Toggle(feature.description,
-                           isOn: appState.bindingForFeature(feature))
-                        .help(feature.help)
-                    if feature == .customSubredditBar && appState.bindingForFeature(feature).wrappedValue {
-                        FavoriteSubredditsSectionView()
-                            .environmentObject(appState)
-                    }
+        VStack(alignment: .leading) {
+            ForEach(features, id: \.self) { feature in
+                Toggle(feature.description,
+                       isOn: appState.bindingForFeature(feature))
+                    .help(feature.help)
+                if feature == .customSubredditBar && appState.bindingForFeature(feature).wrappedValue {
+                    FavoriteSubredditsSectionView()
+                        .environmentObject(appState)
                 }
             }
-            .padding([.top, .bottom, .leading], 10)
-            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
         }
+        .padding([.top, .bottom, .leading], 10)
+        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
     }
 
 }

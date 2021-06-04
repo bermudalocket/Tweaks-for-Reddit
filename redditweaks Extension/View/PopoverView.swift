@@ -15,12 +15,13 @@ struct PopoverView: View {
 
     @Environment(\.managedObjectContext) private var viewContext
 
-    @EnvironmentObject private var iapHelper: IAPHelper
     @EnvironmentObject private var appState: AppState
 
-    private var binding: Binding<Bool> {
+    private var liveCommentPreviewBinding: Binding<Bool> {
         appState.bindingForFeature(.liveCommentPreview)
     }
+
+    @AppStorage("didPurchaseLiveCommentPreviews") private var didPurchaseLiveCommentPreviews = false
 
     var body: some View {
         VStack(spacing: 10) {
@@ -31,23 +32,19 @@ struct PopoverView: View {
             FeaturesListView()
                 .environmentObject(appState)
 
-            if iapHelper.canMakePayments {
-                GroupBox(label: Text("In-App Purchases")) {
-                    Toggle("Live preview comments in markdown", isOn: binding)
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                        .padding(10)
-                        .onChange(of: binding.wrappedValue) { value in
-                            if value && !iapHelper.didPurchaseLiveCommentPreviews {
-                                NSWorkspace.shared.open(URL(string: "rdtwks://iap")!)
-                                binding.wrappedValue = false
-                            }
+            if IAPHelper.shared.canMakePayments {
+                Toggle("Live preview comments in markdown", isOn: liveCommentPreviewBinding)
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                    .padding(10)
+                    .onChange(of: liveCommentPreviewBinding.wrappedValue) { value in
+                        if value && !didPurchaseLiveCommentPreviews {
+                            NSWorkspace.shared.open(URL(string: "rdtwks://iap")!)
+                            liveCommentPreviewBinding.wrappedValue = false
                         }
-                }
-
+                    }
             }
 
             SettingsView()
-
         }
         .padding(10)
         .frame(width: 325, alignment: .top)

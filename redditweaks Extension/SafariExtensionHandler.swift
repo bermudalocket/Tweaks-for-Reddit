@@ -41,7 +41,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                 else {
                     return
                 }
-                if IAPHelper.shared.didPurchaseLiveCommentPreviews {
+                if Feature.liveCommentPreview.isEnabled {
                     NoCommit.inject(into: page) // premium/paid features
                 }
                 pageType.features

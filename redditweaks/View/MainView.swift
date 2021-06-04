@@ -10,8 +10,6 @@ import SwiftUI
 
 struct MainView: View {
 
-    @EnvironmentObject private var state: MainAppState
-
     @State private var selectedTab: SelectedTab? = .welcome
 
     var body: some View {
@@ -45,12 +43,6 @@ struct MainView: View {
         }
         .navigationViewStyle(DoubleColumnNavigationViewStyle())
         .frame(width: 825, height: 450)
-        .onAppear {
-            self.selectedTab = state.selectedTab
-        }
-        .onDisappear {
-            state.selectedTab = self.selectedTab ?? .welcome
-        }
     }
 
 }
@@ -58,7 +50,5 @@ struct MainView: View {
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
-            .environmentObject(MainAppState())
-            .accentColor(.redditOrange)
     }
 }

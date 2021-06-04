@@ -12,35 +12,39 @@ struct SettingsView: View {
 
     @EnvironmentObject private var appState: AppState
 
+    @AppStorage("verifySubreddits", store: Redditweaks.defaults)
+    private var doSubredditVerification = true
+
+    @AppStorage("favoriteSubredditListHeight", store: Redditweaks.defaults)
+    private var favoriteSubredditListHeight = FavoriteSubredditListHeight.medium
+
     var body: some View {
-        GroupBox(label: Text("Settings")) {
-            VStack(alignment: .leading) {
-                Toggle("Verify favorite subreddits exist",
-                       isOn: $appState.doSubredditVerification)
-                    .disabled(!(appState.features[.customSubredditBar] ?? false))
-                    .padding(5)
-                    .help("Tweaks for Reddit will make a request to https://www.reddit.com/r/(sub) to check if it exists")
-                HStack {
-                    Text("Favorites display size")
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                    Menu(appState.favoriteSubredditListHeight.displayName) {
-                        Button("Small") {
-                            appState.favoriteSubredditListHeight = .small
-                        }
-                        Button("Medium") {
-                            appState.favoriteSubredditListHeight = .medium
-                        }
-                        Button("Large") {
-                            appState.favoriteSubredditListHeight = .large
-                        }
+        VStack(alignment: .leading) {
+            Toggle("Verify favorite subreddits exist",
+                   isOn: $doSubredditVerification)
+                .disabled(!(appState.features[.customSubredditBar] ?? false))
+                .padding(5)
+                .help("Tweaks for Reddit will make a request to https://www.reddit.com/r/(sub) to check if it exists")
+            HStack {
+                Text("Favorites display size")
+                    .frame(minWidth: 0, maxWidth: .infinity)
+                Menu(favoriteSubredditListHeight.displayName) {
+                    Button("Small") {
+                        self.favoriteSubredditListHeight = .small
+                    }
+                    Button("Medium") {
+                        self.favoriteSubredditListHeight = .medium
+                    }
+                    Button("Large") {
+                        self.favoriteSubredditListHeight = .large
                     }
                 }
-                .contentShape(Rectangle())
-                .help("Determines how many subreddits are visible in the Favorite Subreddits list")
             }
-            .frame(minWidth: 0, maxWidth: .infinity)
-            .padding(5)
+            .contentShape(Rectangle())
+            .help("Determines how many subreddits are visible in the Favorite Subreddits list")
         }
+        .frame(minWidth: 0, maxWidth: .infinity)
+        .padding(5)
     }
 }
 

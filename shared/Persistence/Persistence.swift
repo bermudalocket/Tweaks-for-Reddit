@@ -11,6 +11,8 @@ struct PersistenceController {
 
     static let shared = PersistenceController()
 
+    static let preview = PersistenceController(inMemory: true)
+
     let container: NSPersistentCloudKitContainer
 
     init(inMemory: Bool = false) {
@@ -45,7 +47,7 @@ struct PersistenceController {
             .fetch(request)
             .map(\.karma)
             .compactMap { Int($0) }
-            .reduce(into: 0) { agg, next in agg += next }
+            .reduce(0, +) // i love swift so much
     }
 
     func saveUserKarma(for user: String, karma: Int) {
@@ -75,21 +77,6 @@ struct PersistenceController {
         } catch {
             print("Error: \(error)")
         }
-    }
-
-    var iapState: IAPState {
-        let request = NSFetchRequest<IAPState>(entityName: "IAPState")
-        request.sortDescriptors = [
-            NSSortDescriptor(keyPath: \IAPState.timestamp, ascending: false)
-        ]
-        guard let results = try? self.container.viewContext.fetch(request), let result = results.first else {
-            let initialState = IAPState(context: self.container.viewContext)
-            initialState.timestamp = Date()
-            initialState.livecommentpreviews = false
-            try? self.container.viewContext.save()
-            return initialState
-        }
-        return result
     }
 
 }
