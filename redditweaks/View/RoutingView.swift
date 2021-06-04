@@ -34,6 +34,7 @@ struct RoutingView: View {
             case .debug:
                 DebugView()
                     .environmentObject(IAPHelper.shared)
+                    .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
         }
     }
 }

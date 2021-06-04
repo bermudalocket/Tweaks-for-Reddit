@@ -59,7 +59,6 @@ struct ConnectToSafariView_Previews: PreviewProvider {
     static var previews: some View {
         ConnectToSafariView()
             .environmentObject(OnboardingEnvironment())
-            .environmentObject(MainAppState())
             .frame(width: 510)
     }
 }

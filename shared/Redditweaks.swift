@@ -16,4 +16,13 @@ enum Redditweaks {
 
     public static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A"
 
+    public static var identifier: UUID {
+        guard let stored = defaults.string(forKey: "identifier"), let uuid = UUID(uuidString: stored) else {
+            let newId = UUID()
+            defaults.setValue(newId.uuidString, forKey: "identifier")
+            return newId
+        }
+        return uuid
+    }
+
 }

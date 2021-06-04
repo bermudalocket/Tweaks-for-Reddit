@@ -11,8 +11,6 @@ import StoreKit
 
 struct InAppPurchasesView: View {
 
-    @Environment(\.locale) private var locale
-
     @EnvironmentObject private var iapHelper: IAPHelper
 
     @State private var isRestoring = false
@@ -23,15 +21,7 @@ struct InAppPurchasesView: View {
 
     @State private var isShowingScreenshot = false
 
-    @AppStorage("dontPlayAnimation", store: Redditweaks.defaults)
-    private var dontPlayAnimation = false
-
-    private var priceFormatter: NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = locale
-        return formatter
-    }
+    @AppStorage("dontPlayAnimation") private var dontPlayAnimation = false
 
     var body: some View {
         ZStack {

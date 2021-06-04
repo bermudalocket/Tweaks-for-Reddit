@@ -23,7 +23,7 @@ enum SelectedTab: String, Codable, CaseIterable, RawRepresentable {
     }
 
     public init?(rawValue: String) {
-        guard let tab = SelectedTab.allCases.filter { $0.name == rawValue }.first else {
+        guard let tab = SelectedTab.allCases.filter({ $0.name == rawValue }).first else {
             return nil
         }
         self = tab

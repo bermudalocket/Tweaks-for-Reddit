@@ -17,7 +17,7 @@ struct RedditweaksButtonStyle: ButtonStyle {
     private func calculateScale(with configuration: Configuration) -> CGFloat {
         var scale: CGFloat = 1.0
         if isEnabled {
-            if configuration.isPressed { scale -= 0.4 }
+            if configuration.isPressed { scale -= 0.2 }
             if isHovering { scale -= 0.05 }
         }
         return scale
@@ -32,6 +32,7 @@ struct RedditweaksButtonStyle: ButtonStyle {
             .background(
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(.accentColor)
+                    .shadow(radius: 5)
             )
             .scaleEffect(calculateScale(with: configuration))
             .animation(.linear)

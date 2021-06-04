@@ -52,7 +52,7 @@ class SubredditVerifier: ObservableObject {
                     let count = (try? vc.fetch(fetch))?.count ?? 0
                     let sub = FavoriteSubreddit(context: vc)
                     sub.name = subreddit
-                    sub.position = Int16(count)
+                    sub.position = count
                     subreddit = ""
                 }
             }
@@ -63,18 +63,20 @@ class SubredditVerifier: ObservableObject {
 
 struct FavoriteSubredditsSectionView: View {
 
+    // periphery:ignore
     @Environment(\.managedObjectContext) private var viewContext
-
-    @EnvironmentObject private var appState: AppState
 
     @StateObject private var subVerifier = SubredditVerifier()
 
     @State private var favoriteSubredditField = ""
 
-    @FetchRequest(sortDescriptors: [
-        NSSortDescriptor(keyPath: \FavoriteSubreddit.position, ascending: true),
+    @AppStorage("favoriteSubredditListHeight", store: Redditweaks.defaults)
+    private var favoriteSubredditListHeight = FavoriteSubredditListHeight.medium
+
+    @FetchRequest<FavoriteSubreddit>(sortDescriptors: [
+        NSSortDescriptor(keyPath: \FavoriteSubreddit.internalPosition, ascending: true),
         NSSortDescriptor(keyPath: \FavoriteSubreddit.name, ascending: true)
-    ]) private var favoriteSubreddits: FetchedResults<FavoriteSubreddit>
+    ], animation: .easeInOut) private var favoriteSubreddits: FetchedResults<FavoriteSubreddit>
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -103,8 +105,9 @@ struct FavoriteSubredditsSectionView: View {
                 .onMove(perform: onMove)
             }
             .listStyle(PlainListStyle())
-            .frame(height: min(CGFloat(appState.favoriteSubredditListHeight.rawValue), 25 * CGFloat(favoriteSubreddits.count)))
+            .frame(height: min(CGFloat(favoriteSubredditListHeight.rawValue), 25 * CGFloat(favoriteSubreddits.count)))
         }
+        .transition(.move(edge: .top).animation(.easeInOut.speed(0.5)))
     }
 
     private func onMove(indices: IndexSet, newOffset: Int) {
@@ -112,7 +115,7 @@ struct FavoriteSubredditsSectionView: View {
             return
         }
         let sub = favoriteSubreddits[oldOffset]
-        sub.position = Int16(newOffset)
+        sub.position = newOffset
     }
 
 }

@@ -184,10 +184,10 @@ const showEstimatedDownvotes = () => {
 
 // MARK: autoExpandImages
 let autoExpandImages = () => {
-    const expandableDomains = [ "i.redd.it", "reddit.com", "i.imgur.com" ]
-    document.querySelectorAll(".thing").forEach(e => {
+    const expandableDomains = [ "i.redd.it", "reddit.com", "i.imgur.com", "pbs.twimg.com" ]
+    document.querySelectorAll(".thing.collapsed").forEach(e => {
         if (expandableDomains.includes(e.getAttribute("data-domain"))) {
-            e.querySelector(".expando-button").click()
+            e.querySelector(".expando-button")?.click()
         }
     })
 }
