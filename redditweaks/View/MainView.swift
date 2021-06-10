@@ -10,31 +10,21 @@ import SwiftUI
 
 struct MainView: View {
 
-    @State private var selectedTab: SelectedTab? = .welcome
+    @AppStorage("selectedTab") private var selectedTab: SelectedTab = .welcome
 
     var body: some View {
         NavigationView {
             VStack {
-                LogoView()
+                TitleView()
                     .padding(.top, 30)
-                List {
-                    ForEach(SelectedTab.allCases.indices, id: \.self) { i in
-                        let tab = SelectedTab.allCases[i]
-                        NavigationLink(
-                            destination: RoutingView(tab: tab),
-                            tag: tab,
-                            selection: $selectedTab,
-                            label: {
-                                Label {
-                                    Text(tab.name)
-                                        .font(.title3)
-                                } icon: {
-                                    Image(systemName: "\(i+1).circle")
-                                        .font(.title2)
-                                        .padding(10)
-                                }
-                            })
-                            .accentColor(.redditOrange)
+                List(SelectedTab.allCases, id: \.self) { tab in
+                    NavigationLink(
+                        destination: RoutingView(tab: tab),
+                        tag: tab,
+                        selection: .init(get: { selectedTab }, set: { selectedTab = $0 ?? .welcome })
+                    ) {
+                        Text(tab.name)
+                            .font(.title3)
                     }
                 }
                 .listStyle(SidebarListStyle())

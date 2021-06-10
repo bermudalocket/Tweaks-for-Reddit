@@ -21,7 +21,9 @@ class IAPHelper: ObservableObject {
     let productsPublisher = SKProductsRequestPublisher()
     private var cancellables = Set<AnyCancellable>()
 
+    let transactionStatusPublisher = PassthroughSubject<SKPaymentTransactionState, Never>()
     @Published var currentTransactionStatus: SKPaymentTransactionState?
+
     @Published var products = [SKProduct]()
 
     @Published var isValidating = false
@@ -102,7 +104,7 @@ class IAPHelper: ObservableObject {
 
     private func handleTransactions(_ transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
-            self.currentTransactionStatus = transaction.transactionState
+            self.transactionStatusPublisher.send(transaction.transactionState)
             switch transaction.transactionState {
                 case .purchased:
                     didPurchaseLiveCommentPreviews = true

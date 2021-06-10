@@ -15,11 +15,11 @@ struct RedditweaksApp: App {
     // periphery:ignore
     @NSApplicationDelegateAdaptor private var appDelegate: RedditweaksAppDelegate
 
-    @Environment(\.scenePhase) private var scenePhase
-
     var body: some Scene {
         WindowGroup {
             MainView()
+                .accentColor(.redditOrange)
+                .environmentObject(IAPHelper.shared)
                 .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
                 .onOpenURL { url in
                     guard url.absoluteString.starts(with: "rdtwks://") else {
@@ -27,16 +27,9 @@ struct RedditweaksApp: App {
                     }
                     Redditweaks.defaults.setValue(SelectedTab.liveCommentPreview, forKey: "selectedTab")
                 }
-                .accentColor(.redditOrange)
-                .onChange(of: scenePhase) { phase in
-                    switch phase {
-                        case .active:
-                            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(1))) {
-                                NSApp.mainWindow?.isMovableByWindowBackground = true
-                            }
-
-                        default:
-                            return
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .milliseconds(500))) {
+                        NSApp.mainWindow?.isMovableByWindowBackground = true
                     }
                 }
         }
