@@ -16,11 +16,9 @@ struct RoutingView: View {
         switch tab {
             case .connectToSafari:
                 ConnectToSafariView()
-                    .environmentObject(OnboardingEnvironment())
 
             case .liveCommentPreview:
                 InAppPurchasesView()
-                    .environmentObject(IAPHelper.shared)
 
             case .welcome:
                 WelcomeView()
@@ -33,8 +31,6 @@ struct RoutingView: View {
 
             case .debug:
                 DebugView()
-                    .environmentObject(IAPHelper.shared)
-                    .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
         }
     }
 }

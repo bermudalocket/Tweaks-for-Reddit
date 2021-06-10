@@ -30,7 +30,6 @@ struct PopoverView: View {
                 .background(SectionBackgroundView())
 
             FeaturesListView()
-                .environmentObject(appState)
 
             if IAPHelper.shared.canMakePayments {
                 Toggle("Live preview comments in markdown", isOn: liveCommentPreviewBinding)

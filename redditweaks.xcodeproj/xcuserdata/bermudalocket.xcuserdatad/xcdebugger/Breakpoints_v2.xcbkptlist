@@ -22,16 +22,6 @@
                </BreakpointActionProxy>
             </Actions>
             <Locations>
-               <Location
-                  uuid = "B7EA638F-4DB3-452B-B9BA-13035BFED2BB - 13d56743671e8b83"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "dyld::_main(macho_header const*, unsigned long, int, char const**, char const**, char const**, unsigned long*)"
-                  moduleName = "dyld"
-                  usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "0">
-               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
