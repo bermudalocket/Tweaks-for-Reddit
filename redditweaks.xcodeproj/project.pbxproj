@@ -41,7 +41,6 @@
 		8925FD122633B42C00D83FF1 /* ArtPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8925FD112633B42C00D83FF1 /* ArtPopoverView.swift */; };
 		8936A35925F0C0FA001F5DA6 /* InternetAccessPolicy.json in Resources */ = {isa = PBXBuildFile; fileRef = 8936A35825F0C0FA001F5DA6 /* InternetAccessPolicy.json */; };
 		8936A35A25F0C0FA001F5DA6 /* InternetAccessPolicy.json in Resources */ = {isa = PBXBuildFile; fileRef = 8936A35825F0C0FA001F5DA6 /* InternetAccessPolicy.json */; };
-		89463AF5266AB13E0053A048 /* require.js in Resources */ = {isa = PBXBuildFile; fileRef = 89463AF4266AB13E0053A048 /* require.js */; };
 		8949C04623DD582D002CF0C0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8949C04223DD5810002CF0C0 /* LICENSE */; };
 		8949C04723DD582E002CF0C0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8949C04223DD5810002CF0C0 /* LICENSE */; };
 		8952B9C025EED54200EF44DF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8952B9BE25EED54200EF44DF /* SettingsView.swift */; };
@@ -78,9 +77,6 @@
 		89BD2060265873E000DDCBA4 /* SKPaymentTransactionPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BD205E265873E000DDCBA4 /* SKPaymentTransactionPublisher.swift */; };
 		89BD2062265873FF00DDCBA4 /* SKProductsRequestPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BD2061265873FF00DDCBA4 /* SKProductsRequestPublisher.swift */; };
 		89BD2063265873FF00DDCBA4 /* SKProductsRequestPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BD2061265873FF00DDCBA4 /* SKProductsRequestPublisher.swift */; };
-		89BD20652658786B00DDCBA4 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BD20642658786B00DDCBA4 /* ConfettiView.swift */; };
-		89BD2068265892E900DDCBA4 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 89BD2067265892E900DDCBA4 /* ConfettiSwiftUI */; };
-		89BD2069265892E900DDCBA4 /* ConfettiSwiftUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 89BD2067265892E900DDCBA4 /* ConfettiSwiftUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		89BD206B26589B2C00DDCBA4 /* Color+redditOrange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BD206A26589B2C00DDCBA4 /* Color+redditOrange.swift */; };
 		89BD206C26589B2C00DDCBA4 /* Color+redditOrange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BD206A26589B2C00DDCBA4 /* Color+redditOrange.swift */; };
 		89C5BE9E2613AD7800268E76 /* SafariExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CD138A245E153200A8D3E4 /* SafariExtensionHandler.swift */; };
@@ -138,7 +134,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				89BD2069265892E900DDCBA4 /* ConfettiSwiftUI in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -173,7 +168,6 @@
 		8925FD0F2633AD3000D83FF1 /* RedditweaksButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditweaksButtonStyle.swift; sourceTree = "<group>"; };
 		8925FD112633B42C00D83FF1 /* ArtPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtPopoverView.swift; sourceTree = "<group>"; };
 		8936A35825F0C0FA001F5DA6 /* InternetAccessPolicy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = InternetAccessPolicy.json; sourceTree = SOURCE_ROOT; };
-		89463AF4266AB13E0053A048 /* require.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = require.js; sourceTree = "<group>"; };
 		8949C04223DD5810002CF0C0 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
 		895233BF24A6AC0300B72CE8 /* Tweaks for Reddit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tweaks for Reddit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8952B9BE25EED54200EF44DF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -203,7 +197,6 @@
 		89BD205B2658735A00DDCBA4 /* TFRProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFRProduct.swift; sourceTree = "<group>"; };
 		89BD205E265873E000DDCBA4 /* SKPaymentTransactionPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPaymentTransactionPublisher.swift; sourceTree = "<group>"; };
 		89BD2061265873FF00DDCBA4 /* SKProductsRequestPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKProductsRequestPublisher.swift; sourceTree = "<group>"; };
-		89BD20642658786B00DDCBA4 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		89BD206A26589B2C00DDCBA4 /* Color+redditOrange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+redditOrange.swift"; sourceTree = "<group>"; };
 		89C5BE7F2613ACC300268E76 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		89C5BE852613AD0B00268E76 /* SFSafariPage+redditweaks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFSafariPage+redditweaks.swift"; sourceTree = "<group>"; };
@@ -241,7 +234,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				89BD2068265892E900DDCBA4 /* ConfettiSwiftUI in Frameworks */,
 				898D091C262A286C00268E76 /* StoreKit.framework in Frameworks */,
 				8988B79226521C4700268E76 /* CloudKit.framework in Frameworks */,
 			);
@@ -280,7 +272,6 @@
 			isa = PBXGroup;
 			children = (
 				8982998A24B4059C0063FFE9 /* PopoverView.swift */,
-				8952B9C125EED97D00EF44DF /* TitleView.swift */,
 				8952B9BE25EED54200EF44DF /* SettingsView.swift */,
 				897C570C25E8181000E08F27 /* FeaturesListView.swift */,
 				897C570F25E8184F00E08F27 /* SectionBackgroundView.swift */,
@@ -313,7 +304,6 @@
 			isa = PBXGroup;
 			children = (
 				898D09172629FDD600268E76 /* snudown.js */,
-				89463AF4266AB13E0053A048 /* require.js */,
 				99C7C310235D81AA00ABA6EA /* redditweaks-script.js */,
 				99A81B7C236FBD42006D4A61 /* toolbar.pdf */,
 				898D0919262A1EEA00268E76 /* redditweaks.css */,
@@ -329,9 +319,18 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		8941F0C9267297D500268E76 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8952B9C125EED97D00EF44DF /* TitleView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		897BAE3325264C16004849DB /* shared */ = {
 			isa = PBXGroup;
 			children = (
+				8941F0C9267297D500268E76 /* View */,
 				89812B5B266992B200770B54 /* Debugger */,
 				89BD205A2658732400DDCBA4 /* In-App Purchases */,
 				89EC30C02610FFFE00268E76 /* Persistence */,
@@ -373,7 +372,6 @@
 				899A09F5262FB33D00268E76 /* ArtSafariToolbarView.swift */,
 				89619D7226503C3400214AD0 /* LogoView.swift */,
 				8925FD0F2633AD3000D83FF1 /* RedditweaksButtonStyle.swift */,
-				89BD20642658786B00DDCBA4 /* ConfettiView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -513,7 +511,6 @@
 			);
 			name = "Tweaks for Reddit";
 			packageProductDependencies = (
-				89BD2067265892E900DDCBA4 /* ConfettiSwiftUI */,
 			);
 			productName = redditweaks2;
 			productReference = 99C7C2ED235D81A700ABA6EA /* Tweaks for Reddit.app */;
@@ -574,7 +571,6 @@
 			);
 			mainGroup = 99C7C2E4235D81A700ABA6EA;
 			packageReferences = (
-				89BD2066265892E900DDCBA4 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			productRefGroup = 99C7C2EE235D81A700ABA6EA /* Products */;
 			projectDirPath = "";
@@ -615,7 +611,6 @@
 				99A81B7D236FBD42006D4A61 /* toolbar.pdf in Resources */,
 				898D091A262A1EEA00268E76 /* redditweaks.css in Resources */,
 				8936A35A25F0C0FA001F5DA6 /* InternetAccessPolicy.json in Resources */,
-				89463AF5266AB13E0053A048 /* require.js in Resources */,
 				99C7C311235D81AA00ABA6EA /* redditweaks-script.js in Resources */,
 				897BAE2E252573EE004849DB /* Assets.xcassets in Resources */,
 				8909ACC125F46FAB00251064 /* README.md in Resources */,
@@ -722,7 +717,6 @@
 				89619D752650449400214AD0 /* Persistence.swift in Sources */,
 				891BA367262B8C6D00268E76 /* OnboardingEnvironment.swift in Sources */,
 				89F92EF526560F8D00268E76 /* SettingsView.swift in Sources */,
-				89BD20652658786B00DDCBA4 /* ConfettiView.swift in Sources */,
 				89F92EF226560F8D00268E76 /* FavoriteSubredditView.swift in Sources */,
 				89F92EF62656104E00268E76 /* AppState.swift in Sources */,
 				89F92EF126560F8D00268E76 /* SectionBackgroundView.swift in Sources */,
@@ -985,7 +979,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.12.1;
+				MARKETING_VERSION = 1.12.2;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks.extension;
@@ -1012,7 +1006,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.12.1;
+				MARKETING_VERSION = 1.12.2;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks.extension;
@@ -1032,7 +1026,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 723;
+				CURRENT_PROJECT_VERSION = 996;
 				DEVELOPMENT_TEAM = 2VZ489BR9H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = redditweaks/Info.plist;
@@ -1041,7 +1035,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.12.1;
+				MARKETING_VERSION = 1.12.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1058,7 +1052,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 723;
+				CURRENT_PROJECT_VERSION = 996;
 				DEVELOPMENT_TEAM = 2VZ489BR9H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = redditweaks/Info.plist;
@@ -1067,7 +1061,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.12.1;
+				MARKETING_VERSION = 1.12.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1124,25 +1118,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		89BD2066265892E900DDCBA4 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		89BD2067265892E900DDCBA4 /* ConfettiSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 89BD2066265892E900DDCBA4 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
-			productName = ConfettiSwiftUI;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		897D18F62610FB7000268E76 /* Tweaks for Reddit.xcdatamodeld */ = {
