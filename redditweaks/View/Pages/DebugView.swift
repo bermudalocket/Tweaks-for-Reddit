@@ -38,15 +38,19 @@ struct DebugView: View {
     }
 
     private var coreDataModelName: String {
-        var paths = [String]()
-        Bundle.main.urls(forResourcesWithExtension: "momd", subdirectory: nil)?.forEach { url in
-            Bundle.main.urls(forResourcesWithExtension: "mom", subdirectory: url.lastPathComponent)?.forEach { path in
-                if PersistenceController.shared.container.managedObjectModel.isActive(url: path) {
-                    paths.append(path.lastPathComponent.replacingOccurrences(of: ".mom", with: ""))
-                }
+        guard let momd = Bundle.main.urls(forResourcesWithExtension: "momd", subdirectory: nil)?.first,
+              let moms = Bundle.main.urls(forResourcesWithExtension: "mom", subdirectory: momd.lastPathComponent)
+        else {
+            return "Error"
+        }
+        for path in moms {
+            if PersistenceController.shared.container.managedObjectModel.isActive(url: path) {
+                let lastPathComp = path.lastPathComponent
+                let momName = lastPathComp.replacingOccurrences(of: ".mom", with: "")
+                return momName
             }
         }
-        return paths.joined()
+        return "Error"
     }
 
     private var threadCommentCountSize: Double {
