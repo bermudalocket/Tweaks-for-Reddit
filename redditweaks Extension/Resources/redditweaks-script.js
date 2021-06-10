@@ -86,12 +86,13 @@ let endlessScroll = () => {
         if (!isLoading && (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - (window.innerHeight/3)) {
             isLoading = true
             debug("Endless scrolling: attempting to pull next page...")
-            const nextButton = document.querySelector(".next-button")
+            const nextButtons = document.querySelectorAll(".next-button")
+            const nextButton = nextButtons[nextButtons.length - 1]
             if (nextButton) {
                 debug("Endless scrolling: found .next-button")
-                const parentNode = nextButton.parentNode
+                const parentNode = nextButton.parentNode?.parentNode
                 if (parentNode) {
-                    parentNode.remove()
+                    parentNode.style.display = "none"
                     debug("Endless scrolling: removed .next-button's parentNode")
                 }
                 const siteTable = document.querySelector(".sitetable")
