@@ -23,6 +23,8 @@ struct PopoverView: View {
 
     @AppStorage("didPurchaseLiveCommentPreviews") private var didPurchaseLiveCommentPreviews = false
 
+    @AppStorage("lastReviewRequestTimestamp") private var lastReviewRequestTimestamp: Double = 0
+
     var body: some View {
         VStack(spacing: 10) {
             TitleView()
@@ -51,8 +53,18 @@ struct PopoverView: View {
             if viewContext.hasChanges {
                 try? viewContext.save()
             }
+            askForReview()
         }
     }
+
+    func askForReview() {
+        let timeNow = Date().timeIntervalSince1970
+        if lastReviewRequestTimestamp + (60*60*24*365 / 3) < timeNow {
+            IAPHelper.shared.askForReview()
+            lastReviewRequestTimestamp = timeNow
+        }
+    }
+
 }
 
 struct PopoverView_Previews: PreviewProvider {
