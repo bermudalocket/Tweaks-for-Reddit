@@ -55,6 +55,10 @@ class IAPHelper: ObservableObject {
         }
     }
 
+    func askForReview() {
+        SKStoreReviewController.requestReview()
+    }
+
     func validateReceipt()  {
         self.isValidating = true
         guard let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
