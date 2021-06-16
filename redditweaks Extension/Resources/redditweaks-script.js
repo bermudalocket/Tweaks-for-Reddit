@@ -13,33 +13,42 @@ const uuidv4 = () => {
     );
 }
 
+const enabledFeatures = {
+    autoExpandImages: false,
+    hideAds: false,
+    hidePromotedPosts: false,
+    hideHappeningNowBanners: false,
+    rememberUserVotes: false,
+}
+
 ready(() => {
     if (window.top === window) {
         safari.self.addEventListener("message", event => {
-            if (event.name === "script") {
-                let func = event.message["function"]
-                eval(func)
-            } else if (event.name === "userKarmaFetchRequestResponse") {
-                const user = event.message["user"]
-                const karma = event.message["karma"]
-                document.querySelectorAll(".comment").forEach(comment => {
-                    const author = comment.getAttribute("data-author")
-                    if (author === user) {
-                        let karmaDiv = document.createElement("span")
-                        karmaDiv.textContent = `[${karma}] `
-                        karmaDiv.classList.add(karma < 0 ? "rdtwks-negativeKarmaMemory" : "rdtwks-positiveKarmaMemory")
-                        const authorElement = comment.querySelector(".author")
-                        authorElement.parentNode.insertBefore(karmaDiv, authorElement.nextSibling)
+            switch (event.name) {
+                case "script":
+                    let func = event.message["function"]
+                    eval(func)
+                    switch (func) {
+                        case "autoExpandImages()": enabledFeatures.autoExpandImages = true; break;
+                        case "hideAds()": enabledFeatures.hideAds = true; break;
+                        case "hidePromotedPosts()": enabledFeatures.hidePromotedPosts = true; break;
+                        case "hideHappeningNowBanners()": enabledFeatures.hideHappeningNowBanners = true; break;
+                        case "rememberUserVotes()": enabledFeatures.rememberUserVotes = true; break;
                     }
-                })
-            } else if (event.name == "threadCommentCountFetchRequestResponse") {
-                debug("threadCommentCountFetchRequestResponse in: " + event.message["thread"] + " -> " + event.message["count"])
-                showNewComments("fulfillRequest", event.message)
+                    break
+
+                case "userKarmaFetchRequestResponse":
+                    debug(`${event.name} in: ${event.message['user']} -> ${event.message['karma']}`)
+                    rememberUserVotes("userKarmaFetchRequestResponse", event.message)
+                    break
+
+                case "threadCommentCountFetchRequestResponse":
+                    debug(`${event.name} in: ${event.message["thread"]} -> ${event.message["count"]}`)
+                    showNewComments("fulfillRequest", event.message)
+                    break
             }
         });
-        safari.extension.dispatchMessage("begin", {
-            "url": window.location.href,
-        })
+        safari.extension.dispatchMessage("begin", { "url": window.location.href })
     }
 })
 
@@ -77,10 +86,28 @@ let endlessScroll = () => {
             const parser = new DOMParser()
             const html = parser.parseFromString(text, "text/html")
             preloadedData = html.documentElement.querySelector(".sitetable")
+            if (enabledFeatures.hidePromotedPosts) {
+                hidePromotedPosts(preloadedData)
+            }
+            if (enabledFeatures.hideHappeningNowBanners) {
+                hideHappeningNowBanners(preloadedData)
+            }
+            if (enabledFeatures.hideAds) {
+                hideAds(preloadedData)
+            }
             debug("Endless scrolling: preloading completed")
         })
 
     ready(preloadData)
+
+    const postLoadTasks = () => {
+        if (enabledFeatures.autoExpandImages) {
+            autoExpandImages()
+        }
+        if (enabledFeatures.rememberUserVotes) {
+            rememberUserVotes("load")
+        }
+    }
 
     window.onscroll = async () => {
         if (!isLoading && (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - (window.innerHeight/3)) {
@@ -99,6 +126,7 @@ let endlessScroll = () => {
                 if (siteTable) {
                     if (preloadedData) {
                         preloadedData.childNodes.forEach(node => siteTable.appendChild(node))
+                        postLoadTasks()
                     } else {
                         debug("Endless scrolling: there is no preloaded data")
                     }
@@ -150,13 +178,16 @@ let showKarma = () => {
 }
 
 // MARK: hide junk
-const removeAll = (selector) => document.querySelectorAll(selector).forEach(e => e.remove())
-const hideAds = () => removeAll('.ad-container, .ad-container, #ad_1')
-const hidePromotedPosts = () => removeAll(".promoted")
-const hideUsername = () => removeAll("#header-bottom-right .user a")
-const hideRedditPremiumBanner = () => removeAll(".premium-banner-outer")
-const hideNewRedditButton = () => removeAll(".redesign-beta-optin")
-const hideHappeningNowBanners = () => removeAll('.happening-now-wrap')
+const removeAll = (selector, subject) => {
+    (subject ?? document).querySelectorAll(selector).forEach(e => e.remove())
+}
+const hideAds = (subject) => removeAll(".ad-container, .ad-container, #ad_1", subject)
+const hideNSFW = (subject) => removeAll(".over18", subject)
+const hidePromotedPosts = (subject) => removeAll(".promoted", subject)
+const hideUsername = (subject) => removeAll("#header-bottom-right .user a", subject)
+const hideRedditPremiumBanner = (subject) => removeAll(".premium-banner-outer", subject)
+const hideNewRedditButton = (subject) => removeAll(".redesign-beta-optin", subject)
+const hideHappeningNowBanners = (subject) => removeAll(".happening-now-wrap", subject)
 
 // MARK: showEstimatedDownvotes
 const showEstimatedDownvotes = () => {
@@ -184,13 +215,22 @@ const showEstimatedDownvotes = () => {
 }
 
 // MARK: autoExpandImages
-let autoExpandImages = () => {
-    const expandableDomains = [ "i.redd.it", "reddit.com", "i.imgur.com", "pbs.twimg.com" ]
-    document.querySelectorAll(".thing.collapsed").forEach(e => {
-        if (expandableDomains.includes(e.getAttribute("data-domain"))) {
-            e.querySelector(".expando-button")?.click()
-        }
-    })
+let autoExpandImages = (subject) => {
+    debug(`[AutoExpandImages] Begin scan on ${subject ?? document}`)
+    const expandableDomains = [ "i.redd.it", "reddit.com", "i.imgur.com", "pbs.twimg.com" ];
+    Array.from((subject ?? document).querySelectorAll(".thing"))
+        .filter(e => {
+            const dataUrl = e.getAttribute("data-url")
+            if (!dataUrl) return false
+            for (const i in expandableDomains) {
+                const domain = expandableDomains[i]
+                if (dataUrl.includes(domain)) {
+                    return true
+                }
+            }
+            return false
+        })
+        .forEach(e => e.querySelector(".expando-button:not(.expanded)")?.click())
 }
 
 // MARK: oldReddit
@@ -269,54 +309,74 @@ let collapseChildComments = () => document.querySelectorAll(".comment .noncollap
     }
 })
 
-// MARK: nsfwFilter
-let nsfwFilter = () => removeAll(".over18")
-
 // MARK: rememberUserVotes
-let rememberUserVotes = () => {
-    let completedAuthors = []
-    document.querySelectorAll(".comment").forEach(comment => {
-        const author = comment.getAttribute("data-author")
-        comment.querySelector(".arrow.up")?.addEventListener("click", _ => {
-            safari.extension.dispatchMessage("userKarmaSaveRequest", {
-                "user": author,
-                "karma": 1
+let rememberUserVotes = (context, userInfo, subject) => {
+    if (!subject) {
+        subject = document
+    }
+    let selector = (window.location.href.includes("/comments/")) ? ".comment" : ".thing"
+
+    if (context === "userKarmaFetchRequestResponse") {
+        const user = userInfo["user"]
+        const karma = userInfo["karma"]
+        subject.querySelectorAll(selector).forEach(comment => {
+            const author = comment.getAttribute("data-author")
+            if (author === user) {
+                let karmaDiv = document.createElement("span")
+                karmaDiv.textContent = `[${karma}] `
+                karmaDiv.classList.add(karma < 0 ? "rdtwks-negativeKarmaMemory" : "rdtwks-positiveKarmaMemory")
+                const authorElement = comment.querySelector(".author")
+                authorElement.parentNode.insertBefore(karmaDiv, authorElement.nextSibling)
+            }
+        })
+    } else {
+        let completedAuthors = []
+        subject.querySelectorAll(selector).forEach(comment => {
+            const author = comment.getAttribute("data-author")
+            comment.querySelector(".arrow.up")?.addEventListener("click", _ => {
+                safari.extension.dispatchMessage("userKarmaSaveRequest", {
+                    "user": author,
+                    "karma": 1
+                })
+            })
+            comment.querySelector(".arrow.down")?.addEventListener("click", _ => {
+                safari.extension.dispatchMessage("userKarmaSaveRequest", {
+                    "user": author,
+                    "karma": -1
+                })
+            })
+            if (completedAuthors.includes(author)) {
+                return
+            }
+            completedAuthors.push(author)
+            safari.extension.dispatchMessage("userKarmaFetchRequest", {
+                "user": author
             })
         })
-        comment.querySelector(".arrow.down")?.addEventListener("click", _ => {
-            safari.extension.dispatchMessage("userKarmaSaveRequest", {
-                "user": author,
-                "karma": -1
-            })
-        })
-        if (completedAuthors.includes(author)) {
-            return
-        }
-        completedAuthors.push(author)
-        safari.extension.dispatchMessage("userKarmaFetchRequest", {
-            "user": author
-        })
-    })
+    }
 }
 
 // MARK: showNewComments
-let showNewComments = (context, userInfo) => {
+let showNewComments = (context, userInfo, subject) => {
+    if (!subject) {
+        subject = document
+    }
     if (context === "parseAndSave") {
         const id = String(window.location).match(/\/comments\/([a-zA-Z0-9]+)\//)[1]
-        let comments = document.querySelector("a.bylink.comments").textContent.split(" ")[0]
+        let comments = subject.querySelector("a.bylink.comments").textContent.split(" ")[0]
         safari.extension.dispatchMessage("threadCommentCountSaveRequest", {
             "thread": id,
             "count": comments
         })
     } else if (context === "parseAndLoad") {
-        document.querySelectorAll("a.bylink.comments").forEach(node => {
+        subject.querySelectorAll("a.bylink.comments").forEach(node => {
             let id = node.getAttribute("href").match(/\/comments\/([a-zA-Z0-9]+)\//)[1]
             safari.extension.dispatchMessage("threadCommentCountFetchRequest", {
                 "thread": id
             })
         })
     } else if (context === "fulfillRequest") {
-        document.querySelectorAll("a.bylink.comments[href*='" + userInfo["thread"] + "']").forEach(node => {
+        subject.querySelectorAll("a.bylink.comments[href*='" + userInfo["thread"] + "']:not(.tfr)").forEach(node => {
             const currentCount = node.textContent.replace(" comments", "").replace(" comment", "")
             const saved = userInfo["count"]
             if (saved && saved > 0) {
@@ -327,6 +387,8 @@ let showNewComments = (context, userInfo) => {
                         node.append(` [${diff} NEW]`)
                     }
                 }
+                node.querySelector(".expando-button.expanded")?.click()
+                node.classList.add("tfr") // token which blacklists this post/comment from being marked again
             }
         })
     }
