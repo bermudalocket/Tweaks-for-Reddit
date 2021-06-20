@@ -13,6 +13,8 @@ This project started in June 2019 as an attempt to port the entirety of the Redd
 
 ## Requirements
 
+As of version 1.7.2, Tweaks for Reddit is only supported on macOS 11.x (Big Sur) and macOS 12.x (Monterey).
+
 As of version 1.4, redditweaks is only supported on macOS 10.15 (Catalina) and 11 (Big Sur). This is due to the adoption of SwiftUI and Combine in version 1.4.
 
 Versions 1.3 and below were written in UIKit with the help of [SnapKit](https://github.com/SnapKit/SnapKit).
@@ -25,7 +27,7 @@ Versions 1.3 and below were written in UIKit with the help of [SnapKit](https://
 
 ## Development Note
 
-The `./shared` folder contains (almost) all of the SwiftUI implementation for the extension's broswer toolbar popover. The Xcode canvas refuses to provide a preview for SwiftUI files whose sole target membership is a Safari Extension:
+The Xcode canvas refuses to provide a preview for SwiftUI files whose sole target membership is a Safari Extension:
 
 ````
 UnsupportedAppExtensionTypeError: redditweaks Extension.appex is unsupported
@@ -33,11 +35,11 @@ UnsupportedAppExtensionTypeError: redditweaks Extension.appex is unsupported
 Previews cannot be hosted inside "com.apple.Safari.extension" app extensions
 ````
 
-To get around this, I needed to add the  `redditweaks` target to the files' target memberships. This allows the Xcode canvas previews to work as intended.
+To get around this, I needed to add the `Tweaks for Reddit` target to the extension files' target memberships. This allows the Xcode canvas previews to work as intended.
 
 ## Historical Screenshots
 
-    <img src='https://i.imgur.com/wytyfjh.jpg' width=85%>
-    <img src='https://i.imgur.com/RLFPr6i.jpg' width=33%>
-    <img src='https://i.imgur.com/VNxAfgB.jpg' width=33%>
-    <img src='https://i.imgur.com/Mgz1lbk.png' width=33%>
+    https://i.imgur.com/wytyfjh.jpg
+    https://i.imgur.com/RLFPr6i.jpg
+    https://i.imgur.com/VNxAfgB.jpg
+    https://i.imgur.com/Mgz1lbk.png
