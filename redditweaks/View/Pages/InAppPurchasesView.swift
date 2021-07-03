@@ -8,8 +8,11 @@
 
 import SwiftUI
 import StoreKit
+import TfRGlobals
 
 struct InAppPurchasesView: View {
+
+    @EnvironmentObject private var store: MainAppStore
 
     @State private var isRestoring = false
     @State private var didMakePurchase = false
@@ -111,7 +114,7 @@ struct InAppPurchasesView: View {
 
     private var iapLogicView: some View {
         Group {
-            if IAPHelper.shared.canMakePayments {
+            if store.state.canMakePurchases {
                 if IAPHelper.shared.didPurchaseLiveCommentPreviews {
                     Text("Thank you for your support!")
                         .font(.title2)
@@ -147,7 +150,6 @@ struct InAppPurchasesView: View {
                             .frame(width: 160)
                     }
                 }
-                .buttonStyle(RedditweaksButtonStyle())
             } else {
                 Text("Payments aren't available on your device.")
                     .font(.title2)

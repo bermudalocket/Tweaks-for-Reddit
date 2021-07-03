@@ -6,32 +6,45 @@
 //  Copyright © 2019 Michael Rippe. All rights reserved.
 //
 
-import SwiftUI
+import Combine
 import StoreKit
+import SwiftUI
+import TfRGlobals
+import TFRPopover
+import UserNotifications
 
 @main
 struct RedditweaksApp: App {
 
-    // periphery:ignore
+    // swiftlint:disable:next weak_delegate
     @NSApplicationDelegateAdaptor private var appDelegate: RedditweaksAppDelegate
+
+    @StateObject private var store: MainAppStore = CommandLine.arguments.contains("main-ui-testing") ? .mock : .live
 
     var body: some Scene {
         WindowGroup {
             MainView()
                 .accentColor(.redditOrange)
-                .environmentObject(IAPHelper.shared)
-                .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+                .environmentObject(store)
                 .onOpenURL { url in
                     guard url.absoluteString.starts(with: "rdtwks://") else {
                         return
                     }
-                    Redditweaks.defaults.setValue(SelectedTab.liveCommentPreview, forKey: "selectedTab")
-                }
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .milliseconds(500))) {
-                        NSApp.mainWindow?.isMovableByWindowBackground = true
+                    if url.host == "iap" {
+                        store.send(.setTab(.liveCommentPreview))
+                    } else if url.host == "oauth" {
+                        store.send(.exchangeCodeForTokens(incomingUrl: url))
+                    } else if url.host == "auth" {
+                        store.send(.setTab(.oauth))
                     }
                 }
+                .onAppear {
+                    store.send(.loadSavedState)
+                }
+                .onDisappear {
+                    store.send(.persistState)
+                }
+                .handlesExternalEvents(preferring: Set(arrayLiteral: "*"), allowing: Set(arrayLiteral: "*"))
         }
         .defaultAppStorage(Redditweaks.defaults)
         .windowStyle(HiddenTitleBarWindowStyle())
@@ -47,6 +60,10 @@ class RedditweaksAppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ notification: Notification) {
         SKPaymentQueue.default().remove(IAPHelper.shared.transactionPublisher)
+    }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        true
     }
 
 }

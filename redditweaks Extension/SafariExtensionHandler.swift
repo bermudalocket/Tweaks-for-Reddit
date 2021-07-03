@@ -10,22 +10,24 @@ import CoreData
 import Foundation
 import SafariServices
 import SwiftUI
+import TfRGlobals
+import TFRPopover
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
 
-    private let injectedPersistenceController: PersistenceController
+    private let injectedPersistenceController: CoreDataService
 
     override func popoverViewController() -> SFSafariExtensionViewController {
         PopoverViewWrapper()
     }
 
     override init() {
-        self.injectedPersistenceController = .shared
+        injectedPersistenceController = .live
         super.init()
     }
 
-    init(persistenceController: PersistenceController = .shared) {
-        self.injectedPersistenceController = persistenceController
+    init(persistenceController: CoreDataService = .live) {
+        injectedPersistenceController = persistenceController
         super.init()
     }
 
@@ -102,8 +104,9 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                 }
 
             case .customSubredditBar:
-                let subs = PersistenceController.shared
+                let subs = CoreDataService.live
                         .favoriteSubreddits
+                        .compactMap(\.name)
                         .compactMap({ "'\($0)'" })
                         .joined(separator: ",")
                 return "customSubredditBar([\(subs)])"
@@ -122,6 +125,18 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
             return
         }
         messageReceived(message: message, from: page, userInfo: userInfo)
+    }
+
+}
+
+extension SFSafariPage {
+
+    func dispatchMessageToScript(message: Message, userInfo: [String: Any]? = nil) {
+        dispatchMessageToScript(withName: message.key, userInfo: userInfo)
+    }
+
+    func executeJavascript(_ javascript: String) {
+        dispatchMessageToScript(message: .script, userInfo: [ "function": javascript ])
     }
 
 }

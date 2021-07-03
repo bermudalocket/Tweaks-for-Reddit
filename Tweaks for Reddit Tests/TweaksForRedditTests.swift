@@ -8,10 +8,71 @@
 //  Copyright © 2020 Michael Rippe. All rights reserved.
 //
 
+import Combine
 import XCTest
 @testable import Tweaks_for_Reddit
 
 class TweaksForRedditTests: XCTestCase {
+
+    private var cancellables = Set<AnyCancellable>()
+
+    func testCheckMessages() {
+        let waiter = XCTestExpectation(description: "Check messages")
+
+        let store = Store<RedditState, RedditAction, AppEnvironment>(
+            initialState: RedditState(userData: nil, unreadMessages: nil),
+            reducer: redditReducer,
+            environment: .mock
+        )
+
+        store.$state.sink { newState in
+            if newState.unreadMessages != nil {
+                waiter.fulfill()
+            }
+        }.store(in: &cancellables)
+
+        store.send(.checkForMessages)
+
+        wait(for: [waiter], timeout: 10)
+
+        XCTAssertNotNil(store.state.unreadMessages)
+        XCTAssertEqual(store.state.unreadMessages!.count, 1)
+
+        let message = store.state.unreadMessages!.first!
+
+        XCTAssertEqual(message.author, "thebermudamocket")
+        XCTAssertEqual(message.subreddit, "iOSProgramming")
+        XCTAssertEqual(message.subject, "comment reply")
+    }
+
+    func testOAuth() {
+        let waiter = XCTestExpectation(description: "oauth")
+
+        let store: MainAppStore = .mock
+
+        store.$state.sink { newState in
+            if newState.didCompleteOAuth {
+                waiter.fulfill()
+            }
+        }.store(in: &cancellables)
+
+        store.send(.beginOAuth)
+        store.send(.exchangeCodeForTokens(incomingUrl: URL(string: "rdtwks://oauth?code=mocked")!))
+
+        wait(for: [waiter], timeout: 10)
+
+        XCTAssertTrue(store.state.didCompleteOAuth)
+        XCTAssertNil(store.state.error)
+    }
+
+    func testKeychain() {
+        let keychain = KeychainService.mock
+
+        let randomString = UUID().uuidString
+        keychain.setToken(.test, randomString)
+
+        XCTAssertEqual(randomString, keychain.getToken(.test))
+    }
 
     func testDebugger() {
         let debugger = Debugger.shared
@@ -19,8 +80,10 @@ class TweaksForRedditTests: XCTestCase {
 
         let testMessage = "test"
         debugger.log(testMessage)
-        guard let data = FileManager.default.contents(atPath: "debug.log"), let str = String(data: data, encoding: .utf8) else {
-            XCTFail()
+        guard let data = FileManager.default.contents(atPath: "debug.log"),
+              let str = String(data: data, encoding: .utf8)
+        else {
+            XCTFail("File does not exist or could not be read.")
             return
         }
         XCTAssertEqual(str, testMessage)
@@ -33,12 +96,15 @@ class TweaksForRedditTests: XCTestCase {
     }
 
     func testFetchRequest() {
-        let vc = PersistenceController.shared.container.viewContext
-
-        let testSub = FavoriteSubreddit(context: vc)
+        let env = TFREnvironment(
+            oauth: .mock,
+            iap: .shared,
+            coreData: .preview,
+            defaults: .mock
+        )
+        let testSub = FavoriteSubreddit(context: PersistenceController.shared.container.viewContext)
         testSub.name = "Apple"
-
-        XCTAssertTrue(PersistenceController.shared.favoriteSubreddits.contains { $0 == "Apple" })
+        XCTAssertTrue(PersistenceController.shared.favoriteSubreddits.contains { $0.name == "Apple" })
     }
 
     func testCoreDataAddDelete() {
@@ -49,11 +115,11 @@ class TweaksForRedditTests: XCTestCase {
         // add
         let sub = FavoriteSubreddit(context: vc)
         sub.name = uuid
-        XCTAssertTrue(PersistenceController.shared.favoriteSubreddits.contains { $0 == uuid })
+        XCTAssertTrue(PersistenceController.shared.favoriteSubreddits.contains { $0.name == uuid })
 
         // delete
         vc.delete(sub)
-        XCTAssertTrue(!PersistenceController.shared.favoriteSubreddits.contains { $0 == uuid })
+        XCTAssertTrue(!PersistenceController.shared.favoriteSubreddits.contains { $0.name == uuid })
     }
 
     func testBuildJavascript() {
@@ -66,6 +132,3 @@ class TweaksForRedditTests: XCTestCase {
     }
 
 }
-
-
-

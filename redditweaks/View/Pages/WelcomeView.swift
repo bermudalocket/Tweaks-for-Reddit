@@ -18,7 +18,7 @@ struct WelcomeView: View {
             Text("Tweaks for Reddit")
                 .font(.system(size: 32, weight: .heavy, design: .rounded))
             Spacer()
-        }
+        }.accessibilityLabel("Welcome to Tweaks for Reddit")
     }
 }
 

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MainView: View {
 
-    @AppStorage("selectedTab") private var selectedTab: SelectedTab = .welcome
+    @EnvironmentObject private var store: MainAppStore
 
     var body: some View {
         NavigationView {
@@ -21,10 +21,15 @@ struct MainView: View {
                     NavigationLink(
                         destination: RoutingView(tab: tab),
                         tag: tab,
-                        selection: .init(get: { selectedTab }, set: { selectedTab = $0 ?? .welcome })
+                        selection: store.binding(for: \.tab, transform: MainAppAction.setTab)
                     ) {
-                        Text(tab.name)
-                            .font(.title3)
+                        HStack {
+                            Image(systemName: tab.symbol)
+                                .frame(width: 25)
+                                .foregroundColor(.accentColor)
+                            Text(tab.name)
+                        }
+                        .font(.title3)
                     }
                 }
                 .listStyle(SidebarListStyle())
@@ -40,5 +45,12 @@ struct MainView: View {
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
+            .environmentObject(
+                MainAppStore(
+                    initialState: .mock,
+                    reducer: .none,
+                    environment: .mock
+                )
+            )
     }
 }

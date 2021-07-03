@@ -25,15 +25,16 @@ struct RedditweaksButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundColor(.white)
-            .font(.title3)
+//            .foregroundColor(.white)
+//            .font(.title3)
             .padding(.horizontal)
             .padding(.vertical, 10)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(.accentColor)
-                    .shadow(radius: 5)
-            )
+            .buttonStyle(BorderedButtonStyle())
+//            .background(
+//                RoundedRectangle(cornerRadius: 10)
+//                    .foregroundColor(.accentColor)
+//                    .shadow(radius: 5)
+//            )
             .scaleEffect(calculateScale(with: configuration))
             .animation(.linear)
             .contentShape(Rectangle())
@@ -42,6 +43,7 @@ struct RedditweaksButtonStyle: ButtonStyle {
 
 }
 
+// swiftlint:disable:next type_name
 struct RedditweaksButtonStyle_Preview: PreviewProvider {
 
     static var previews: some View {

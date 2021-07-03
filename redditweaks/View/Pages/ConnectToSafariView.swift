@@ -8,10 +8,16 @@
 
 import SwiftUI
 import SafariServices.SFSafariApplication
+import TfRCompose
+import TfRGlobals
 
 struct ConnectToSafariView: View {
 
-    @State private var isSafariExtensionEnabled = false
+    @EnvironmentObject private var store: Store<MainAppState, MainAppAction, TFREnvironment>
+
+    private lazy var timer = Timer(timeInterval: 2, repeats: true) { [self] _ in
+        self.store.send(.updateSafariExtensionState)
+    }
 
     var body: some View {
         VStack {
@@ -23,42 +29,42 @@ struct ConnectToSafariView: View {
                     .font(.system(size: 32, weight: .bold))
             }
             .padding([.horizontal, .bottom])
-
             VStack(spacing: 10) {
-                Text("Connecting to Safari is easy")
-                    .font(.headline) + Text(".")
+                Text("Connecting to Safari is easy.")
                 Text("All you have to do is click a checkbox in Safari's preferences.\nClick the button below to have Safari open to the right spot.")
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
-                if isSafariExtensionEnabled {
+                if store.state.isSafariExtensionEnabled {
                     Text("The extension is enabled!")
                         .font(.title2)
                         .bold()
                 } else {
                     Button("Open in Safari") {
-                        SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") {
-                            if let error = $0 {
-                                NSLog("Error opening Safari: \(error).")
-                            }
-                        }
+                        store.send(.openSafariToExtensionsWindow)
                     }
-                    .buttonStyle(RedditweaksButtonStyle())
                 }
             }
         }
-        .onAppear {
-            SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") { state, error in
-                self.isSafariExtensionEnabled = state?.isEnabled ?? false
-            }
-        }
+        .padding()
     }
 
 }
 
 struct ConnectToSafariView_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectToSafariView()
-            .environmentObject(OnboardingEnvironment())
-            .frame(width: 510)
+        Group {
+            ConnectToSafariView()
+                .environmentObject(MainAppStore(
+                    initialState: MainAppState(isSafariExtensionEnabled: false),
+                    reducer: mainAppReducer,
+                    environment: .mock
+                ))
+            ConnectToSafariView()
+                .environmentObject(MainAppStore(
+                    initialState: MainAppState(isSafariExtensionEnabled: true),
+                    reducer: mainAppReducer,
+                    environment: .mock
+                ))
+        }
     }
 }
