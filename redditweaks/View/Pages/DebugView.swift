@@ -9,6 +9,7 @@
 import CloudKit
 import Combine
 import SwiftUI
+import TfRGlobals
 
 extension NSManagedObjectModel {
     func isActive(url: URL) -> Bool {
@@ -34,7 +35,7 @@ struct DebugView: View {
     private var karmaMemories: FetchedResults<KarmaMemory>
 
     private var coreDataModelId: String {
-        PersistenceController.shared.container.managedObjectModel.versionIdentifiers.first as? String ?? "N/A"
+        CoreDataService.live.container.managedObjectModel.versionIdentifiers.first as? String ?? "N/A"
     }
 
     private var coreDataModelName: String {
@@ -44,7 +45,7 @@ struct DebugView: View {
             return "Error"
         }
         for path in moms {
-            if PersistenceController.shared.container.managedObjectModel.isActive(url: path) {
+            if CoreDataService.live.container.managedObjectModel.isActive(url: path) {
                 let lastPathComp = path.lastPathComponent
                 let momName = lastPathComp.replacingOccurrences(of: ".mom", with: "")
                 return momName
@@ -82,6 +83,8 @@ struct DebugView: View {
         return fmt
     }
 
+    @Environment(\.openURL) private var openURL
+
     var body: some View {
         VStack(spacing: 30) {
             LazyVGrid(columns: columns) {
@@ -107,6 +110,9 @@ struct DebugView: View {
 
                     Text("Thread Comment Counts").bold()
                     Text("\(threadCommentCounts.count), totaling \(formatter.string(from: NSNumber(value: threadCommentCountSize))!) Kb")
+                }
+                Button("Open Popover") {
+                    openURL(URL(string: "rdtwks://debugpopover")!)
                 }
             }
         }

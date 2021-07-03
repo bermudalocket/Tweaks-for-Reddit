@@ -14,6 +14,9 @@ struct RoutingView: View {
 
     var body: some View {
         switch tab {
+            case .oauth:
+                OAuthView()
+
             case .connectToSafari:
                 ConnectToSafariView()
 
@@ -29,8 +32,8 @@ struct RoutingView: View {
             case .toolbar:
                 SafariPopoverView()
 
-            case .debug:
-                DebugView()
+//            case .debug:
+//                DebugView()
         }
     }
 }

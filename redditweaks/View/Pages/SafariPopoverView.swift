@@ -24,6 +24,8 @@ struct SafariPopoverView: View {
             VStack(spacing: 12) {
                 Text("The extension can be accessed in Safari via the toolbar.")
                 Text("From there, you can enable individual features via their checkboxes.")
+                Text("Keep in mind you must be using \"Old Reddit\" in order for the extension to work.")
+                    .bold()
             }
 
             ArtSafariToolbarView()
@@ -34,6 +36,6 @@ struct SafariPopoverView: View {
 
 struct PageView_Previews: PreviewProvider {
     static var previews: some View {
-        PopoverView()
+        SafariPopoverView()
     }
 }

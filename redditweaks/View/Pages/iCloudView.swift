@@ -9,6 +9,8 @@
 import CloudKit
 import SwiftUI
 
+// swiftlint:disable type_name
+
 struct iCloudView: View {
 
     private var isConnected: Bool {
