@@ -236,13 +236,14 @@ let autoExpandImages = (subject) => {
 // MARK: oldReddit
 let oldReddit = () => {
     const isOldReddit = document.querySelector("ul.sr-bar")
+    const url = window.location.href
     if (!isOldReddit) {
         if (url.includes("/poll/")) {
             return
         } else if (url.startsWith("https://www.reddit")) {
-            window.location = window.location.href.replace("www", "old")
+            window.location = url.replace("www", "old")
         } else if (url.startsWith("https://reddit.com")) {
-            window.location = window.location.href.replace("reddit.com", "old.reddit.com")
+            window.location = url.replace("reddit.com", "old.reddit.com")
         }
     }
 }
