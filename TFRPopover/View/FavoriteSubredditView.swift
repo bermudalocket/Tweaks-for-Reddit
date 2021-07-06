@@ -19,12 +19,11 @@ extension View {
 
 struct FavoriteSubredditView: View {
 
-    @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject private var store: ExtensionStore
 
     let subreddit: FavoriteSubreddit
 
-    @State private var isEditing = false
-    @State private var subredditRenameField = ""
+    @State private var isHovered = false
 
     public let sfSymbolsMap: [String: String] = [
         "apple": "applelogo",
@@ -77,6 +76,10 @@ struct FavoriteSubredditView: View {
     private let defaultIcon = Image(systemName: "doc")
 
     private var icon: AnyView {
+        if isHovered {
+            return Image(systemName: "arrowshape.turn.up.left.fill")
+                .eraseToAnyView()
+        }
         guard let name = subreddit.name else {
             return defaultIcon.eraseToAnyView()
         }
@@ -94,52 +97,32 @@ struct FavoriteSubredditView: View {
         }
     }
 
-    func openSubredditInBrowser() {
-        guard let name = subreddit.name, let url = URL(string: "https://www.reddit.com/r/\(name)") else {
-            return
-        }
-        NSWorkspace.shared.open(url)
-    }
-
     var body: some View {
         HStack(alignment: .center) {
             self.icon
                 .foregroundColor(.accentColor)
                 .frame(width: 20)
-                .onTapGesture(perform: openSubredditInBrowser)
-            if isEditing {
-                TextField(
-                    "Subreddit",
-                    text: $subredditRenameField,
-                    onEditingChanged: { _ in },
-                    onCommit: {
-                        subreddit.name = subredditRenameField
-                        isEditing = false
-                    }
-                )
-                .focusable()
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .frame(width: 200, alignment: .leading)
-            } else {
-                Menu("r/\(subreddit.name ?? "???")") {
-                    Button("Open", action: openSubredditInBrowser)
-                    Button("Edit") { isEditing = true }
-                    Divider()
-                    Button(
-                        action: {
-                            viewContext.delete(subreddit)
-                        }, label: {
-                            Text("Delete").foregroundColor(.red)
-                        }
-                    )
+                .onTapGesture {
+                    store.send(.openFavoriteSubreddit(subreddit))
                 }
-                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                .menuStyle(BorderlessButtonMenuStyle())
+            Menu("r/\(subreddit.name ?? "???")") {
+                Button("Open") {
+                    store.send(.openFavoriteSubreddit(subreddit))
+                }
+                Divider()
+                Button(action: {
+                    store.send(.deleteFavoriteSubreddit(self.subreddit))
+                }, label: {
+                    Text("Delete")
+                        .foregroundColor(.red)
+                })
             }
+            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+            .menuStyle(BorderlessButtonMenuStyle())
         }
         .contentShape(Rectangle())
-        .onAppear {
-            self.subredditRenameField = self.subreddit.name ?? ""
+        .onHover {
+            self.isHovered = $0
         }
     }
 

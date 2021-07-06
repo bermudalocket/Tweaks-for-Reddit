@@ -47,6 +47,7 @@ struct ExtensionState: Equatable {
     var newToOAuthFeatures = true
     var enableOAuthFeatures = true
 
+    var newFavoriteSubredditTextField = ""
     var favoriteSubredditListHeight: FavoriteSubredditListHeight = .medium
 
     var isShowingFavoriteSubredditEmptyError = false
@@ -75,9 +76,13 @@ enum ExtensionError: Error {
 
 enum ExtensionAction: Equatable {
     case setFeatureState(feature: Feature, enabled: Bool)
-    case addFavoriteSubreddit(_ subreddit: String)
 
+    case setFavoriteSubredditTextFieldContents(text: String)
     case setFavoriteSubredditsListHeight(height: FavoriteSubredditListHeight)
+
+    case addFavoriteSubreddit(_ subreddit: String)
+    case deleteFavoriteSubreddit(_ subreddit: FavoriteSubreddit)
+    case openFavoriteSubreddit(_ subreddit: FavoriteSubreddit)
 
     case askForReview
     case openAppToOAuth
@@ -95,6 +100,19 @@ enum ExtensionAction: Equatable {
 let extensionReducer = Reducer<ExtensionState, ExtensionAction, TFREnvironment> { state, action, env in
     logReducer("extensionReducer: \(action)")
     switch action {
+        case .deleteFavoriteSubreddit(let subreddit):
+            state.favoriteSubreddits.removeAll { $0 == subreddit }
+            env.coreData.container.viewContext.delete(subreddit)
+            try? env.coreData.container.viewContext.save()
+
+        case .setFavoriteSubredditTextFieldContents(text: let text):
+            state.newFavoriteSubredditTextField = text
+
+        case .openFavoriteSubreddit(let subreddit):
+            if let name = subreddit.name {
+                NSWorkspace.shared.open(URL(string: "https://www.reddit.com/r/\(name)")!)
+            }
+
         case .resolveError(let error):
             switch error {
                 case .favoriteSubredditInvalid:
