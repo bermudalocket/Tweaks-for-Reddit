@@ -189,6 +189,14 @@ const hideRedditPremiumBanner = (subject) => removeAll(".premium-banner-outer", 
 const hideNewRedditButton = (subject) => removeAll(".redesign-beta-optin", subject)
 const hideHappeningNowBanners = (subject) => removeAll(".happening-now-wrap", subject)
 
+const hideJunk = () => {
+    hideAds()
+    hidePromotedPosts()
+    hideRedditPremiumBanner()
+    hideNewRedditButton()
+    hideHappeningNowBanners()
+}
+
 // MARK: showEstimatedDownvotes
 const showEstimatedDownvotes = () => {
     const scoreDiv = document.querySelector("div.score")
