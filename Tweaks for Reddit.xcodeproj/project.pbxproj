@@ -27,11 +27,9 @@
 		8909ACC025F46FAB00251064 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8909ACBF25F46FAA00251064 /* README.md */; };
 		8909ACC125F46FAB00251064 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8909ACBF25F46FAA00251064 /* README.md */; };
 		890CD1E126531C1600CC4405 /* iCloudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD1E026531C1600CC4405 /* iCloudView.swift */; };
-		891A74F92680F21C00268E76 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 891A74F82680F21C00268E76 /* KeychainAccess */; };
 		891A750A26811F6400268E76 /* MainAppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891A750926811F6400268E76 /* MainAppStore.swift */; };
 		891BA369262B8CDF00268E76 /* ConnectToSafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891BA368262B8CDF00268E76 /* ConnectToSafariView.swift */; };
 		891BA36B262B8D4B00268E76 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891BA36A262B8D4B00268E76 /* MainView.swift */; };
-		891F63602680700900268E76 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 891F635F2680700900268E76 /* KeychainAccess */; };
 		8925FD0C263385D800D83FF1 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8925FD0B263385D800D83FF1 /* WelcomeView.swift */; };
 		8925FD102633AD3000D83FF1 /* RedditweaksButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8925FD0F2633AD3000D83FF1 /* RedditweaksButtonStyle.swift */; };
 		89290F5F2686722300268E76 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 89290F5E2686722300268E76 /* Documentation.docc */; };
@@ -82,7 +80,6 @@
 		898A39362689015100268E76 /* FavoriteSubreddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8917DE392665994C0081DA7D /* FavoriteSubreddit.swift */; };
 		898A39372689015100268E76 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC30C12611000E00268E76 /* CoreDataService.swift */; };
 		898A39382689015D00268E76 /* Tweaks for Reddit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 89AB1BE326865B8C00268E76 /* Tweaks for Reddit.xcdatamodeld */; };
-		898A393A2689018500268E76 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 898A39392689018500268E76 /* KeychainAccess */; };
 		898A393B2689023F00268E76 /* URL+queryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A7D1132685008300268E76 /* URL+queryParameters.swift */; };
 		898A393C2689023F00268E76 /* Color+redditOrange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BD206A26589B2C00DDCBA4 /* Color+redditOrange.swift */; };
 		898A393E2689023F00268E76 /* URL+redditURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89290F762686C6ED00268E76 /* URL+redditURLs.swift */; };
@@ -395,7 +392,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				898A393A2689018500268E76 /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,7 +417,6 @@
 				8988B79226521C4700268E76 /* CloudKit.framework in Frameworks */,
 				898A39162688FFBA00268E76 /* TfRGlobals.framework in Frameworks */,
 				89EAB7572687F24000268E76 /* TfRCompose.framework in Frameworks */,
-				891F63602680700900268E76 /* KeychainAccess in Frameworks */,
 				898A38FF2688FE5E00268E76 /* TFRPopover.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,7 +426,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				898A395126891E9000268E76 /* TfRGlobals.framework in Frameworks */,
-				891A74F92680F21C00268E76 /* KeychainAccess in Frameworks */,
 				8988B79326521CF500268E76 /* CloudKit.framework in Frameworks */,
 				898A394C26891C0200268E76 /* TFRPopover.framework in Frameworks */,
 				898A395526891E9500268E76 /* TfRCompose.framework in Frameworks */,
@@ -777,7 +771,6 @@
 			);
 			name = TfRGlobals;
 			packageProductDependencies = (
-				898A39392689018500268E76 /* KeychainAccess */,
 			);
 			productName = TfRGlobals;
 			productReference = 898A390F2688FFBA00268E76 /* TfRGlobals.framework */;
@@ -840,7 +833,6 @@
 			);
 			name = "Tweaks for Reddit";
 			packageProductDependencies = (
-				891F635F2680700900268E76 /* KeychainAccess */,
 			);
 			productName = redditweaks2;
 			productReference = 99C7C2ED235D81A700ABA6EA /* Tweaks for Reddit.app */;
@@ -864,7 +856,6 @@
 			);
 			name = "Tweaks for Reddit Extension";
 			packageProductDependencies = (
-				891A74F82680F21C00268E76 /* KeychainAccess */,
 			);
 			productName = "redditweaks2 Extension";
 			productReference = 99C7C300235D81AA00ABA6EA /* Tweaks for Reddit Extension.appex */;
@@ -919,7 +910,6 @@
 			);
 			mainGroup = 99C7C2E4235D81A700ABA6EA;
 			packageReferences = (
-				891F635E2680700900268E76 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = 99C7C2EE235D81A700ABA6EA /* Products */;
 			projectDirPath = "";
@@ -1828,35 +1818,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		891F635E2680700900268E76 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		891A74F82680F21C00268E76 /* KeychainAccess */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 891F635E2680700900268E76 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
-			productName = KeychainAccess;
-		};
-		891F635F2680700900268E76 /* KeychainAccess */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 891F635E2680700900268E76 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
-			productName = KeychainAccess;
-		};
-		898A39392689018500268E76 /* KeychainAccess */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 891F635E2680700900268E76 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
-			productName = KeychainAccess;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		89AB1BE326865B8C00268E76 /* Tweaks for Reddit.xcdatamodeld */ = {
