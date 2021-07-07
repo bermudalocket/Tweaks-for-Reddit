@@ -13,9 +13,9 @@ enum FavoriteSubredditListHeight: Int, CaseIterable {
 
     var displayName: String {
         switch self {
-            case .small: return "Small"
-            case .medium: return "Medium"
-            case .large: return "Large"
+            case .small: return "a few"
+            case .medium: return "a bunch"
+            case .large: return "a lot"
         }
     }
 

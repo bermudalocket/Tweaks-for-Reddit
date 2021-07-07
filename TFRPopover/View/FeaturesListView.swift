@@ -32,7 +32,7 @@ struct FeaturesListView: View {
                 }
             }
         }
-        .padding([.top, .bottom, .leading], 10)
+        .padding(10)
         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
     }
 

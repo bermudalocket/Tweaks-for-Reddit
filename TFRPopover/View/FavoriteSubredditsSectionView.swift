@@ -58,6 +58,7 @@ struct FavoriteSubredditsSectionView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
+            HStack {
                 Menu("Sorting \(store.state.favoriteSubredditListSortingMethod.description)") {
                     ForEach(FavoriteSubredditSortingMethod.allCases, id: \.self) { method in
                         Button("Sort \(method.description)") {
@@ -65,6 +66,14 @@ struct FavoriteSubredditsSectionView: View {
                         }
                     }
                 }
+                Menu("Showing \(store.state.favoriteSubredditListHeight.displayName)") {
+                    ForEach(FavoriteSubredditListHeight.allCases, id: \.self) { listHeight in
+                        Button("Show \(listHeight.displayName)") {
+                            store.send(.setFavoriteSubredditsListHeight(height: listHeight))
+                        }
+                    }
+                }
+            }
             HStack(spacing: 5) {
                 TextField("r/", text: $favoriteSubredditField) { _ in
                 } onCommit: {
@@ -96,6 +105,7 @@ struct FavoriteSubredditsSectionView: View {
                 CGFloat(store.state.favoriteSubredditListHeight.rawValue),
                 25 * CGFloat(store.state.favoriteSubreddits.count)
             ))
+
         }
     }
 

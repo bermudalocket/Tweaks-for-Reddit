@@ -38,10 +38,6 @@ public struct PopoverView: View {
                     )
             }
 
-            GroupBox(label: Text("Features")) {
-                FeaturesListView()
-            }
-
             if store.state.canMakePurchases {
                 GroupBox(label: Text("In-App Purchases")) {
                     Toggle("Live preview comments in markdown", isOn: store.binding(for: .liveCommentPreview))
@@ -49,9 +45,9 @@ public struct PopoverView: View {
                         .padding(10)
                 }
             }
-
-            GroupBox(label: Text("Settings")) {
-                SettingsView()
+            
+            GroupBox(label: Text("Features")) {
+                FeaturesListView()
             }
         }
         .padding(10)
