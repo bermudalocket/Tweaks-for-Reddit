@@ -125,6 +125,7 @@
 		89EAB7602687F2BD00268E76 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891A74FD2681117E00268E76 /* Reducer.swift */; };
 		89EC4E6D262DE06800268E76 /* SafariPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC4E6C262DE06800268E76 /* SafariPopoverView.swift */; };
 		89EE61942661CED700B2C7BA /* RoutingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EE61932661CED700B2C7BA /* RoutingView.swift */; };
+		89F0BC722695594500268E76 /* FavoriteSubredditSortingMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F0BC712695594500268E76 /* FavoriteSubredditSortingMethod.swift */; };
 		89F92EEF26560F8D00268E76 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8952B9C125EED97D00EF44DF /* TitleView.swift */; };
 		89F92EFE2656121E00268E76 /* TweaksForRedditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F92EFA2656118500268E76 /* TweaksForRedditTests.swift */; };
 		99A81B7D236FBD42006D4A61 /* toolbar.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 99A81B7C236FBD42006D4A61 /* toolbar.pdf */; };
@@ -353,6 +354,7 @@
 		89EC30C12611000E00268E76 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		89EC4E6C262DE06800268E76 /* SafariPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariPopoverView.swift; sourceTree = "<group>"; };
 		89EE61932661CED700B2C7BA /* RoutingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingView.swift; sourceTree = "<group>"; };
+		89F0BC712695594500268E76 /* FavoriteSubredditSortingMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteSubredditSortingMethod.swift; sourceTree = "<group>"; };
 		89F3C4282683FF7800268E76 /* DefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsService.swift; sourceTree = "<group>"; };
 		89F3C42B2684238A00268E76 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		89F92EFA2656118500268E76 /* TweaksForRedditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweaksForRedditTests.swift; sourceTree = "<group>"; };
@@ -508,6 +510,7 @@
 				8982998C24B405BC0063FFE9 /* PopoverViewWrapper.swift */,
 				891A7500268111EF00268E76 /* ExtensionStore.swift */,
 				8904856C268BE7C800A91BD4 /* FavoriteSubredditListHeight.swift */,
+				89F0BC712695594500268E76 /* FavoriteSubredditSortingMethod.swift */,
 				891A75032681126B00268E76 /* RedditStore.swift */,
 				C96A6649FD5348AC8CA9E48B /* Feature.swift */,
 				898A38FA2688FE5E00268E76 /* TFRPopover.h */,
@@ -1052,6 +1055,7 @@
 				898A3946268903C200268E76 /* SectionBackgroundView.swift in Sources */,
 				898A3942268903C200268E76 /* FavoriteSubredditsSectionView.swift in Sources */,
 				898A3944268903C200268E76 /* RedditInfoView.swift in Sources */,
+				89F0BC722695594500268E76 /* FavoriteSubredditSortingMethod.swift in Sources */,
 				8904856D268BE7C800A91BD4 /* FavoriteSubredditListHeight.swift in Sources */,
 				898A3943268903C200268E76 /* FavoriteSubredditView.swift in Sources */,
 				898A39482689053400268E76 /* ExtensionStore.swift in Sources */,
