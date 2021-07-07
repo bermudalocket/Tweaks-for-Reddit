@@ -26,7 +26,7 @@ public enum Redditweaks {
         return uuid
     }
 
-    public static let popoverWidth: CGFloat = 325.0
+    public static let popoverWidth: CGFloat = 350.0
 
 }
 
