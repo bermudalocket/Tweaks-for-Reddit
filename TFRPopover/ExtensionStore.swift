@@ -48,6 +48,7 @@ struct ExtensionState: Equatable {
     var enableOAuthFeatures = true
 
     var newFavoriteSubredditTextField = ""
+    var favoriteSubredditListSortingMethod = FavoriteSubredditSortingMethod.alphabetical
     var favoriteSubredditListHeight: FavoriteSubredditListHeight = .medium
 
     var isShowingFavoriteSubredditEmptyError = false
@@ -79,6 +80,7 @@ enum ExtensionAction: Equatable {
 
     case setFavoriteSubredditTextFieldContents(text: String)
     case setFavoriteSubredditsListHeight(height: FavoriteSubredditListHeight)
+    case setFavoriteSubredditSortingMethod(method: FavoriteSubredditSortingMethod)
 
     case addFavoriteSubreddit(_ subreddit: String)
     case deleteFavoriteSubreddit(_ subreddit: FavoriteSubreddit)
@@ -100,6 +102,9 @@ enum ExtensionAction: Equatable {
 let extensionReducer = Reducer<ExtensionState, ExtensionAction, TFREnvironment> { state, action, env in
     logReducer("extensionReducer: \(action)")
     switch action {
+        case .setFavoriteSubredditSortingMethod(method: let method):
+            state.favoriteSubredditListSortingMethod = method
+
         case .deleteFavoriteSubreddit(let subreddit):
             state.favoriteSubreddits.removeAll { $0 == subreddit }
             env.coreData.container.viewContext.delete(subreddit)

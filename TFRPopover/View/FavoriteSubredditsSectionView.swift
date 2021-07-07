@@ -10,6 +10,7 @@
 
 import Combine
 import SwiftUI
+import TfRGlobals
 
 // TODO
 // https://stackoverflow.com/questions/60454752/swiftui-background-color-of-list-mac-os
@@ -45,8 +46,25 @@ struct FavoriteSubredditsSectionView: View {
 
     @State private var isShowingError: Int = 0
 
+    private var favoriteSubreddits: [FavoriteSubreddit] {
+        switch store.state.favoriteSubredditListSortingMethod {
+            case .alphabetical:
+                return store.state.favoriteSubreddits.sorted { $0.name! < $1.name! }
+
+            case .manual:
+                return store.state.favoriteSubreddits.sorted { $0.position < $1.position }
+        }
+    }
+
     var body: some View {
         VStack(alignment: .leading) {
+                Menu("Sorting \(store.state.favoriteSubredditListSortingMethod.description)") {
+                    ForEach(FavoriteSubredditSortingMethod.allCases, id: \.self) { method in
+                        Button("Sort \(method.description)") {
+                            store.send(.setFavoriteSubredditSortingMethod(method: method))
+                        }
+                    }
+                }
             HStack(spacing: 5) {
                 TextField("r/", text: $favoriteSubredditField) { _ in
                 } onCommit: {
@@ -61,11 +79,17 @@ struct FavoriteSubredditsSectionView: View {
                 }
                 .modifier(Shake(animatableData: CGFloat(isShowingError)))
             }
-            List {
-                ForEach(store.state.favoriteSubreddits, id: \.self) {
-                    FavoriteSubredditView(subreddit: $0)
+            Group {
+                if store.state.favoriteSubredditListSortingMethod == .alphabetical {
+                    List(favoriteSubreddits, rowContent: FavoriteSubredditView.init(subreddit:))
+                } else {
+                    List {
+                        ForEach(favoriteSubreddits) {
+                            FavoriteSubredditView(subreddit: $0)
+                        }
+                        .onMove(perform: onMove)
+                    }
                 }
-                .onMove(perform: onMove)
             }
             .listStyle(PlainListStyle())
             .frame(height: min(
