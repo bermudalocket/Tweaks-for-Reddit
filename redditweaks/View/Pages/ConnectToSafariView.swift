@@ -8,8 +8,8 @@
 
 import SwiftUI
 import SafariServices.SFSafariApplication
-import TfRCompose
-import TfRGlobals
+import Composable_Architecture
+import Tweaks_for_Reddit_Core
 
 struct ConnectToSafariView: View {
 

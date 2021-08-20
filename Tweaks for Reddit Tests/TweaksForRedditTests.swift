@@ -11,6 +11,10 @@
 import Combine
 import XCTest
 @testable import Tweaks_for_Reddit
+@testable import Tweaks_for_Reddit_Extension
+@testable import Tweaks_for_Reddit_Core
+@testable import Composable_Architecture
+@testable import Tweaks_for_Reddit_Popover
 
 class TweaksForRedditTests: XCTestCase {
 
@@ -19,7 +23,7 @@ class TweaksForRedditTests: XCTestCase {
     func testCheckMessages() {
         let waiter = XCTestExpectation(description: "Check messages")
 
-        let store = Store<RedditState, RedditAction, AppEnvironment>(
+        let store = Store<RedditState, RedditAction, TFREnvironment>(
             initialState: RedditState(userData: nil, unreadMessages: nil),
             reducer: redditReducer,
             environment: .mock
@@ -65,62 +69,38 @@ class TweaksForRedditTests: XCTestCase {
         XCTAssertNil(store.state.error)
     }
 
-    func testKeychain() {
-        let keychain = KeychainService.mock
-
-        let randomString = UUID().uuidString
-        keychain.setToken(.test, randomString)
-
-        XCTAssertEqual(randomString, keychain.getToken(.test))
-    }
-
-    func testDebugger() {
-        let debugger = Debugger.shared
-        XCTAssertTrue(FileManager.default.fileExists(atPath: "debug.log"))
-
-        let testMessage = "test"
-        debugger.log(testMessage)
-        guard let data = FileManager.default.contents(atPath: "debug.log"),
-              let str = String(data: data, encoding: .utf8)
-        else {
-            XCTFail("File does not exist or could not be read.")
-            return
-        }
-        XCTAssertEqual(str, testMessage)
-    }
-
     func testAllFeaturesAreAssignedAPageType() {
         Feature.features.forEach { feature in
             XCTAssertTrue(RedditPageType.allCases.map { $0.features.contains(feature) }.count >= 1)
         }
     }
-
-    func testFetchRequest() {
-        let env = TFREnvironment(
-            oauth: .mock,
-            iap: .shared,
-            coreData: .preview,
-            defaults: .mock
-        )
-        let testSub = FavoriteSubreddit(context: PersistenceController.shared.container.viewContext)
-        testSub.name = "Apple"
-        XCTAssertTrue(PersistenceController.shared.favoriteSubreddits.contains { $0.name == "Apple" })
-    }
-
-    func testCoreDataAddDelete() {
-        let vc = PersistenceController.shared.container.viewContext
-
-        let uuid = UUID().uuidString
-
-        // add
-        let sub = FavoriteSubreddit(context: vc)
-        sub.name = uuid
-        XCTAssertTrue(PersistenceController.shared.favoriteSubreddits.contains { $0.name == uuid })
-
-        // delete
-        vc.delete(sub)
-        XCTAssertTrue(!PersistenceController.shared.favoriteSubreddits.contains { $0.name == uuid })
-    }
+//
+//    func testFetchRequest() {
+//        let env = TFREnvironment(
+//            oauth: .mock,
+//            iap: .shared,
+//            coreData: .preview,
+//            defaults: .mock
+//        )
+//        let testSub = FavoriteSubreddit(context: PersistenceController.shared.container.viewContext)
+//        testSub.name = "Apple"
+//        XCTAssertTrue(PersistenceController.shared.favoriteSubreddits.contains { $0.name == "Apple" })
+//    }
+//
+//    func testCoreDataAddDelete() {
+//        let vc = PersistenceController.shared.container.viewContext
+//
+//        let uuid = UUID().uuidString
+//
+//        // add
+//        let sub = FavoriteSubreddit(context: vc)
+//        sub.name = uuid
+//        XCTAssertTrue(PersistenceController.shared.favoriteSubreddits.contains { $0.name == uuid })
+//
+//        // delete
+//        vc.delete(sub)
+//        XCTAssertTrue(!PersistenceController.shared.favoriteSubreddits.contains { $0.name == uuid })
+//    }
 
     func testBuildJavascript() {
 //        let safari = SafariExtensionHandler()

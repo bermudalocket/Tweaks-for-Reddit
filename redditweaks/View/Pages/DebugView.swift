@@ -9,7 +9,7 @@
 import CloudKit
 import Combine
 import SwiftUI
-import TfRGlobals
+import Tweaks_for_Reddit_Core
 
 extension NSManagedObjectModel {
     func isActive(url: URL) -> Bool {

@@ -9,14 +9,13 @@
 import Combine
 import StoreKit
 import SwiftUI
-import TfRGlobals
-import TFRPopover
+import Tweaks_for_Reddit_Core
+import Tweaks_for_Reddit_Popover
 import UserNotifications
 
 @main
 struct RedditweaksApp: App {
 
-    // swiftlint:disable:next weak_delegate
     @NSApplicationDelegateAdaptor private var appDelegate: RedditweaksAppDelegate
 
     @StateObject private var store: MainAppStore = CommandLine.arguments.contains("main-ui-testing") ? .mock : .live

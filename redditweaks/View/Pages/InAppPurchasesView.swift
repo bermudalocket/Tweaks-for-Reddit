@@ -8,7 +8,7 @@
 
 import SwiftUI
 import StoreKit
-import TfRGlobals
+import Tweaks_for_Reddit_Core
 
 struct InAppPurchasesView: View {
 

@@ -6,28 +6,41 @@
 //  Copyright © 2020 Michael Rippe. All rights reserved.
 //
 
+import Combine
 import CoreData
 import Foundation
 import SafariServices
 import SwiftUI
-import TfRGlobals
-import TFRPopover
+import Tweaks_for_Reddit_Core
+import Tweaks_for_Reddit_Popover
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
 
-    private let injectedPersistenceController: CoreDataService
+    private let coreData: CoreDataService
+    private let reddit: OAuthClient
+
+    private var tick = 0
+    private var cancellables = Set<AnyCancellable>()
 
     override func popoverViewController() -> SFSafariExtensionViewController {
         PopoverViewWrapper()
     }
 
     override init() {
-        injectedPersistenceController = .live
+        coreData = .live
+        reddit = OAuthClientLive()
         super.init()
     }
 
+    override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping (Bool, String) -> Void) {
+        let count = Int(Redditweaks.defaults.string(forKey: "newMessageCount") ?? "0") ?? 0
+        let badge = count > 0 ? "New" : ""
+        validationHandler(true, badge)
+    }
+
     init(persistenceController: CoreDataService = .live) {
-        injectedPersistenceController = persistenceController
+        coreData = persistenceController
+        reddit = OAuthClientLive()
         super.init()
     }
 
@@ -57,13 +70,13 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                       let count = Int(countStr) else {
                     return
                 }
-                injectedPersistenceController.saveCommentCount(for: thread, count: count)
+                coreData.saveCommentCount(for: thread, count: count)
 
             case .threadCommentCountFetchRequest:
                 guard let thread = userInfo["thread"] as? String else {
                     return
                 }
-                let count = injectedPersistenceController.commentCount(for: thread) ?? -1
+                let count = coreData.commentCount(for: thread) ?? -1
                 page.dispatchMessageToScript(message: .threadCommentCountFetchRequestResponse, userInfo: [
                     "thread": thread,
                     "count": count
@@ -71,7 +84,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
 
             case .userKarmaFetchRequest:
                 guard let user = userInfo["user"] as? String,
-                      let karma = injectedPersistenceController.userKarma(for: user),
+                      let karma = coreData.userKarma(for: user),
                       karma != 0 else {
                     return
                 }
@@ -85,7 +98,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                       let karma = userInfo["karma"] as? Int else {
                     return
                 }
-                injectedPersistenceController.saveUserKarma(for: user, karma: karma)
+                coreData.saveUserKarma(for: user, karma: karma)
 
             default:
                 print("Received message not meant for this handler: \(message) \(userInfo)")

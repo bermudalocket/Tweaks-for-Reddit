@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import TFRPopover
+import Tweaks_for_Reddit_Popover
 
 enum RedditPageType: CaseIterable {
 
@@ -17,13 +17,13 @@ enum RedditPageType: CaseIterable {
         let base: [Feature] = [.customSubredditBar, .hideJunk, .hideUsername, .noChat, .oldRedditRedirect, .showKarma, .showNewComments, .rememberUserVotes]
         switch self {
             case .feed:
-                return base + [.autoExpandImages, .endlessScroll]
+                return base + [.autoExpandImages, .endlessScroll, .subredditFirewall]
 
             case .post:
                 return base + [.collapseAutoModerator, .collapseChildComments, .liveCommentPreview, .showEstimatedDownvotes]
 
             case .subreddit:
-                return base + [.autoExpandImages, .endlessScroll]
+                return base + [.autoExpandImages, .endlessScroll, .subredditFirewall]
 
             default:
                 return base

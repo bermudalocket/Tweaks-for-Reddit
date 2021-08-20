@@ -37,34 +37,3 @@ class Tweaks_for_RedditUITests: XCTestCase {
     }
 
 }
-
-class MainAppTests: XCTestCase {
-
-    var app: XCUIApplication!
-
-    override func setUpWithError() throws {
-        continueAfterFailure = true
-        app = XCUIApplication()
-        app.launchArguments = ["main-ui-testing"]
-        app.launch()
-    }
-
-    func testExample() throws {
-        XCTAssertTrue(app.staticTexts["Welcome to Tweaks for Reddit"].exists)
-
-        let safariButton = app.buttons["Connect to Safari"]
-        XCTAssertTrue(safariButton.exists)
-        safariButton.click()
-
-        XCTAssertTrue(app.staticTexts["Connect to Safari"].exists)
-
-        let openInSafari = app.buttons["Open in Safari"]
-        XCTAssertTrue(openInSafari.exists)
-//        openInSafari.click()
-
-        let oauthButton = app.buttons["Reddit API Access"]
-        XCTAssertTrue(oauthButton.exists)
-        oauthButton.click()
-    }
-
-}

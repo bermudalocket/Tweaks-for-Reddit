@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "898A38F72688FE5E00268E76"
-               BuildableName = "TFRPopover.framework"
-               BlueprintName = "TFRPopover"
+               BuildableName = "Tweaks_for_Reddit_Popover.framework"
+               BlueprintName = "Tweaks for Reddit Popover"
                ReferencedContainer = "container:Tweaks for Reddit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -51,8 +51,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "898A38F72688FE5E00268E76"
-            BuildableName = "TFRPopover.framework"
-            BlueprintName = "TFRPopover"
+            BuildableName = "Tweaks_for_Reddit_Popover.framework"
+            BlueprintName = "Tweaks for Reddit Popover"
             ReferencedContainer = "container:Tweaks for Reddit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

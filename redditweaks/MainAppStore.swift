@@ -9,9 +9,9 @@
 import AppKit.NSWorkspace
 import Foundation
 import StoreKit
-import TfRCompose
-import TfRGlobals
-import TFRPopover
+import Composable_Architecture
+import Tweaks_for_Reddit_Core
+import Tweaks_for_Reddit_Popover
 import UserNotifications
 
 typealias MainAppStore = Store<MainAppState, MainAppAction, TFREnvironment>

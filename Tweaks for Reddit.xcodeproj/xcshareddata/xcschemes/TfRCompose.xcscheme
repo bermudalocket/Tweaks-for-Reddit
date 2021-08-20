@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "89EAB7412687F24000268E76"
-               BuildableName = "TfRCompose.framework"
-               BlueprintName = "TfRCompose"
+               BuildableName = "Composable_Architecture.framework"
+               BlueprintName = "Composable Architecture"
                ReferencedContainer = "container:Tweaks for Reddit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -51,8 +51,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "89EAB7412687F24000268E76"
-            BuildableName = "TfRCompose.framework"
-            BlueprintName = "TfRCompose"
+            BuildableName = "Composable_Architecture.framework"
+            BlueprintName = "Composable Architecture"
             ReferencedContainer = "container:Tweaks for Reddit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
