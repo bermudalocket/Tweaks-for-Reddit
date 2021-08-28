@@ -1,6 +1,6 @@
 //
 //  ThreadCommentCount.swift
-//  redditweaks
+//  Tweaks for Reddit Core
 //
 //  Created by Michael Rippe on 5/31/21.
 //  Copyright © 2021 bermudalocket. All rights reserved.

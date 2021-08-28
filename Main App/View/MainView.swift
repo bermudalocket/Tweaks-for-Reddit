@@ -26,7 +26,7 @@ struct MainView: View {
                         HStack {
                             Image(systemName: tab.symbol)
                                 .frame(width: 25)
-                                .foregroundColor(.accentColor)
+                                .foregroundColor(.redditOrange)
                             Text(tab.name)
                         }
                         .font(.title3)

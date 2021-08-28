@@ -1,22 +1,30 @@
 {
-  "ApplicationDescription" : "Redditweaks is a Safari app extension for reddit.com.",
+  "ApplicationDescription" : "Tweaks for Reddit is a Safari app extension for reddit.com.",
   "Connections" : [
     {
-      "DenyConsequences" : "If you deny this connection, automatic update checking will not work.",
-      "Host" : "github.com",
-      "IsIncoming" : false,
-      "NetworkProtocol" : "TCP",
-      "Port" : "443",
-      "Purpose" : "Redditweaks checks for updates by fetching the latest version from GitHub."
-    },
-    {
-      "DenyConsequences" : "If you deny this connection, Redditweaks will not be able to verify subreddits.",
+      "DenyConsequences" : "The app and extension will not be able to access the OAuth2-based Reddit API.",
       "Host" : "reddit.com",
       "IsIncoming" : false,
       "NetworkProtocol" : "TCP",
       "Port" : "443",
-      "Purpose" : "Redditweaks checks to see if subreddits are valid before adding them to your favorites."
-    }
+      "Purpose" : "The app and extension may need to access the Reddit API based on the features you enable."
+    },
+    {
+        "DenyConsequences": "The app will not be able to verify your in-app purchase receipt(s) with Apple.",
+        "Host": "bermudalocket.com",
+        "IsIncoming": false,
+        "NetworkProtocol": "TCP",
+        "Port": "443",
+        "Purpose": "The app needs to communicate with our middleman server to verify your in-app purchase receipt(s) with Apple."
+    },
+    {
+        "DenyConsequences": "The extension will not be able to download and display your Snoovatar.",
+        "Host": "i.redd.it",
+        "IsIncoming": false,
+        "NetworkProtocol": "TCP",
+        "Port": "443",
+        "Purpose": "The extension may need to download your Snoovatar from Reddit's image server based on features you enable."
+    },
   ],
   "DeveloperName" : "bermudalocket"
 }

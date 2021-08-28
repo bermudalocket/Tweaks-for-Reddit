@@ -28,7 +28,7 @@ public struct Feature: Hashable, Comparable {
     }
 
     public var isEnabled: Bool {
-        Redditweaks.defaults.bool(forKey: key)
+        TweaksForReddit.defaults.bool(forKey: key)
     }
 
     /// Comparable alphabetically
@@ -41,7 +41,6 @@ public struct Feature: Hashable, Comparable {
 extension Feature {
 
     public static let features: [Feature] = [
-        .subredditFirewall,
         .showEstimatedDownvotes,
         .autoExpandImages,
         .endlessScroll,
@@ -56,8 +55,6 @@ extension Feature {
         .oldRedditRedirect,
         .hideJunk
     ]
-
-    public static let subredditFirewall = Feature(key: "subredditFirewall", description: "Subreddit Firewall", help: "Prevents subreddits with a history of astroturfing from being displayed.")
 
     // in-app purchase
     public static let liveCommentPreview = Feature(

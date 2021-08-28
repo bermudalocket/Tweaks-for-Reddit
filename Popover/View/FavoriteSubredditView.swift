@@ -25,7 +25,7 @@ struct FavoriteSubredditView: View {
 
     @State private var isHovered = false
 
-    public let sfSymbolsMap: [String: String] = [
+    let sfSymbolsMap: [String: String] = [
         "apple": "applelogo",
         "art": "paintbrush.fill",
         "books": "books.vertical.fill",
@@ -57,7 +57,7 @@ struct FavoriteSubredditView: View {
         "homepod": "homepod.fill",
     ]
 
-    public let emojiMap: [String: String] = [
+    let emojiMap: [String: String] = [
         "jokes": "😂",
         "phasmophobiagame": "👻",
         "science": "🔬",

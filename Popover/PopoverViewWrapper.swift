@@ -19,6 +19,7 @@ import Tweaks_for_Reddit_Core
 public class PopoverViewWrapper: SFSafariExtensionViewController {
 
     public init() {
+        log("Initializing PopoverViewWrapper")
         super.init(nibName: nil, bundle: nil)
 
         let environment = TFREnvironment.live
@@ -27,7 +28,7 @@ public class PopoverViewWrapper: SFSafariExtensionViewController {
             initialState: ExtensionState(
                 redditState: .live,
                 favoriteSubreddits: environment.coreData.favoriteSubreddits,
-                canMakePurchases: environment.iap.canMakePayments,
+                canMakePurchases: environment.appStore.canMakePayments,
                 didPurchaseLiveCommentPreviews: environment.defaults.bool(forKey: "didPurchaseLiveCommentPreviews")
             ),
             reducer: extensionReducer,
@@ -40,6 +41,7 @@ public class PopoverViewWrapper: SFSafariExtensionViewController {
         activity.repeats = true
         activity.tolerance = 20
         activity.schedule { completion in
+            logService("Checking for messages...", service: .background)
             store.send(.reddit(.checkForMessages))
             completion(.finished)
         }

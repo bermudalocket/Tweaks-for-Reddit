@@ -1,6 +1,6 @@
 //
 //  AsyncImage.swift
-//  redditweaks
+//  Tweaks for Reddit Core
 //
 //  Created by Michael Rippe on 6/18/21.
 //  Copyright © 2021 bermudalocket. All rights reserved.
@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 
-public class AsyncImageLoader: ObservableObject {
+class AsyncImageLoader: ObservableObject {
 
     let publisher = PassthroughSubject<Image, Never>()
 

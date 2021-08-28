@@ -124,6 +124,6 @@ struct RedditInfoViewPreview: PreviewProvider {
                     deriveAction: ExtensionAction.reddit
                 )
             )
-            .frame(width: Redditweaks.popoverWidth)
+            .frame(width: TweaksForReddit.popoverWidth)
     }
 }

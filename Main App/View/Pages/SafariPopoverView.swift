@@ -30,6 +30,8 @@ struct SafariPopoverView: View {
 
             ArtSafariToolbarView()
                 .padding(.vertical)
+
+            NextTabButton()
         }
     }
 }

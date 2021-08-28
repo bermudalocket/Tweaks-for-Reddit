@@ -12,11 +12,12 @@ enum SelectedTab: String, Codable, CaseIterable, RawRepresentable {
 
     case welcome = "Welcome"
     case connectToSafari = "Connect to Safari"
+    case notifications = "Notifications"
     case oauth = "Reddit API Access"
     case toolbar = "The Toolbar Popover"
     case iCloud
     case liveCommentPreview = "Live Comment Previews"
-//    case debug = "Debug"
+//    case testFlight = "TestFlight"
 
     var name: String {
         self.rawValue
@@ -29,12 +30,13 @@ enum SelectedTab: String, Codable, CaseIterable, RawRepresentable {
             case .oauth: return "key.fill"
             case .toolbar: return "menubar.arrow.up.rectangle"
             case .iCloud: return "cloud.fill"
-            case .liveCommentPreview: return "bold.italic.underline"
-//            case .debug: return "ant.fill"
+            case .liveCommentPreview: return "sparkles.square.fill.on.square"
+            case .notifications: return "bell.badge.fill"
+//            case .testFlight: return "paperplane.fill"
         }
     }
 
-    public init?(rawValue: String) {
+    init?(rawValue: String) {
         guard let tab = SelectedTab.allCases.filter({ $0.name == rawValue }).first else {
             return nil
         }

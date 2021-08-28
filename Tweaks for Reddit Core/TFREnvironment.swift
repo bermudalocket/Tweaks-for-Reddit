@@ -1,6 +1,6 @@
 //
-//  AppEnvironment.swift
-//  redditweaks
+//  TFREnvironment.swift
+//  Tweaks for Reddit Core
 //
 //  Created by Michael Rippe on 6/25/21.
 //  Copyright © 2021 bermudalocket. All rights reserved.
@@ -11,49 +11,25 @@ import SafariServices
 
 public struct TFREnvironment {
     public var oauth: OAuthClient
-    public var iap: IAPHelper
     public var coreData: CoreDataService
     public var defaults: DefaultsService
     public var keychain: KeychainService
+    public var appStore: AppStoreService
 }
 
 extension TFREnvironment {
     public static let live = Self(
         oauth: OAuthClientLive(),
-        iap: .shared,
         coreData: .live,
         defaults: DefaultsServiceLive(),
-        keychain: KeychainServiceLive()
+        keychain: KeychainServiceLive(),
+        appStore: AppStoreServiceLive()
     )
     public static let mock = Self(
         oauth: OAuthClientMock(),
-        iap: .shared,
         coreData: .mock,
         defaults: DefaultsServiceMock(),
-        keychain: KeychainServiceMock()
+        keychain: KeychainServiceMock(),
+        appStore: AppStoreServiceLive()
     )
-}
-
-public struct TFRExtensionEnvironment {
-    public var oauth: OAuthClient
-    public var iap: IAPHelper
-    public var coreData: CoreDataService
-    public var defaults: DefaultsService
-    public var keychain: KeychainService
-    public var safari: SFSafariExtensionHandler
-
-    public static func create(with: SFSafariExtensionHandler) -> TFRExtensionEnvironment {
-        Self(
-            oauth: OAuthClientLive(),
-            iap: .shared,
-            coreData: .live,
-            defaults: DefaultsServiceLive(),
-            keychain: KeychainServiceLive(),
-            safari: with
-        )
-    }
-}
-
-public class SFSafariExtensionHandlerMock: SFSafariExtensionHandler {
-
 }

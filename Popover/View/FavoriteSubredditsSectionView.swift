@@ -107,7 +107,7 @@ struct FavoriteSubredditsSectionView_Previews: PreviewProvider {
     static var previews: some View {
         FavoriteSubredditsSectionView()
             .environmentObject(ExtensionStore.mock)
-            .frame(width: Redditweaks.popoverWidth)
+            .frame(width: TweaksForReddit.popoverWidth)
             .padding()
     }
 }

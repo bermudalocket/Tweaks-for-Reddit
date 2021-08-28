@@ -1,6 +1,6 @@
 //
 //  KeychainService.swift
-//  redditweaks
+//  Tweaks for Reddit Core
 //
 //  Created by Michael Rippe on 6/23/21.
 //  Copyright © 2021 bermudalocket. All rights reserved.
@@ -14,7 +14,7 @@ public protocol KeychainService {
     func setTokens(_ tokens: Tokens)
 }
 
-public class KeychainServiceLive: KeychainService {
+class KeychainServiceLive: KeychainService {
 
     private func get(_ key: String) -> String? {
         var query = [String: Any]()
@@ -66,7 +66,7 @@ public class KeychainServiceLive: KeychainService {
         }
     }
 
-    public func getTokens() -> Tokens? {
+    func getTokens() -> Tokens? {
         guard let accessToken = get("accessToken"), let refreshToken = get("refreshToken") else {
             logService("One or more tokens requested are nil", service: .keychain)
             return nil
@@ -74,7 +74,7 @@ public class KeychainServiceLive: KeychainService {
         return Tokens(accessToken: accessToken, refreshToken: refreshToken)
     }
 
-    public func setTokens(_ tokens: Tokens) {
+    func setTokens(_ tokens: Tokens) {
         do {
             guard let accessToken = tokens.accessToken, let refreshToken = tokens.refreshToken else {
                 throw OAuthError.noToken
@@ -88,26 +88,16 @@ public class KeychainServiceLive: KeychainService {
 
 }
 
-public class KeychainServiceMock: KeychainService {
+class KeychainServiceMock: KeychainService {
 
     private var tokens: Tokens?
 
-    public func getTokens() -> Tokens? {
+    func getTokens() -> Tokens? {
         tokens
     }
 
-    public func setTokens(_ tokens: Tokens) {
+    func setTokens(_ tokens: Tokens) {
         self.tokens = tokens
     }
 
-}
-
-public enum TokenType: String {
-    case accessToken = "accessToken"
-    case refreshToken = "refreshToken"
-    case test = "testToken"
-
-    public var tag: Data {
-        "com.bermudalocket.tfr.\(self.rawValue)".data(using: .utf8)!
-    }
 }

@@ -26,7 +26,7 @@ extension ExtensionStore {
 extension Store where State == ExtensionState, Action == ExtensionAction {
     func binding(for feature: Feature) -> Binding<Bool> {
         Binding<Bool> {
-            Redditweaks.defaults.bool(forKey: feature.key)
+            TweaksForReddit.defaults.bool(forKey: feature.key)
         } set: {
             self.send(.setFeatureState(feature: feature, enabled: $0))
         }

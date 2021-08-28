@@ -16,7 +16,7 @@ struct TitleView: View {
             Text("Tweaks for Reddit")
                 .font(.system(.title, design: .rounded))
                 .fontWeight(.heavy)
-            Text("Version \(Redditweaks.version)")
+            Text("Version \(TweaksForReddit.version)")
                 .font(.subheadline)
         }
         .padding(.horizontal)

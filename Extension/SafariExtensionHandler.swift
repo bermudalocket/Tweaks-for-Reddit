@@ -14,33 +14,27 @@ import SwiftUI
 import Tweaks_for_Reddit_Core
 import Tweaks_for_Reddit_Popover
 
-class SafariExtensionHandler: SFSafariExtensionHandler {
+public class SafariExtensionHandler: SFSafariExtensionHandler {
 
     private let coreData: CoreDataService
-    private let reddit: OAuthClient
 
-    private var tick = 0
-    private var cancellables = Set<AnyCancellable>()
-
-    override func popoverViewController() -> SFSafariExtensionViewController {
+    public override func popoverViewController() -> SFSafariExtensionViewController {
         PopoverViewWrapper()
     }
 
     override init() {
         coreData = .live
-        reddit = OAuthClientLive()
         super.init()
     }
 
-    override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping (Bool, String) -> Void) {
-        let count = Int(Redditweaks.defaults.string(forKey: "newMessageCount") ?? "0") ?? 0
+    public override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping (Bool, String) -> Void) {
+        let count = Int(TweaksForReddit.defaults.string(forKey: "newMessageCount") ?? "0") ?? 0
         let badge = count > 0 ? "New" : ""
         validationHandler(true, badge)
     }
 
     init(persistenceController: CoreDataService = .live) {
         coreData = persistenceController
-        reddit = OAuthClientLive()
         super.init()
     }
 
@@ -132,7 +126,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     /**
      Converts a vanilla Safari extension message into an enumerable one and passes it along.
      */
-    override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String: Any]?) {
+    public override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String: Any]?) {
         guard let message = Message.fromString(messageName) else {
             print("ERROR: couldn't get Message object from key \(messageName)")
             return

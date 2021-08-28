@@ -6,12 +6,8 @@
 //  Copyright © 2019 Michael Rippe. All rights reserved.
 //
 
-import Combine
-import StoreKit
 import SwiftUI
 import Tweaks_for_Reddit_Core
-import Tweaks_for_Reddit_Popover
-import UserNotifications
 
 @main
 struct RedditweaksApp: App {
@@ -45,21 +41,13 @@ struct RedditweaksApp: App {
                 }
                 .handlesExternalEvents(preferring: Set(arrayLiteral: "*"), allowing: Set(arrayLiteral: "*"))
         }
-        .defaultAppStorage(Redditweaks.defaults)
+        .defaultAppStorage(TweaksForReddit.defaults)
         .windowStyle(HiddenTitleBarWindowStyle())
     }
 
 }
 
 class RedditweaksAppDelegate: NSObject, NSApplicationDelegate {
-
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        SKPaymentQueue.default().add(IAPHelper.shared.transactionPublisher)
-    }
-
-    func applicationWillTerminate(_ notification: Notification) {
-        SKPaymentQueue.default().remove(IAPHelper.shared.transactionPublisher)
-    }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true

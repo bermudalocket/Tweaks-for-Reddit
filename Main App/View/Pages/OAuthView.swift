@@ -40,18 +40,18 @@ struct OAuthView: View {
                         .bold()
                     Text("Having problems? Click here to reauthorize.")
                         .font(.callout)
-                        .foregroundColor(Color(.placeholderTextColor))
+                        .foregroundColor(.gray)
                         .onTapGesture { store.send(.beginOAuth) }
                         .onHover { $0 ? NSCursor.pointingHand.push() : NSCursor.pop() }
                 }
-            } else {
-                Button("Start OAuth") {
-                    store.send(.beginOAuth)
-                }
             }
 
-            Toggle(isOn: store.binding(for: \.enableOAuth, transform: MainAppAction.setOAuthState)) {
-                Text("Enable OAuth features")
+            HStack {
+                Button("Start authorizing \(Image(systemName: "lock"))") {
+                    store.send(.beginOAuth)
+                }.buttonStyle(RedditweaksButtonStyle())
+                    .disabled(store.state.didCompleteOAuth)
+                NextTabButton()
             }
 
         }

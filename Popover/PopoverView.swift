@@ -14,19 +14,19 @@ import SwiftUI
 import Composable_Architecture
 import Tweaks_for_Reddit_Core
 
-public struct PopoverView: View {
+struct PopoverView: View {
 
     @EnvironmentObject private var store: ExtensionStore
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 10) {
-            Text("Tweaks for Reddit v\(Redditweaks.version)")
+            Text("Tweaks for Reddit v\(TweaksForReddit.version)")
                 .font(.callout)
                 .foregroundColor(.gray)
 
             if store.state.enableOAuthFeatures {
                 RedditInfoView()
-                    .frame(width: Redditweaks.popoverWidth, height: 175)
+                    .frame(width: TweaksForReddit.popoverWidth, height: 175)
                     .environmentObject(
                         store.derived(
                             deriveState: \.redditState,
@@ -40,13 +40,6 @@ public struct PopoverView: View {
                     Toggle("Live preview comments in markdown", isOn: store.binding(for: .liveCommentPreview))
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                         .padding(10)
-                        .alert(isPresented: $store.state.isShowingDidNotPurchaseLiveCommentPreviewsError) {
-                            Alert(
-                                title: Text("Something went wrong..."),
-                                message: Text("Either you have not purchased this in-app purchase, or something went wrong detecting your receipt. Try restoring your purchase through the main Tweaks for Reddit app, and if that fails, contact us for support on GitHub."),
-                                dismissButton: .default(Text("OK"))
-                            )
-                        }
                 }
             }
             
@@ -57,12 +50,12 @@ public struct PopoverView: View {
             HStack {
                 Text("Find a bug? Got a suggestion?")
                 Button("Contact us") {
-                    NSWorkspace.shared.open(URL(string: "mailto:support@eigenstuff.net?subject=Tweaks%20for%20Reddit%20Feedback&body=\(Redditweaks.debugInfo.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!)")!)
+                    NSWorkspace.shared.open(URL(string: "mailto:support@bermudalocket.com?subject=Tweaks%20for%20Reddit%20Feedback&body=\(TweaksForReddit.debugInfo.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!)")!)
                 }
             }
         }
         .padding(10)
-        .frame(width: Redditweaks.popoverWidth, alignment: .top)
+        .frame(width: TweaksForReddit.popoverWidth, alignment: .top)
         .onAppear {
             store.send(.load)
         }

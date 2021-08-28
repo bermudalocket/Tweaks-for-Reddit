@@ -1,6 +1,6 @@
 //
 //  Tokens.swift
-//  redditweaks
+//  Tweaks for Reddit Core
 //
 //  Created by Michael Rippe on 6/24/21.
 //  Copyright © 2021 bermudalocket. All rights reserved.
@@ -16,8 +16,4 @@ public struct Tokens: Decodable, Equatable {
         case accessToken = "access_token"
         case refreshToken = "refresh_token"
     }
-}
-
-extension Tokens {
-    static let empty = Tokens(accessToken: nil, refreshToken: nil)
 }

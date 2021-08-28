@@ -1,6 +1,6 @@
 //
-//  Persistence.swift
-//  fud
+//  CoreDataService.swift
+//  Tweaks for Reddit Core
 //
 //  Created by Michael Rippe on 2/15/21.
 //
@@ -45,9 +45,20 @@ public class CoreDataService {
     }
 
     public var iapState: IAPState? {
-        let req = NSFetchRequest<IAPState>(entityName: "IAPState")
+        let req = IAPState.fetchRequest()
         req.sortDescriptors = [ NSSortDescriptor(keyPath: \IAPState.timestamp, ascending: false) ]
-        return try? container.viewContext.fetch(req).first
+        do {
+            let results = try container.viewContext.fetch(req)
+            let count = results.count
+            log("Got results")
+            log("Results: \(count)")
+            guard let first = results.first else { return nil }
+            log("Result: \(first)")
+            return first
+        } catch {
+            log("Failed to get iap state fetch")
+            return nil
+        }
     }
 
     public func userKarma(for user: String) -> Int? {

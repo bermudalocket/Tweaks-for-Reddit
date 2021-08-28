@@ -17,20 +17,20 @@ enum RedditPageType: CaseIterable {
         let base: [Feature] = [.customSubredditBar, .hideJunk, .hideUsername, .noChat, .oldRedditRedirect, .showKarma, .showNewComments, .rememberUserVotes]
         switch self {
             case .feed:
-                return base + [.autoExpandImages, .endlessScroll, .subredditFirewall]
+                return base + [.autoExpandImages, .endlessScroll]
 
             case .post:
                 return base + [.collapseAutoModerator, .collapseChildComments, .liveCommentPreview, .showEstimatedDownvotes]
 
             case .subreddit:
-                return base + [.autoExpandImages, .endlessScroll, .subredditFirewall]
+                return base + [.autoExpandImages, .endlessScroll]
 
             default:
                 return base
         }
     }
 
-    public static func forURL(_ url: URL) -> RedditPageType? {
+    static func forURL(_ url: URL) -> RedditPageType? {
         let urlStr = url.absoluteString
         guard urlStr.contains("reddit") else {
             return nil

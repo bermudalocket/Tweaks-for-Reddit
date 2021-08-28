@@ -13,18 +13,14 @@ import Tweaks_for_Reddit_Core
 
 struct ConnectToSafariView: View {
 
-    @EnvironmentObject private var store: Store<MainAppState, MainAppAction, TFREnvironment>
-
-    private lazy var timer = Timer(timeInterval: 2, repeats: true) { [self] _ in
-        self.store.send(.updateSafariExtensionState)
-    }
+    @EnvironmentObject private var store: MainAppStore
 
     var body: some View {
         VStack {
             VStack(spacing: 10) {
                 Image(systemName: "safari")
                     .font(.system(size: 68))
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(.redditOrange)
                 Text("Connect to Safari")
                     .font(.system(size: 32, weight: .bold))
             }
@@ -38,14 +34,22 @@ struct ConnectToSafariView: View {
                     Text("The extension is enabled!")
                         .font(.title2)
                         .bold()
-                } else {
-                    Button("Open in Safari") {
+                }
+                HStack {
+                    Spacer()
+                    Button("Open in Safari \(Image(systemName: "safari.fill"))") {
                         store.send(.openSafariToExtensionsWindow)
-                    }
+                    }.buttonStyle(RedditweaksButtonStyle())
+                    .disabled(store.state.isSafariExtensionEnabled)
+                    NextTabButton()
+                    Spacer()
                 }
             }
         }
         .padding()
+        .onAppear {
+            store.send(.checkSafariExtensionState)
+        }
     }
 
 }

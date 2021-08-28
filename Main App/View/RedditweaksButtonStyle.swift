@@ -12,33 +12,35 @@ struct RedditweaksButtonStyle: ButtonStyle {
 
     @Environment(\.isEnabled) private var isEnabled
 
-    @State private var isHovering = false
+    @State private var isHovered = false
+
+    private var textColor: Color {
+        if isEnabled {
+            return isHovered ? Color(.highlightColor) : Color(.windowBackgroundColor)
+        }
+        return Color(.placeholderTextColor)
+    }
 
     private func calculateScale(with configuration: Configuration) -> CGFloat {
         var scale: CGFloat = 1.0
         if isEnabled {
-            if configuration.isPressed { scale -= 0.2 }
-            if isHovering { scale -= 0.05 }
+            if configuration.isPressed { scale -= 0.1 }
         }
         return scale
     }
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-//            .foregroundColor(.white)
-//            .font(.title3)
-            .padding(.horizontal)
-            .padding(.vertical, 10)
-            .buttonStyle(BorderedButtonStyle())
-//            .background(
-//                RoundedRectangle(cornerRadius: 10)
-//                    .foregroundColor(.accentColor)
-//                    .shadow(radius: 5)
-//            )
+            .font(.system(.title3).bold())
+            .padding(10)
+            .foregroundColor(textColor)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .foregroundColor(isEnabled ? .redditOrange : Color(.disabledControlTextColor))
+            )
+            .onHover { isHovered = $0 }
             .scaleEffect(calculateScale(with: configuration))
             .animation(.linear)
-            .contentShape(Rectangle())
-            .onHover { self.isHovering = $0 }
     }
 
 }

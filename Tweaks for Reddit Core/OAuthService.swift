@@ -1,6 +1,6 @@
 //
-//  NetworkManager.swift
-//  redditweaks
+//  OAuthService.swift
+//  Tweaks for Reddit Core
 //
 //  Created by Michael Rippe on 6/22/21.
 //  Copyright © 2021 bermudalocket. All rights reserved.
@@ -30,25 +30,25 @@ public protocol OAuthClient {
     func request(tokens: Tokens, endpoint: Endpoint, isRetry: Bool) -> AnyPublisher<Data, OAuthError>
 }
 
-public class OAuthClientMock: OAuthClient {
+class OAuthClientMock: OAuthClient {
 
-    public func begin(state: String) -> AnyPublisher<Never, Never> {
+    func begin(state: String) -> AnyPublisher<Never, Never> {
         Empty(completeImmediately: true, outputType: Never.self, failureType: Never.self).eraseToAnyPublisher()
     }
 
-    public func exchangeCodeForTokens(code: String) -> AnyPublisher<Tokens, OAuthError> {
+    func exchangeCodeForTokens(code: String) -> AnyPublisher<Tokens, OAuthError> {
         Just(Tokens(accessToken: "mocked", refreshToken: "mocked"))
             .setFailureType(to: OAuthError.self)
             .eraseToAnyPublisher()
     }
 
-    public func refresh(refreshToken: String) -> AnyPublisher<Tokens, OAuthError> {
+    func refresh(refreshToken: String) -> AnyPublisher<Tokens, OAuthError> {
         Just(Tokens(accessToken: "mocked2", refreshToken: "mocked2"))
             .setFailureType(to: OAuthError.self)
             .eraseToAnyPublisher()
     }
 
-    public func request(tokens: Tokens, endpoint: Endpoint, isRetry: Bool = false) -> AnyPublisher<Data, OAuthError> {
+    func request(tokens: Tokens, endpoint: Endpoint, isRetry: Bool = false) -> AnyPublisher<Data, OAuthError> {
         switch endpoint {
             default:
                 return Just("".data(using: .utf8)!)
@@ -59,13 +59,9 @@ public class OAuthClientMock: OAuthClient {
 
 }
 
-public class OAuthClientLive: OAuthClient {
+class OAuthClientLive: OAuthClient {
 
-    public init() {
-    
-    }
-
-    public func begin(state: String) -> AnyPublisher<Never, Never> {
+    func begin(state: String) -> AnyPublisher<Never, Never> {
         var comps = URLComponents(string: "https://www.reddit.com/api/v1/authorize")!
         comps.queryItems = [
             URLQueryItem(name: "client_id", value: "CLhgpMcqOhskvA"),
@@ -81,7 +77,7 @@ public class OAuthClientLive: OAuthClient {
         return .none
     }
 
-    public func exchangeCodeForTokens(code: String) -> AnyPublisher<Tokens, OAuthError> {
+    func exchangeCodeForTokens(code: String) -> AnyPublisher<Tokens, OAuthError> {
         let request: URLRequest = {
             var request = URLRequest(url: .accessToken)
             request.httpMethod = "POST"
@@ -111,7 +107,7 @@ public class OAuthClientLive: OAuthClient {
             .eraseToAnyPublisher()
     }
 
-    public func refresh(refreshToken: String) -> AnyPublisher<Tokens, OAuthError> {
+    func refresh(refreshToken: String) -> AnyPublisher<Tokens, OAuthError> {
         let request: URLRequest = {
             var request = URLRequest(url: .refreshToken)
             request.httpMethod = "POST"
@@ -150,7 +146,7 @@ public class OAuthClientLive: OAuthClient {
             .eraseToAnyPublisher()
     }
 
-    public func request(tokens: Tokens, endpoint: Endpoint, isRetry: Bool = false) -> AnyPublisher<Data, OAuthError> {
+    func request(tokens: Tokens, endpoint: Endpoint, isRetry: Bool = false) -> AnyPublisher<Data, OAuthError> {
         guard let accessToken = tokens.accessToken else {
             return Fail(error: OAuthError.noToken).eraseToAnyPublisher()
         }

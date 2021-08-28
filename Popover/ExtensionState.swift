@@ -26,7 +26,6 @@ struct ExtensionState: Equatable {
     var favoriteSubredditListSortingMethod = FavoriteSubredditSortingMethod.alphabetical
     var favoriteSubredditListHeight: FavoriteSubredditListHeight = .medium
 
-    var isShowingDidNotPurchaseLiveCommentPreviewsError = false
     var isShowingFavoriteSubredditEmptyError = false
     var isShowingFavoriteSubredditAlreadyExists = false
 

@@ -1,6 +1,6 @@
 //
 //  AppStoreValidationRequest.swift
-//  redditweaks
+//  Tweaks for Reddit Core
 //
 //  Created by Michael Rippe on 6/2/21.
 //  Copyright © 2021 bermudalocket. All rights reserved.

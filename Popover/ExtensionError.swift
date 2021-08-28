@@ -11,5 +11,4 @@ import Foundation
 enum ExtensionError: Error {
     case favoriteSubredditInvalid
     case favoriteSubredditRedundant
-    case didNotPurchaseLiveCommentPreviews
 }

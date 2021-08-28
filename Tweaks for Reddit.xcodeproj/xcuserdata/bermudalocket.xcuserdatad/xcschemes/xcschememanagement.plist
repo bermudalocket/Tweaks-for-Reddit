@@ -19,11 +19,6 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>Safari Extension.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
 		<key>SnapKitPlayground (Playground) 1.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -45,27 +40,12 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
-		<key>TFRPopover.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
-		<key>TfRCompose.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
-		</dict>
 		<key>TfRGlobals Tests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>12</integer>
 		</dict>
 		<key>TfRGlobals.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>7</integer>
-		</dict>
-		<key>Tweaks for Reddit Core.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>7</integer>
@@ -93,6 +73,16 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>898A38F72688FE5E00268E76</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>898A390E2688FFBA00268E76</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>898F0574267EBDE600268E76</key>
 		<dict>
 			<key>primary</key>
@@ -104,6 +94,11 @@
 			<true/>
 		</dict>
 		<key>99C7C2EC235D81A700ABA6EA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>99C7C2FF235D81AA00ABA6EA</key>
 		<dict>
 			<key>primary</key>
 			<true/>

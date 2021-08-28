@@ -1,6 +1,6 @@
 //
-//  UserAboutResponse.swift
-//  redditweaks
+//  UserData.swift
+//  Tweaks for Reddit Core
 //
 //  Created by Michael Rippe on 6/17/21.
 //  Copyright © 2021 bermudalocket. All rights reserved.

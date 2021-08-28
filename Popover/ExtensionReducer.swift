@@ -46,9 +46,6 @@ let extensionReducer = Reducer<ExtensionState, ExtensionAction, TFREnvironment> 
 
                 case .favoriteSubredditRedundant:
                     state.isShowingFavoriteSubredditAlreadyExists = false
-
-                case .didNotPurchaseLiveCommentPreviews:
-                    state.isShowingDidNotPurchaseLiveCommentPreviewsError = false
             }
 
         case .setFavoriteSubredditsListHeight(height: let height):
@@ -75,6 +72,9 @@ let extensionReducer = Reducer<ExtensionState, ExtensionAction, TFREnvironment> 
             state.canMakePurchases = SKPaymentQueue.canMakePayments()
             state.favoriteSubreddits = env.coreData.favoriteSubreddits
             state.didPurchaseLiveCommentPreviews = env.coreData.iapState?.liveCommentPreviews ?? false
+            if !state.didPurchaseLiveCommentPreviews && env.defaults.bool(forKey: Feature.liveCommentPreview.key) {
+                env.defaults.set(false, forKey: Feature.liveCommentPreview.key)
+            }
 
         case .save:
             try? env.coreData.container.viewContext.save()
@@ -89,7 +89,7 @@ let extensionReducer = Reducer<ExtensionState, ExtensionAction, TFREnvironment> 
 
         case .setFeatureState(feature: let feature, enabled: let isEnabled):
             if feature == .liveCommentPreview && isEnabled && !(env.coreData.iapState?.liveCommentPreviews ?? false) {
-                state.isShowingDidNotPurchaseLiveCommentPreviewsError = true
+                NSWorkspace.shared.open(URL(string: "rdtwks://iap")!)
                 return .none
             }
             env.defaults.set(isEnabled, forKey: feature.key)

@@ -37,6 +37,9 @@ enum RedditAction: Equatable {
 
 let redditReducer = Reducer<RedditState, RedditAction, TFREnvironment> { state, action, env in
     logReducer("redditReducer: \(action)")
+//    env.coreData.container.viewContext.delete(env.coreData.iapState!)
+//    try? env.coreData.container.viewContext.save()
+    log("IAP State = \(env.coreData.iapState?.liveCommentPreviews) \(env.coreData.iapState?.timestamp)")
     switch action {
         case .showOAuthError(let error):
             state.isShowingOAuthError = true
@@ -44,6 +47,9 @@ let redditReducer = Reducer<RedditState, RedditAction, TFREnvironment> { state, 
 
         case .updateMessages(let messages):
             env.defaults.set(messages.count, forKey: "newMessageCount")
+            
+            messages.forEach(NotificationService.shared.send(msg:))
+
             state.unreadMessages = messages
 
         case .checkForMessages:

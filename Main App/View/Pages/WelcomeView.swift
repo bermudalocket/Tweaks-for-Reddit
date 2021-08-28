@@ -16,7 +16,9 @@ struct WelcomeView: View {
             Text("Welcome to")
                 .font(.title2)
             Text("Tweaks for Reddit")
-                .font(.system(size: 32, weight: .heavy, design: .rounded))
+                .font(.title)
+                .fontWeight(.heavy)
+            NextTabButton().padding()
             Spacer()
         }.accessibilityLabel("Welcome to Tweaks for Reddit")
     }
@@ -25,5 +27,6 @@ struct WelcomeView: View {
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView()
+            .frame(width: 500)
     }
 }
