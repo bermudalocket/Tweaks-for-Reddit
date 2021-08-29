@@ -35,6 +35,14 @@ public func logService(_ message: String, service: LogService) {
     os_log(.default, log: infoLog, service.format, message)
 }
 
+public func logInit(_ name: String) {
+    os_log(.default, log: infoLog, "[TfR][⭐] %{public}s", name)
+}
+
+public func logDeinit(_ name: String) {
+    os_log(.default, log: infoLog, "[TfR][🗑] %{public}s", name)
+}
+
 public func mockLog(_ message: String, level: OSLogType = .default) {
     os_log(level, log: infoLog, "[TfR][🔸 - mocked] %{public}s", message)
 }

@@ -19,8 +19,8 @@ import Tweaks_for_Reddit_Core
 public class PopoverViewWrapper: SFSafariExtensionViewController {
 
     public init() {
-        log("Initializing PopoverViewWrapper")
         super.init(nibName: nil, bundle: nil)
+        logInit("PopoverViewWrapper")
 
         let environment = TFREnvironment.live
 
@@ -51,6 +51,10 @@ public class PopoverViewWrapper: SFSafariExtensionViewController {
             .accentColor(.redditOrange)
 
         self.view = NSHostingView(rootView: view)
+    }
+
+    deinit {
+        logDeinit("PopoverViewWrapper")
     }
 
     required init?(coder: NSCoder) {

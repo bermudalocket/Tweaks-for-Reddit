@@ -23,8 +23,13 @@ public class SafariExtensionHandler: SFSafariExtensionHandler {
     }
 
     override init() {
+        logInit("SafariExtensionHandler")
         coreData = .live
         super.init()
+    }
+
+    deinit {
+        logDeinit("SafariExtensionHandler")
     }
 
     public override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping (Bool, String) -> Void) {
