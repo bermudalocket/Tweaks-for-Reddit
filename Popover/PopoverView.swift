@@ -24,16 +24,14 @@ struct PopoverView: View {
                 .font(.callout)
                 .foregroundColor(.gray)
 
-            if store.state.enableOAuthFeatures {
-                RedditInfoView()
-                    .frame(width: TweaksForReddit.popoverWidth, height: 175)
-                    .environmentObject(
-                        store.derived(
-                            deriveState: \.redditState,
-                            deriveAction: ExtensionAction.reddit
-                        )
+            RedditInfoView()
+                .frame(width: TweaksForReddit.popoverWidth, height: 175)
+                .environmentObject(
+                    store.derived(
+                        deriveState: \.redditState,
+                        deriveAction: ExtensionAction.reddit
                     )
-            }
+                )
 
             if store.state.canMakePurchases {
                 GroupBox(label: Text("In-App Purchases")) {

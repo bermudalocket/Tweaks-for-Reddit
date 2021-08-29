@@ -19,9 +19,6 @@ struct ExtensionState: Equatable {
     var canMakePurchases: Bool = true
     var didPurchaseLiveCommentPreviews: Bool = false
 
-    var newToOAuthFeatures = true
-    var enableOAuthFeatures = true
-
     var newFavoriteSubredditTextField = ""
     var favoriteSubredditListSortingMethod = FavoriteSubredditSortingMethod.alphabetical
     var favoriteSubredditListHeight: FavoriteSubredditListHeight = .medium

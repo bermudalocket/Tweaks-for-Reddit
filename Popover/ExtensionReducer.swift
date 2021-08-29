@@ -61,8 +61,6 @@ let extensionReducer = Reducer<ExtensionState, ExtensionAction, TFREnvironment> 
             NSWorkspace.shared.open(URL(string: "rdtwks://auth")!)
 
         case .load:
-            state.enableOAuthFeatures = env.defaults.bool(forKey: "enableOAuthFeatures")
-            state.newToOAuthFeatures = env.defaults.bool(forKey: "newToOAuthFeatures")
             if let sort = env.defaults.getObject("favoriteSubredditListSortingMethod") as? String {
                 state.favoriteSubredditListSortingMethod = .fromDescription(sort) ?? .alphabetical
             }
