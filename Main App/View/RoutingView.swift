@@ -14,8 +14,8 @@ struct RoutingView: View {
 
     var body: some View {
         switch tab {
-//            case .testFlight:
-//                TestFlightView()
+            case .testFlight:
+                TestFlightView()
 
             case .notifications:
                 NotificationsView()

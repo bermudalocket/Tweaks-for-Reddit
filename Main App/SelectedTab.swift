@@ -7,17 +7,18 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum SelectedTab: String, Codable, CaseIterable, RawRepresentable {
 
     case welcome = "Welcome"
     case connectToSafari = "Connect to Safari"
-    case notifications = "Notifications"
     case oauth = "Reddit API Access"
+    case notifications = "Notifications"
     case toolbar = "The Toolbar Popover"
     case iCloud
     case liveCommentPreview = "Live Comment Previews"
-//    case testFlight = "TestFlight"
+    case testFlight = "TestFlight"
 
     var name: String {
         self.rawValue
@@ -32,7 +33,58 @@ enum SelectedTab: String, Codable, CaseIterable, RawRepresentable {
             case .iCloud: return "cloud.fill"
             case .liveCommentPreview: return "sparkles.square.fill.on.square"
             case .notifications: return "bell.badge.fill"
-//            case .testFlight: return "paperplane.fill"
+            case .testFlight: return "paperplane.fill"
+        }
+    }
+
+    var next: SelectedTab {
+        switch self {
+            case .welcome:
+                return .connectToSafari
+            case .connectToSafari:
+                return .oauth
+            case .oauth:
+                return .notifications
+            case .notifications:
+                return .toolbar
+            case .toolbar:
+                return .iCloud
+            case .iCloud:
+                return .liveCommentPreview
+            case .liveCommentPreview:
+                return .testFlight
+            case .testFlight:
+                return .testFlight
+        }
+    }
+
+    var view: some View {
+        Group {
+            switch self {
+                case .testFlight:
+                    TestFlightView()
+
+                case .notifications:
+                    NotificationsView()
+
+                case .oauth:
+                    OAuthView()
+
+                case .connectToSafari:
+                    ConnectToSafariView()
+
+                case .liveCommentPreview:
+                    InAppPurchasesView()
+
+                case .welcome:
+                    WelcomeView()
+
+                case .iCloud:
+                    iCloudView()
+
+                case .toolbar:
+                    SafariPopoverView()
+            }
         }
     }
 

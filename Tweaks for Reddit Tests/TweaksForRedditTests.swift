@@ -12,7 +12,7 @@ import Combine
 import XCTest
 @testable import Tweaks_for_Reddit
 @testable import Tweaks_for_Reddit_Extension
-@testable import Tweaks_for_Reddit_Core
+@testable import TFRCore
 @testable import Composable_Architecture
 @testable import Tweaks_for_Reddit_Popover
 
@@ -24,9 +24,15 @@ class TweaksForRedditTests: XCTestCase {
         let waiter = XCTestExpectation(description: "Check messages")
 
         let store = Store<RedditState, RedditAction, TFREnvironment>(
-            initialState: RedditState(userData: nil, unreadMessages: nil),
+            initialState: RedditState(),
             reducer: redditReducer,
-            environment: .mock
+            environment: TFREnvironment(
+                oauth: OAuthClientMock(),
+                coreData: CoreDataService.init(inMemory: true),
+                defaults: DefaultsServiceMock(),
+                keychain: KeychainServiceMock(),
+                appStore: AppStoreServiceMock()
+            )
         )
 
         store.$state.sink { newState in
@@ -40,9 +46,12 @@ class TweaksForRedditTests: XCTestCase {
         wait(for: [waiter], timeout: 10)
 
         XCTAssertNotNil(store.state.unreadMessages)
-        XCTAssertEqual(store.state.unreadMessages!.count, 1)
+        XCTAssertEqual(store.state.unreadMessages?.count ?? -1, 1)
 
-        let message = store.state.unreadMessages!.first!
+        guard let message = store.state.unreadMessages?.first else {
+            XCTFail("No messages")
+            return
+        }
 
         XCTAssertEqual(message.author, "thebermudamocket")
         XCTAssertEqual(message.subreddit, "iOSProgramming")
@@ -52,7 +61,17 @@ class TweaksForRedditTests: XCTestCase {
     func testOAuth() {
         let waiter = XCTestExpectation(description: "oauth")
 
-        let store: MainAppStore = .mock
+        let store: MainAppStore = MainAppStore(
+            initialState: .init(),
+            reducer: .none,
+            environment: TFREnvironment(
+                oauth: OAuthClientMock(),
+                coreData: CoreDataService.init(inMemory: true),
+                defaults: DefaultsServiceMock(),
+                keychain: KeychainServiceMock(),
+                appStore: AppStoreServiceMock()
+            )
+        )
 
         store.$state.sink { newState in
             if newState.didCompleteOAuth {
@@ -66,7 +85,6 @@ class TweaksForRedditTests: XCTestCase {
         wait(for: [waiter], timeout: 10)
 
         XCTAssertTrue(store.state.didCompleteOAuth)
-        XCTAssertNil(store.state.error)
     }
 
     func testAllFeaturesAreAssignedAPageType() {

@@ -6,73 +6,131 @@
 //  Copyright © 2021 bermudalocket. All rights reserved.
 //
 
+import AppKit
 import Combine
 import Foundation
 import Composable_Architecture
-import Tweaks_for_Reddit_Core
+import TFRCore
 
 typealias RedditStore = Store<RedditState, RedditAction, TFREnvironment>
 
 struct RedditState: Equatable {
+    var isShowingMailView = false
 
     var userData: UserData?
     var unreadMessages: [UnreadMessage]?
+    var hiddenPosts: [Post]?
+    var hiddenPostsPage: Int = 1
+    var postsBeingUnhidden = [Post]()
 
-    var isShowingOAuthError = false
-    var error: String?
-
-    static let live = Self()
-    static let mock = Self(userData: .mock)
+    var oauthError: RedditError? = nil
 }
 
-enum RedditAction: Equatable {
-    case showOAuthError(_ error: OAuthError)
+public enum RedditAction: Equatable {
+    case openPostHistory
+    case openCommentHistory
+
+    case setIsShowingMailView(_ state: Bool)
+
+    case setOAuthError(_ error: RedditError)
 
     case fetchUserData
     case updateUserData(_ userData: UserData)
+
+    case fetchHiddenPosts(after: Post? = nil, before: Post? = nil)
+    case updateHiddenPosts(_ posts: [Post])
+    case unhidePosts(_ posts: [Post])
 
     case checkForMessages
     case updateMessages(_ messages: [UnreadMessage])
 }
 
 let redditReducer = Reducer<RedditState, RedditAction, TFREnvironment> { state, action, env in
+
+    func getTokens() -> Tokens? {
+        guard let tokens = env.keychain.getTokens() else {
+            state.oauthError = .noToken
+            return nil
+        }
+        return tokens
+    }
+
     logReducer("redditReducer: \(action)")
-//    env.coreData.container.viewContext.delete(env.coreData.iapState!)
-//    try? env.coreData.container.viewContext.save()
-    log("IAP State = \(env.coreData.iapState?.liveCommentPreviews) \(env.coreData.iapState?.timestamp)")
     switch action {
-        case .showOAuthError(let error):
-            state.isShowingOAuthError = true
-            state.error = "\(error.localizedDescription)"
+        case .unhidePosts(let posts):
+            state.postsBeingUnhidden.append(contentsOf: posts)
+            guard let tokens = env.keychain.getTokens() else {
+                state.oauthError = .noToken
+                return .none
+            }
+            return env.reddit.unhide(tokens: tokens, posts: posts)
+                .map { result in
+                    if !result {
+                        logError("failed to unhide post")
+                    }
+                    return RedditAction.fetchHiddenPosts()
+                }
+                .catch { AnyPublisher(value: RedditAction.setOAuthError($0)) }
+                .eraseToAnyPublisher()
+
+        case .fetchHiddenPosts(after: let after, before: let before):
+            state.hiddenPosts = nil
+            guard let tokens = env.keychain.getTokens() else {
+                state.oauthError = .noToken
+                return .none
+            }
+            guard let username = state.userData?.username else {
+                state.oauthError = .noToken
+                return .none
+            }
+            if let _ = after {
+                state.hiddenPostsPage += 1
+            } else if let _ = before {
+                state.hiddenPostsPage -= 1
+            }
+            return env.reddit.getHiddenPosts(tokens: tokens, username: username, after: after, before: before)
+                .map(RedditAction.updateHiddenPosts)
+                .catch { error in
+                    return AnyPublisher(value: RedditAction.setOAuthError(RedditError.wrapping(message: "\(error)")))
+                }
+                .eraseToAnyPublisher()
+
+        case .updateHiddenPosts(let posts):
+            state.postsBeingUnhidden = []
+            state.hiddenPosts = posts
+
+        case .setIsShowingMailView(let isShowingMailView):
+            state.isShowingMailView = isShowingMailView
+
+        case .openPostHistory:
+            guard let username = state.userData?.username else {
+                return .none
+            }
+            NSWorkspace.shared.open(URL(string: "https://www.reddit.com/user/\(username)/submitted/")!)
+
+        case .openCommentHistory:
+            guard let username = state.userData?.username else {
+                return .none
+            }
+            NSWorkspace.shared.open(URL(string: "https://www.reddit.com/user/\(username)/comments/")!)
+
+        case .setOAuthError(let error):
+            state.oauthError = error
 
         case .updateMessages(let messages):
             env.defaults.set(messages.count, forKey: "newMessageCount")
-            
             messages.forEach(NotificationService.shared.send(msg:))
-
             state.unreadMessages = messages
 
         case .checkForMessages:
+            env.defaults.set(nil, forKey: "newMessageCount")
             guard let tokens = env.keychain.getTokens() else {
-                return Just(RedditAction.showOAuthError(.noToken)).eraseToAnyPublisher()
+                state.oauthError = .noToken
+                return .none
             }
-            return env.oauth
-                .request(tokens: tokens, endpoint: .unreadMessages, isRetry: false)
-                .decode(type: UnreadMessagesResponse.self, decoder: JSONDecoder())
-                .map(\.data.children)
-                .reduce([UnreadMessage]()) { agg, next in
-                    var map = next.map(\.data)
-                    map.append(contentsOf: agg)
-                    return map
-                }
+            return env.reddit.getMessages(tokens: tokens)
                 .map(RedditAction.updateMessages)
-                .catch { (error) -> AnyPublisher<RedditAction, Never> in
-                    if let error = error as? OAuthError {
-                        return Just(RedditAction.showOAuthError(error)).eraseToAnyPublisher()
-                    } else {
-                        return Just(RedditAction.showOAuthError(.wrapping(message: "\(error)"))).eraseToAnyPublisher()
-                    }
-                }
+                .catch { AnyPublisher(value: RedditAction.setOAuthError($0)) }
                 .eraseToAnyPublisher()
 
         case .updateUserData(let userData):
@@ -80,21 +138,12 @@ let redditReducer = Reducer<RedditState, RedditAction, TFREnvironment> { state, 
 
         case .fetchUserData:
             guard let tokens = env.keychain.getTokens() else {
-                return Just(RedditAction.showOAuthError(.noToken)).eraseToAnyPublisher()
+                state.oauthError = .noToken
+                return .none
             }
-            return env.oauth
-                .request(tokens: tokens, endpoint: .me, isRetry: false)
-                .decode(type: UserData.self, decoder: JSONDecoder())
+            return env.reddit.getUserData(tokens: tokens)
                 .map(RedditAction.updateUserData)
-                .catch { (error) -> AnyPublisher<RedditAction, Never> in
-                    if let error = error as? OAuthError {
-                        return Just(RedditAction.showOAuthError(error))
-                            .eraseToAnyPublisher()
-                    } else {
-                        return Just(RedditAction.showOAuthError(.wrapping(message: "\(error)")))
-                            .eraseToAnyPublisher()
-                    }
-                }
+                .catch { AnyPublisher(value: RedditAction.setOAuthError($0)) }
                 .eraseToAnyPublisher()
     }
     return .none

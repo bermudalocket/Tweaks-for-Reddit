@@ -22,7 +22,7 @@
 	<true/>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.bermudalocket.tweaksforreddit</string>
+		<string>$(AppIdentifierPrefix)group.com.bermudalocket.tweaksforreddit</string>
 	</array>
 </dict>
 </plist>

@@ -9,11 +9,13 @@
 import SwiftUI
 import SafariServices.SFSafariApplication
 import Composable_Architecture
-import Tweaks_for_Reddit_Core
+import TFRCore
 
 struct ConnectToSafariView: View {
 
     @EnvironmentObject private var store: MainAppStore
+
+    @State private var isAnimating = false
 
     var body: some View {
         VStack {
@@ -21,6 +23,12 @@ struct ConnectToSafariView: View {
                 Image(systemName: "safari")
                     .font(.system(size: 68))
                     .foregroundColor(.redditOrange)
+                    .rotationEffect(isAnimating ? .zero : .degrees(360*5))
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 3.0).delay(1.25).repeatForever()) {
+                            isAnimating.toggle()
+                        }
+                    }
                 Text("Connect to Safari")
                     .font(.system(size: 32, weight: .bold))
             }
@@ -61,13 +69,13 @@ struct ConnectToSafariView_Previews: PreviewProvider {
                 .environmentObject(MainAppStore(
                     initialState: MainAppState(isSafariExtensionEnabled: false),
                     reducer: mainAppReducer,
-                    environment: .mock
+                    environment: .shared
                 ))
             ConnectToSafariView()
                 .environmentObject(MainAppStore(
                     initialState: MainAppState(isSafariExtensionEnabled: true),
                     reducer: mainAppReducer,
-                    environment: .mock
+                    environment: .shared
                 ))
         }
     }

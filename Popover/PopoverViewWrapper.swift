@@ -11,7 +11,7 @@
 import SafariServices
 import SwiftUI
 import Composable_Architecture
-import Tweaks_for_Reddit_Core
+import TFRCore
 
 /**
  A bridge to SwiftUI via NSHostingView.
@@ -22,32 +22,39 @@ public class PopoverViewWrapper: SFSafariExtensionViewController {
         super.init(nibName: nil, bundle: nil)
         logInit("PopoverViewWrapper")
 
-        let environment = TFREnvironment.live
+        let environment = TFREnvironment.shared
 
-        let store = Store<ExtensionState, ExtensionAction, TFREnvironment>(
-            initialState: ExtensionState(
-                redditState: .live,
-                favoriteSubreddits: environment.coreData.favoriteSubreddits,
-                canMakePurchases: environment.appStore.canMakePayments,
-                didPurchaseLiveCommentPreviews: environment.defaults.bool(forKey: "didPurchaseLiveCommentPreviews")
+        let store = PopoverStore(
+            initialState: PopoverState(
+                redditState: .init(),
+                favoriteSubreddits: environment.coreData.favoriteSubreddits
             ),
-            reducer: extensionReducer,
+            reducer: popoverReducer,
             environment: environment
         )
 
-        let activity = NSBackgroundActivityScheduler(identifier: "com.bermudalocket.tweaksforreddit")
-        activity.interval = 60
-        activity.qualityOfService = .background
-        activity.repeats = true
-        activity.tolerance = 20
-        activity.schedule { completion in
-            logService("Checking for messages...", service: .background)
-            store.send(.reddit(.checkForMessages))
-            completion(.finished)
+        var activity: NSBackgroundActivityScheduler {
+            let activity = NSBackgroundActivityScheduler(identifier: "com.bermudalocket.redditweaks.checkForMessagesTask")
+            activity.interval = 60
+            activity.qualityOfService = .background
+            activity.repeats = true
+            activity.tolerance = 20
+            activity.schedule { completion in
+                if activity.shouldDefer {
+                    logService("Deferring task", service: .background)
+                    completion(.deferred)
+                } else {
+                    logService("Checking for messages...", service: .background)
+                    store.send(.reddit(.checkForMessages))
+                    completion(.finished)
+                }
+            }
+            return activity
         }
 
-        let view = PopoverView()
-            .environmentObject(store)
+        let view = PopoverView(store: store)
+//            .environmentObject(store)
+            .environment(\.managedObjectContext, environment.coreData.container.viewContext)
             .accentColor(.redditOrange)
 
         self.view = NSHostingView(rootView: view)

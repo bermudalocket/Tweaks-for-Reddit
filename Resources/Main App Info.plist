@@ -32,19 +32,19 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2476</string>
+	<string>20210917.124555</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.utilities</string>
+	<string>public.app-category.social-networking</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>LSUIElement</key>
+	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2019 Michael Rippe. All rights reserved.</string>
-	<key>NSMainStoryboardFile</key>
-	<string></string>
 	<key>NSSupportsAutomaticTermination</key>
-	<true/>
+	<false/>
 	<key>NSSupportsSuddenTermination</key>
 	<true/>
 </dict>

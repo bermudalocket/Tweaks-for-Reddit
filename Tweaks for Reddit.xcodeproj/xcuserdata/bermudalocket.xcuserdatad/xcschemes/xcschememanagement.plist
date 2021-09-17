@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Composable Architecture.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 		<key>Main App UI Tests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -14,7 +19,7 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
-		<key>Periphery.xcscheme_^#shared#^_</key>
+		<key>Popover.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
@@ -40,6 +45,21 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
+		<key>TFRBackgroundFetcher.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
+		<key>TFRCore Tests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
+		<key>TFRCore.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 		<key>TfRGlobals Tests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -49,6 +69,11 @@
 		<dict>
 			<key>orderHint</key>
 			<integer>7</integer>
+		</dict>
+		<key>Tweaks for Reddit Extension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 		<key>Tweaks for Reddit Notifications.xcscheme_^#shared#^_</key>
 		<dict>
@@ -68,7 +93,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>8925FD0526337E0A00D83FF1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>895233BE24A6AC0300B72CE8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>897A296226E6FD2700268E76</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -84,6 +119,11 @@
 			<true/>
 		</dict>
 		<key>898F0574267EBDE600268E76</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>89E03BF626E93CDC00268E76</key>
 		<dict>
 			<key>primary</key>
 			<true/>

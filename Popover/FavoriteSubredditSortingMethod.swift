@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum FavoriteSubredditSortingMethod: CaseIterable {
+public enum FavoriteSubredditSortingMethod: CaseIterable {
     case alphabetical
     case manual
 

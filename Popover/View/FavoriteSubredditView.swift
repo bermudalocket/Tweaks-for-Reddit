@@ -9,7 +9,7 @@
 //
 
 import SwiftUI
-import Tweaks_for_Reddit_Core
+import TFRCore
 
 extension View {
     func eraseToAnyView() -> AnyView {
@@ -19,61 +19,11 @@ extension View {
 
 struct FavoriteSubredditView: View {
 
-    @EnvironmentObject private var store: ExtensionStore
+    @EnvironmentObject private var store: PopoverStore
 
     let subreddit: FavoriteSubreddit
 
     @State private var isHovered = false
-
-    let sfSymbolsMap: [String: String] = [
-        "apple": "applelogo",
-        "art": "paintbrush.fill",
-        "books": "books.vertical.fill",
-        "consulting": "rectangle.3.offgrid.bubble.left.fill",
-        "earthporn": "globe",
-        "explainlikeimfive": "questionmark.circle.fill",
-        "gaming": "gamecontroller.fill",
-        "math": "function",
-        "movies": "film.fill",
-        "music": "music.quarternote.3",
-        "news": "newspaper.fill",
-        "pics": "photo.fill",
-        "photography": "photo.fill",
-        "space": "moon.stars.fill",
-        "sports": "sportscourt.fill",
-        "television": "tv.fill",
-        "todayilearned": "lightbulb.fill",
-        "worldnews": "newspaper.fill",
-
-        // apple products
-        "iphone": "iphone",
-        "ipad": "ipad",
-        "ipados": "ipad",
-        "ipadosbeta": "ipad",
-        "macos": "desktopcomputer",
-        "macosbeta": "desktopcomputer",
-        "ios": "ipad",
-        "iosbeta": "ipad",
-        "homepod": "homepod.fill",
-    ]
-
-    let emojiMap: [String: String] = [
-        "jokes": "😂",
-        "phasmophobiagame": "👻",
-        "science": "🔬",
-        "askscience": "🧬",
-        "funny": "🎭",
-        "showerthoughts": "🚿",
-        "nyc": "🏙️",
-
-        // sports
-        "soccer": "⚽",
-        "basketball": "🏀",
-        "football": "🏈",
-        "rugby": "🏉",
-    ]
-
-    private let defaultIcon = Image(systemName: "doc")
 
     private var icon: AnyView {
         if isHovered {
@@ -81,20 +31,11 @@ struct FavoriteSubredditView: View {
                 .eraseToAnyView()
         }
         guard let name = subreddit.name else {
-            return defaultIcon.eraseToAnyView()
+            return Image(systemName: "questionmark").eraseToAnyView()
         }
-        if let symbolName = sfSymbolsMap[name] {
-            return Image(systemName: symbolName)
-                .frame(width: 20)
-                .eraseToAnyView()
-        } else if let emoji = emojiMap[name] {
-            return Text(emoji)
-                .drawingGroup()
-                .frame(width: 20)
-                .eraseToAnyView()
-        } else {
-            return defaultIcon.eraseToAnyView()
-        }
+        return Image(systemName: TweaksForReddit.symbolForSubreddit(name))
+            .frame(width: 20)
+            .eraseToAnyView()
     }
 
     var body: some View {
@@ -102,20 +43,18 @@ struct FavoriteSubredditView: View {
             self.icon
                 .foregroundColor(.accentColor)
                 .frame(width: 20)
-                .onTapGesture {
-                    store.send(.openFavoriteSubreddit(subreddit))
-                }
+                .onTapGesture(perform: subreddit.open)
             Menu("r/\(subreddit.name ?? "???")") {
-                Button("Open") {
-                    store.send(.openFavoriteSubreddit(subreddit))
+                Button(action: subreddit.open) {
+                    Text("Open")
                 }
                 Divider()
                 Button(action: {
                     store.send(.deleteFavoriteSubreddit(self.subreddit))
-                }, label: {
+                }) {
                     Text("Delete")
                         .foregroundColor(.red)
-                })
+                }
             }
             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
             .menuStyle(BorderlessButtonMenuStyle())

@@ -17,10 +17,6 @@ public struct Reducer<State, Action, Environment> {
         self.reducer = reducer
     }
 
-    public func apply(_ state: inout State, _ action: Action, _ env: Environment) -> AnyPublisher<Action, Never> {
-        reducer(&state, action, env)
-    }
-
     public func callAsFunction(_ state: inout State, _ action: Action, _ env: Environment) -> AnyPublisher<Action, Never> {
         reducer(&state, action, env)
     }

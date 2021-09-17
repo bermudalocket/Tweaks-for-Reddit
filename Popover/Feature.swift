@@ -4,7 +4,7 @@
 //
 
 import Foundation
-import Tweaks_for_Reddit_Core
+import TFRCore
 
 public struct Feature: Hashable, Comparable {
 
