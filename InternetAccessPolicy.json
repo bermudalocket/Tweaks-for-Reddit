@@ -2,28 +2,36 @@
   "ApplicationDescription" : "Tweaks for Reddit is a Safari app extension for reddit.com.",
   "Connections" : [
     {
-      "DenyConsequences" : "The app and extension will not be able to access the OAuth2-based Reddit API.",
       "Host" : "reddit.com",
-      "IsIncoming" : false,
-      "NetworkProtocol" : "TCP",
       "Port" : "443",
+      "NetworkProtocol" : "TCP",
+      "IsIncoming" : false,
       "Purpose" : "The app and extension may need to access the Reddit API based on the features you enable."
+      "DenyConsequences" : "The app and extension will not be able to access the OAuth2-based Reddit API.",
     },
     {
-        "DenyConsequences": "The app will not be able to verify your in-app purchase receipt(s) with Apple.",
         "Host": "bermudalocket.com",
-        "IsIncoming": false,
-        "NetworkProtocol": "TCP",
         "Port": "443",
+        "NetworkProtocol": "TCP",
+        "IsIncoming": false,
         "Purpose": "The app needs to communicate with our middleman server to verify your in-app purchase receipt(s) with Apple."
+        "DenyConsequences": "The app will not be able to verify your in-app purchase receipt(s) with Apple.",
     },
     {
-        "DenyConsequences": "The extension will not be able to download and display your Snoovatar.",
         "Host": "i.redd.it",
-        "IsIncoming": false,
-        "NetworkProtocol": "TCP",
         "Port": "443",
+        "NetworkProtocol": "TCP",
+        "IsIncoming": false,
         "Purpose": "The extension may need to download your Snoovatar from Reddit's image server based on features you enable."
+        "DenyConsequences": "The extension will not be able to download and display your Snoovatar.",
+    },
+    {
+        "Host" : "oauth.reddit.com",
+        "Port" : "443",
+        "NetworkProtocol" : "TCP",
+        "IsIncoming" : false,
+        "Purpose" : "The app and extension may need to access the Reddit API based on the features you enable."
+        "DenyConsequences" : "The app and extension will not be able to access the OAuth2-based Reddit API.",
     },
   ],
   "DeveloperName" : "bermudalocket"

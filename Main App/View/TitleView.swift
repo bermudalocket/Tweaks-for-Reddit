@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import Tweaks_for_Reddit_Core
+import TFRCore
 
 struct TitleView: View {
 

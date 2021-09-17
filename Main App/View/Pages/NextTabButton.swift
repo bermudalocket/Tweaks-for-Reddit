@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import TFRCore
 
 struct NextTabButton: View {
 

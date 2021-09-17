@@ -341,7 +341,12 @@ let rememberUserVotes = (context, userInfo, subject) => {
     } else {
         let completedAuthors = []
         subject.querySelectorAll(selector).forEach(comment => {
-            const author = comment.getAttribute("data-author")
+            const author = comment.getAttribute("data-author");
+            const permalink = comment.getAttribute("data-permalink");
+            const text = comment.querySelector(".usertext-body .md p")?.innerHTML;
+//            console.log("author: " + author);
+//            console.log("permalink: " + permalink);
+//            console.log("text: " + text);
             comment.querySelector(".arrow.up")?.addEventListener("click", _ => {
                 safari.extension.dispatchMessage("userKarmaSaveRequest", {
                     "user": author,

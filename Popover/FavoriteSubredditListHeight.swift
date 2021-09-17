@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum FavoriteSubredditListHeight: Int, CaseIterable {
+public enum FavoriteSubredditListHeight: Int, CaseIterable {
     case small = 125, medium = 200, large = 320
 
     var displayName: String {

@@ -8,18 +8,18 @@
 
 import SwiftUI
 import Composable_Architecture
-import Tweaks_for_Reddit_Core
+import TFRCore
 
 struct SettingsView: View {
 
-    @EnvironmentObject private var store: Store<ExtensionState, ExtensionAction, TFREnvironment>
+    @EnvironmentObject private var store: Store<PopoverState, PopoverAction, TFREnvironment>
 
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 Text("Favorites display size")
                     .frame(minWidth: 0, maxWidth: .infinity)
-                Picker(selection: store.binding(for: \.favoriteSubredditListHeight, transform: ExtensionAction.setFavoriteSubredditsListHeight(height:)),
+                Picker(selection: store.binding(for: \.favoriteSubredditListHeight, transform: PopoverAction.setFavoriteSubredditsListHeight(height:)),
                        label: EmptyView()
                 ) {
                     ForEach(FavoriteSubredditListHeight.allCases, id: \.self) { height in
@@ -42,6 +42,6 @@ struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
             .frame(width: TweaksForReddit.popoverWidth)
-            .environmentObject(ExtensionStore.mock)
+            .environmentObject(PopoverStore.shared)
     }
 }

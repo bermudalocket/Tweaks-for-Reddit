@@ -10,28 +10,18 @@ import Combine
 import Foundation
 import SwiftUI
 
-struct StorePreview: PreviewProvider {
-    static var previews: some View {
-        Text("hi")
-    }
-}
-
-// MARK: - Store<State, Action, Environment>
-
 public class Store<State, Action, Environment>: ObservableObject {
 
     @Published public var state: State
-    private let environment: Environment
+    public let environment: Environment
     private let reducer: Reducer<State, Action, Environment>
-    private let scheduler: DispatchQueue
 
     private var cancellables = Set<AnyCancellable>()
 
-    public init(initialState: State, reducer: Reducer<State, Action, Environment>, environment: Environment, scheduler: DispatchQueue = .main) {
+    public init(initialState: State, reducer: Reducer<State, Action, Environment>, environment: Environment) {
         self.state = initialState
         self.reducer = reducer
         self.environment = environment
-        self.scheduler = scheduler
     }
 
     public func send(_ action: Action) {

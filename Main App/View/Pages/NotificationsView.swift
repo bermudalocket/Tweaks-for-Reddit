@@ -8,7 +8,7 @@
 
 import SwiftUI
 import UserNotifications
-import Tweaks_for_Reddit_Core
+import TFRCore
 
 struct NotificationsView: View {
 
@@ -18,6 +18,7 @@ struct NotificationsView: View {
         VStack(alignment: .center, spacing: 20) {
             VStack(spacing: 10) {
                 Image(systemName: SelectedTab.notifications.symbol)
+                    .renderingMode(.original)
                     .font(.system(size: 68))
                     .foregroundColor(.accentColor)
                 Text(SelectedTab.notifications.name)
@@ -40,11 +41,21 @@ struct NotificationsView: View {
                         .foregroundColor(.gray)
                 }
             }
+            if !store.state.didCompleteOAuth {
+                HStack {
+                Text("This feature requires OAuth authorization.")
+                    .font(.title2)
+                    .bold()
+                    Button("Go \(Image(systemName: "arrow.right"))") {
+                        store.send(.setTab(.oauth))
+                    }
+                }
+            }
             HStack {
                 Button("Request notifications \(Image(systemName: "lock"))") {
                     store.send(.requestNotificationAuthorization)
                 }.buttonStyle(RedditweaksButtonStyle())
-                    .disabled(store.state.notificationsEnabled)
+                    .disabled(store.state.notificationsEnabled || !store.state.didCompleteOAuth)
                 NextTabButton()
             }
         }.onAppear {
@@ -61,12 +72,12 @@ struct NotificationsView_Previews: PreviewProvider {
                 .environmentObject(MainAppStore(
                     initialState: MainAppState(notificationsEnabled: false),
                     reducer: .none,
-                    environment: .mock))
+                    environment: .shared))
             NotificationsView()
                 .environmentObject(MainAppStore(
                     initialState: MainAppState(notificationsEnabled: true),
                     reducer: .none,
-                    environment: .mock))
+                    environment: .shared))
         }
         .padding()
         .frame(width: 510)

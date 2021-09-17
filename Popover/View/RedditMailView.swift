@@ -8,11 +8,11 @@
 
 import SwiftUI
 import Composable_Architecture
-import Tweaks_for_Reddit_Core
+import TFRCore
 
 struct RedditMailView: View {
 
-    @EnvironmentObject private var store: Store<RedditState, RedditAction, TFREnvironment>
+    @EnvironmentObject private var store: RedditStore
 
     struct Row: View {
         @Environment(\.calendar) private var calendar
@@ -27,11 +27,7 @@ struct RedditMailView: View {
             HStack(spacing: 0) {
                 VStack(alignment: .leading) {
                     HStack {
-                        if isHovering {
-                            Image(systemName: "arrow.left.circle")
-                        } else {
-                            Image(systemName: message.subject == "post reply" ? "note.text" : "text.bubble")
-                        }
+                        Image(systemName: message.subject == "post reply" ? "note.text" : "text.bubble")
                         Text("u/" + message.author).bold()
                     }
                     Text(message.body)
@@ -48,7 +44,13 @@ struct RedditMailView: View {
                         .foregroundColor(Color(.placeholderTextColor))
                 }
             }
+            .padding()
             .contentShape(Rectangle())
+            .background(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .foregroundColor(isHovering ? .accentColor : .clear)
+                    .opacity(0.25)
+            )
             .onHover { isHovering = $0 }
             .onTapGesture {
                 NSWorkspace.shared.open(URL(string: "https://www.reddit.com\(message.context)")!)
@@ -57,20 +59,25 @@ struct RedditMailView: View {
     }
 
     var body: some View {
-        List {
-            if let messages = store.state.unreadMessages {
-                ForEach(messages.sorted(by: { $0.created > $1.created }), id: \.self) { message in
+        if let messages = store.state.unreadMessages {
+            if messages.count > 0 {
+                ForEach(messages.sorted { $0.created > $1.created }, id: \.self) { message in
                     Row(message: message)
-                    Divider()
                 }
+                .accessibilityLabel("Mail list")
+                .frame(height: 80)
+                .padding(.horizontal)
             } else {
-                ProgressView()
-                    .scaleEffect(0.5)
+                Text("No new messages.")
+                    .padding()
             }
-        }
-        .accessibilityLabel("Mail list")
-        .onAppear {
-            store.send(.checkForMessages)
+        } else {
+            ProgressView()
+                .scaleEffect(0.5)
+                .accessibilityLabel("Mail is loading")
+                .onAppear {
+                    store.send(.checkForMessages)
+                }
         }
     }
 }
@@ -79,36 +86,34 @@ import Combine
 
 struct RedditMailView_Previews: PreviewProvider {
     static var previews: some View {
-        RedditMailView()
+        Group {
+            RedditMailView()
+                .environmentObject(PopoverStore.shared)
+            RedditMailView()
+                .environmentObject(PopoverStore(
+                    initialState: PopoverState(
+                        redditState: RedditState(
+                            isShowingMailView: true,
+                            userData: .mock,
+                            unreadMessages: [
+                                UnreadMessage(author: "author", body: "body", subreddit: "subreddit", subject: "subject", context: "context", created: Date().timeIntervalSince1970 - 60*Double.random(in: 50...500)),
+                                UnreadMessage(author: "author", body: "body", subreddit: "subreddit", subject: "subject", context: "context", created: Date().timeIntervalSince1970 - 60*Double.random(in: 50...500)),
+                                UnreadMessage(author: "author", body: "body", subreddit: "subreddit", subject: "subject", context: "context", created: Date().timeIntervalSince1970 - 60*Double.random(in: 50...500)),
+                                UnreadMessage(author: "author", body: "body", subreddit: "subreddit", subject: "subject", context: "context", created: Date().timeIntervalSince1970 - 60*Double.random(in: 50...500)),
+                            ],
+                            oauthError: nil
+                        ),
+                        isShowingWhatsNew: false,
+                        features: Feature.features,
+                        favoriteSubreddits: [],
+                        favoriteSubredditListSortingMethod: .alphabetical,
+                        favoriteSubredditListHeight: .medium
+                    ),
+                    reducer: popoverReducer,
+                    environment: .shared
+                ))
+        }
             .frame(width: 300, height: 300)
-            .environmentObject(
-                Store<RedditState, RedditAction, TFREnvironment>(
-                    initialState: .init(userData: nil, unreadMessages: [
-                        UnreadMessage(author: "thebermudalocket",
-                                      body: "you're a noob",
-                                      subreddit: "lol",
-                                      subject: "comment reply",
-                                      context: "some url",
-                                      created: Date().addingTimeInterval(-1*Double.random(in: 1000...100000)).timeIntervalSince1970
-                                     ),
-                        UnreadMessage(author: "Silversunset01",
-                                      body: "lol",
-                                      subreddit: "limeterracotta",
-                                      subject: "post reply",
-                                      context: "some url",
-                                      created: Date().addingTimeInterval(-1*Double.random(in: 1000...100000)).timeIntervalSince1970
-                                     ),
-                        UnreadMessage(author: "Sir_Didymus",
-                                      body: "oi you fucking lot where the fuck are you i swear on me mum i will find you and i will shove",
-                                      subreddit: "limeterracotta",
-                                      subject: "post reply",
-                                      context: "some url",
-                                      created: Date().addingTimeInterval(-1*Double.random(in: 1000...100000)).timeIntervalSince1970
-                                     )
-                    ]),
-                    reducer: .none,
-                    environment: .mock
-                )
-            )
+            .environment(\.calendar, .current)
     }
 }

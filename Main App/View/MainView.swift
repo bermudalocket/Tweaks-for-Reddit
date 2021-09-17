@@ -19,22 +19,24 @@ struct MainView: View {
                     .padding(.top, 30)
                 List(SelectedTab.allCases, id: \.self) { tab in
                     NavigationLink(
-                        destination: RoutingView(tab: tab),
+                        destination: tab.view,
                         tag: tab,
                         selection: store.binding(for: \.tab, transform: MainAppAction.setTab)
                     ) {
                         HStack {
                             Image(systemName: tab.symbol)
+                                .renderingMode(.original)
                                 .frame(width: 25)
-                                .foregroundColor(.redditOrange)
+
+//                                .foregroundColor(.redditOrange)
                             Text(tab.name)
                         }
                         .font(.title3)
                     }
                 }
-                .listStyle(SidebarListStyle())
-                .frame(width: 240)
             }
+            .listStyle(SidebarListStyle())
+            .frame(width: 240)
         }
         .navigationViewStyle(DoubleColumnNavigationViewStyle())
         .frame(width: 825, height: 450)
@@ -42,14 +44,16 @@ struct MainView: View {
 
 }
 
+import TFRCore
+
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
             .environmentObject(
                 MainAppStore(
-                    initialState: .mock,
+                    initialState: MainAppState(),
                     reducer: .none,
-                    environment: .mock
+                    environment: .shared
                 )
             )
     }

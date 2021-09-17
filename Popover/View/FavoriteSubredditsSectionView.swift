@@ -10,7 +10,7 @@
 
 import Combine
 import SwiftUI
-import Tweaks_for_Reddit_Core
+import TFRCore
 
 // TODO
 // https://stackoverflow.com/questions/60454752/swiftui-background-color-of-list-mac-os
@@ -40,7 +40,7 @@ struct Shake: GeometryEffect {
 
 struct FavoriteSubredditsSectionView: View {
 
-    @EnvironmentObject private var store: ExtensionStore
+    @EnvironmentObject private var store: PopoverStore
 
     @State private var favoriteSubredditField = ""
 
@@ -64,20 +64,17 @@ struct FavoriteSubredditsSectionView: View {
                     }
                 }
             }
-            HStack(spacing: 5) {
-                TextField("r/", text: $favoriteSubredditField) { _ in
-                } onCommit: {
-                    if favoriteSubredditField == "" {
-                        withAnimation(.default) {
-                            isShowingError += 1
-                        }
-                        return
+            TextField("r/", text: $favoriteSubredditField, onCommit: {
+                if favoriteSubredditField == "" {
+                    withAnimation(.default) {
+                        isShowingError += 1
                     }
-                    store.send(.addFavoriteSubreddit(favoriteSubredditField))
-                    favoriteSubredditField = ""
+                    return
                 }
+                store.send(.addFavoriteSubreddit(favoriteSubredditField))
+                favoriteSubredditField = ""
+            })
                 .modifier(Shake(animatableData: CGFloat(isShowingError)))
-            }
             Group {
                 if store.state.favoriteSubredditListSortingMethod == .alphabetical {
                     List(store.state.favoriteSubreddits.sorted { $0.name! < $1.name! }, rowContent: FavoriteSubredditView.init(subreddit:))
@@ -92,6 +89,7 @@ struct FavoriteSubredditsSectionView: View {
                     }
                 }
             }
+            .transition(.opacity.animation(.default))
             .listStyle(PlainListStyle())
             .frame(height: min(
                 CGFloat(store.state.favoriteSubredditListHeight.rawValue),
@@ -106,7 +104,7 @@ struct FavoriteSubredditsSectionView: View {
 struct FavoriteSubredditsSectionView_Previews: PreviewProvider {
     static var previews: some View {
         FavoriteSubredditsSectionView()
-            .environmentObject(ExtensionStore.mock)
+            .environmentObject(PopoverStore.shared)
             .frame(width: TweaksForReddit.popoverWidth)
             .padding()
     }

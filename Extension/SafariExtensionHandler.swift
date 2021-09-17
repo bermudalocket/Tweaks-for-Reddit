@@ -11,36 +11,15 @@ import CoreData
 import Foundation
 import SafariServices
 import SwiftUI
-import Tweaks_for_Reddit_Core
+import TFRCore
 import Tweaks_for_Reddit_Popover
 
 public class SafariExtensionHandler: SFSafariExtensionHandler {
 
-    private let coreData: CoreDataService
+    private let coreData = CoreDataService.shared
 
     public override func popoverViewController() -> SFSafariExtensionViewController {
         PopoverViewWrapper()
-    }
-
-    override init() {
-        logInit("SafariExtensionHandler")
-        coreData = .live
-        super.init()
-    }
-
-    deinit {
-        logDeinit("SafariExtensionHandler")
-    }
-
-    public override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping (Bool, String) -> Void) {
-        let count = Int(TweaksForReddit.defaults.string(forKey: "newMessageCount") ?? "0") ?? 0
-        let badge = count > 0 ? "New" : ""
-        validationHandler(true, badge)
-    }
-
-    init(persistenceController: CoreDataService = .live) {
-        coreData = persistenceController
-        super.init()
     }
 
     final func messageReceived(message: Message, from page: SFSafariPage, userInfo: [String: Any]? = nil) {
@@ -116,7 +95,7 @@ public class SafariExtensionHandler: SFSafariExtensionHandler {
                 }
 
             case .customSubredditBar:
-                let subs = CoreDataService.live
+                let subs = CoreDataService.shared
                         .favoriteSubreddits
                         .compactMap(\.name)
                         .compactMap({ "'\($0)'" })
@@ -132,6 +111,7 @@ public class SafariExtensionHandler: SFSafariExtensionHandler {
      Converts a vanilla Safari extension message into an enumerable one and passes it along.
      */
     public override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String: Any]?) {
+        log("[Ext Msg] \(messageName)")
         guard let message = Message.fromString(messageName) else {
             print("ERROR: couldn't get Message object from key \(messageName)")
             return
