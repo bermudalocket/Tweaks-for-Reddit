@@ -239,8 +239,8 @@ let mainAppReducer = Reducer<MainAppState, MainAppAction, TFREnvironment> { stat
             DispatchQueue.main.async { //After(deadline: .now().advanced(by: .milliseconds(1))) {
                 if let window = NSApplication.shared.windows.first {
                     window.isMovableByWindowBackground = true
-                    window.makeKey()
-                    window.orderFrontRegardless()
+                    window.makeKeyAndOrderFront(nil)
+                    window.level = .floating
                 }
             }
 
@@ -250,10 +250,6 @@ let mainAppReducer = Reducer<MainAppState, MainAppAction, TFREnvironment> { stat
             state.oauthState = .started
             let id = UUID().uuidString
             env.defaults.set(id, forKey: "oauthState")
-            if let window = NSApplication.shared.mainWindow {
-                window.level = .floating
-                window.setFrameOrigin(NSPoint(x: 50, y: (window.screen?.visibleFrame.size.height ?? 150) - 50))
-            }
             env.reddit.begin(state: id)
 
         case .setOAuthState(let oauthState):
