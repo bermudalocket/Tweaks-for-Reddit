@@ -25,17 +25,9 @@ Versions 1.3 and below were written in UIKit with the help of [SnapKit](https://
 3. Launch `redditweaks.app` and follow the prompt to enable the extension in Safari.
 4. You may then close the app. It is not required to be open for the extension to work, but you cannot delete it.
 
-## Development Note
+## Development
 
-The Xcode canvas refuses to provide a preview for SwiftUI files whose sole target membership is a Safari Extension:
-
-````
-UnsupportedAppExtensionTypeError: redditweaks Extension.appex is unsupported
-
-Previews cannot be hosted inside "com.apple.Safari.extension" app extensions
-````
-
-To get around this, I needed to add the `Tweaks for Reddit` target to the extension files' target memberships. This allows the Xcode canvas previews to work as intended.
+<img src='https://i.imgur.com/U63PICE.png'>
 
 ## Historical Screenshots
 
