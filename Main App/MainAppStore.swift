@@ -14,6 +14,16 @@ import TFRCore
 import Tweaks_for_Reddit_Popover
 import UserNotifications
 
+extension SFSafariExtensionManager {
+    public static func getSafariExtensionState(id: String) async -> Bool {
+        return await withCheckedContinuation { cont in
+            getStateOfSafariExtension(withIdentifier: id) { state, error in
+                return cont.resume(returning: state?.isEnabled ?? false)
+            }
+        }
+    }
+}
+
 typealias MainAppStore = Store<MainAppState, MainAppAction, TFREnvironment>
 
 extension MainAppStore {
