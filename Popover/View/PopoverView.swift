@@ -12,7 +12,7 @@ import AppKit
 import Combine
 import StoreKit
 import SwiftUI
-import Composable_Architecture
+import TFRCompose
 import TFRCore
 
 public struct PopoverView: View {

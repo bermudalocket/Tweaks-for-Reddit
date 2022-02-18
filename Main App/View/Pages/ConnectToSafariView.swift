@@ -8,7 +8,7 @@
 
 import SwiftUI
 import SafariServices.SFSafariApplication
-import Composable_Architecture
+import TFRCompose
 import TFRCore
 
 struct ConnectToSafariView: View {
@@ -16,6 +16,19 @@ struct ConnectToSafariView: View {
     @EnvironmentObject private var store: MainAppStore
 
     @State private var isAnimating = false
+
+    @State private var isExtensionEnabled = false
+
+    @Sendable
+    private func checkSafariExtensionState() async {
+        Task {
+            isExtensionEnabled = await SFSafariExtensionManager.getSafariExtensionState(id: TweaksForReddit.extensionId)
+        }
+    }
+
+    private func openSafariPreferences() {
+        SFSafariApplication.showPreferencesForExtension(withIdentifier: TweaksForReddit.extensionId)
+    }
 
     var body: some View {
         VStack {
@@ -45,10 +58,9 @@ struct ConnectToSafariView: View {
                 }
                 HStack {
                     Spacer()
-                    Button("Open in Safari \(Image(systemName: "safari.fill"))") {
-                        store.send(.openSafariToExtensionsWindow)
-                    }.buttonStyle(RedditweaksButtonStyle())
-                    .disabled(store.state.isSafariExtensionEnabled)
+                    Button("Open in Safari \(Image(systemName: "safari.fill"))", action: openSafariPreferences)
+                        .buttonStyle(RedditweaksButtonStyle())
+                        .disabled(store.state.isSafariExtensionEnabled)
                     NextTabButton()
                     Spacer()
                 }
@@ -56,7 +68,7 @@ struct ConnectToSafariView: View {
         }
         .padding()
         .onAppear {
-            store.send(.checkSafariExtensionState)
+            Task(priority: .userInitiated, operation: checkSafariExtensionState)
         }
     }
 

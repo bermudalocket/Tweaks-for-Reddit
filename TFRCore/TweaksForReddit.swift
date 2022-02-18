@@ -13,6 +13,8 @@ public enum TweaksForReddit {
 
     public static let bundleId = "com.bermudalocket.redditweaks"
 
+    public static let extensionId = "\(bundleId).extension"
+
     public static let groupId = "group.\(bundleId)"
 
     public static let defaults = UserDefaults(suiteName: groupId)!

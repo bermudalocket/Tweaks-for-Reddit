@@ -1,0 +1,3 @@
+[submodule "Compose"]
+	path = Compose
+	url = https://github.com/bermudalocket/TFRCompose

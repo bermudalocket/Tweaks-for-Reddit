@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import Composable_Architecture
+import TFRCompose
 import TFRCore
 
 struct RedditMailView: View {

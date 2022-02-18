@@ -10,7 +10,7 @@ import Combine
 import Foundation
 import StoreKit
 import SwiftUI
-import Composable_Architecture
+import TFRCompose
 import TFRCore
 
 public typealias PopoverStore = Store<PopoverState, PopoverAction, TFREnvironment>

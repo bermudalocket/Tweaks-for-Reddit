@@ -10,7 +10,7 @@
 
 import SafariServices
 import SwiftUI
-import Composable_Architecture
+import TFRCompose
 import TFRCore
 
 /**

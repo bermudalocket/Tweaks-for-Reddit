@@ -16,7 +16,7 @@ public struct TFREnvironment {
         coreData: CoreDataService(inMemory: false),
         defaults: DefaultsServiceLive(),
         keychain: KeychainServiceLive(),
-        appStore: AppStoreService.shared
+        appStore: AppStoreService()
     )
 
     public var reddit: RedditServiceProtocol
@@ -25,7 +25,7 @@ public struct TFREnvironment {
     public var keychain: KeychainService
     public var appStore: AppStoreService
 
-    private init(oauth: RedditServiceProtocol, coreData: CoreDataService, defaults: DefaultsService, keychain: KeychainService, appStore: AppStoreService) {
+    init(oauth: RedditServiceProtocol, coreData: CoreDataService, defaults: DefaultsService, keychain: KeychainService, appStore: AppStoreService) {
         self.reddit = oauth
         self.coreData = coreData
         self.defaults = defaults
@@ -38,6 +38,7 @@ public struct TFREnvironment {
 import Combine
 
 extension TFREnvironment {
+
     /// Used for SwiftUI preview providers only.
     public static func mocked() -> TFREnvironment {
         TFREnvironment(
@@ -45,7 +46,7 @@ extension TFREnvironment {
             coreData: CoreDataService(inMemory: true),
             defaults: DefaultsServiceMock(),
             keychain: KeychainServiceMock(),
-            appStore: AppStoreService.shared
+            appStore: AppStoreService()
         )
     }
 

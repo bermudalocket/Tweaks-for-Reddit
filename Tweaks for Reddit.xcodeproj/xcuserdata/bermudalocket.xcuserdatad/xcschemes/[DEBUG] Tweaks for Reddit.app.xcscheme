@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "89EAB7412687F24000268E76"
-               BuildableName = "Composable_Architecture.framework"
-               BlueprintName = "Composable Architecture"
+               BlueprintIdentifier = "99C7C2EC235D81A700ABA6EA"
+               BuildableName = "Tweaks for Reddit.app"
+               BlueprintName = "Tweaks for Reddit"
                ReferencedContainer = "container:Tweaks for Reddit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,7 +26,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
       </Testables>
    </TestAction>
@@ -40,6 +41,41 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "99C7C2EC235D81A700ABA6EA"
+            BuildableName = "Tweaks for Reddit.app"
+            BlueprintName = "Tweaks for Reddit"
+            ReferencedContainer = "container:Tweaks for Reddit.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.CloudKitDebug 0"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.SQLDebug 0"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.Logging.stderr 0"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.ConcurrencyDebug 0"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.MigrationDebug 0"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
+      <StoreKitConfigurationFileReference
+         identifier = "../../Configuration.storekit">
+      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -50,9 +86,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "89EAB7412687F24000268E76"
-            BuildableName = "Composable_Architecture.framework"
-            BlueprintName = "Composable Architecture"
+            BlueprintIdentifier = "99C7C2EC235D81A700ABA6EA"
+            BuildableName = "Tweaks for Reddit.app"
+            BlueprintName = "Tweaks for Reddit"
             ReferencedContainer = "container:Tweaks for Reddit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

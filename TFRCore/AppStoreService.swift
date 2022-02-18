@@ -31,13 +31,9 @@ public enum InAppPurchase: CaseIterable {
 
 public class AppStoreService: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
 
-    public static let shared = AppStoreService()
-
     private let paymentQueue = SKPaymentQueue.default()
 
     private let restoreCompletePublisher = PassthroughSubject<Bool, Never>()
-
-    private let transactionPublisher = PassthroughSubject<[SKPaymentTransaction], Never>()
 
     private(set) var products = [SKProduct]()
 
@@ -59,7 +55,6 @@ public class AppStoreService: NSObject, SKProductsRequestDelegate, SKPaymentTran
         request.delegate = self
         return request
     }
-
 
     public func purchase(_ item: InAppPurchase) {
         logService("Purchase: \(item)", service: .appStore)
@@ -87,7 +82,15 @@ public class AppStoreService: NSObject, SKProductsRequestDelegate, SKPaymentTran
 
     public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         logService("Received \(transactions.count) transaction(s)", service: .appStore)
-        self.transactionPublisher.send(transactions)
+        for transaction in transactions {
+            switch transaction.transactionState {
+                case .purchased, .restored:
+                    NSUbiquitousKeyValueStore.default.set(true, forKey: "livecommentpreviews")
+
+                default:
+                    NSUbiquitousKeyValueStore.default.set(false, forKey: "livecommentpreviews")
+            }
+        }
     }
 
     public func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {

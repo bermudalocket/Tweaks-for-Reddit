@@ -9,15 +9,22 @@
 import AppKit
 import Foundation
 import StoreKit
-import Composable_Architecture
+import TFRCompose
 import TFRCore
 import Tweaks_for_Reddit_Popover
 import UserNotifications
 
 typealias MainAppStore = Store<MainAppState, MainAppAction, TFREnvironment>
 
+extension MainAppStore {
+    func setSafariExtensionEnabled(_ enabled: Bool) {
+        state.isSafariExtensionEnabled = enabled
+    }
+}
+
 struct MainAppState: Equatable {
     var tab: SelectedTab? = .welcome
+
     var isSafariExtensionEnabled = false
 
     var oauthState = OAuthState.notStarted
@@ -45,10 +52,6 @@ enum MainAppAction: Equatable {
     case nextTab
     case setTab(_ tab: SelectedTab?)
     case handleDeeplink(_ url: URL)
-
-    case openSafariToExtensionsWindow
-    case checkSafariExtensionState
-    case setSafariExtensionState(_ state: Bool)
 
     case requestNotificationAuthorization
     case checkNotificationsEnabled
@@ -130,36 +133,11 @@ let mainAppReducer = Reducer<MainAppState, MainAppAction, TFREnvironment> { stat
             env.appStore.purchase(.liveCommentPreview)
 
         case .validateReceipt:
-            state.receiptValidationStatus = .checking
-            guard let appStoreReceiptURL = Bundle.main.appStoreReceiptURL, FileManager.default.fileExists(atPath: appStoreReceiptURL.path) else {
-                return Just(MainAppAction.setReceiptValidationStatus(.noReceiptFile)).eraseToAnyPublisher()
+            if NSUbiquitousKeyValueStore.default.bool(forKey: "livecommentpreview") {
+                state.receiptValidationStatus = .valid
+            } else {
+                state.receiptValidationStatus = .invalid
             }
-            guard let receiptData = try? Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped) else {
-                return Just(MainAppAction.setReceiptValidationStatus(.receiptMalformed)).eraseToAnyPublisher()
-            }
-            let receipt = AppStoreValidationRequest(receipt: receiptData.base64EncodedString(options: []), identifier: TweaksForReddit.identifier)
-            var request = URLRequest(url: URL(string: "https://www.bermudalocket.com/verify-receipt")!)
-            request.httpMethod = "POST"
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            guard let body = try? JSONEncoder().encode(receipt) else {
-                return AnyPublisher(value: MainAppAction.setReceiptValidationStatus(ReceiptValidationStatus.networkError))
-            }
-            request.httpBody = body
-            return URLSession.shared.dataTaskPublisher(for: request)
-                .map { (data, response) -> ReceiptValidationStatus in
-                    guard let res = response as? HTTPURLResponse, res.statusCode == 200,
-                          let result = try? JSONDecoder().decode([AppStoreValidationResponse].self, from: data) else {
-                              return .networkError
-                    }
-                    if result.contains(where: { $0.id == "livecommentpreview" }) {
-                        return .valid
-                    } else {
-                        return .invalid
-                    }
-                }
-                .replaceError(with: .networkError)
-                .map(MainAppAction.setReceiptValidationStatus)
-                .eraseToAnyPublisher()
 
         // MARK: - Tabs
 
@@ -196,23 +174,6 @@ let mainAppReducer = Reducer<MainAppState, MainAppAction, TFREnvironment> { stat
             }
             .map(MainAppAction.setNotificationsEnabled)
             .eraseToAnyPublisher()
-
-        // MARK: - Safari
-
-        case .openSafariToExtensionsWindow:
-            SFSafariApplication.showPreferencesForExtension(withIdentifier: "com.bermudalocket.redditweaks.extension")
-
-        case .checkSafariExtensionState:
-            return Future<Bool, Never> { promise in
-                SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: "com.bermudalocket.redditweaks.extension") { safariState, _ in
-                    return promise(.success(safariState?.isEnabled ?? false))
-                }
-            }
-            .map(MainAppAction.setSafariExtensionState)
-            .eraseToAnyPublisher()
-
-        case .setSafariExtensionState(let safariState):
-            state.isSafariExtensionEnabled = safariState
 
         // MARK: - Lifecycle
 

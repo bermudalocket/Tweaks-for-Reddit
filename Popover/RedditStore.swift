@@ -9,7 +9,7 @@
 import AppKit
 import Combine
 import Foundation
-import Composable_Architecture
+import TFRCompose
 import TFRCore
 
 typealias RedditStore = Store<RedditState, RedditAction, TFREnvironment>

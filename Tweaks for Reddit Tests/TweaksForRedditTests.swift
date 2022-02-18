@@ -13,49 +13,42 @@ import XCTest
 @testable import Tweaks_for_Reddit
 @testable import Tweaks_for_Reddit_Extension
 @testable import TFRCore
-@testable import Composable_Architecture
+@testable import TFRCompose
 @testable import Tweaks_for_Reddit_Popover
+
+extension Task where Success == Never, Failure == Never {
+    public static func sleep(_ seconds: Int) async throws {
+        try await Task.sleep(nanoseconds: .init(UInt64(seconds) * NSEC_PER_SEC))
+    }
+}
 
 class TweaksForRedditTests: XCTestCase {
 
     private var cancellables = Set<AnyCancellable>()
 
-    func testCheckMessages() {
-        let waiter = XCTestExpectation(description: "Check messages")
+    func testICloudKeyValueStore() async throws {
+        let randomId = UUID().uuidString
+        let iCloud = NSUbiquitousKeyValueStore.default
 
-        let store = Store<RedditState, RedditAction, TFREnvironment>(
-            initialState: RedditState(),
-            reducer: redditReducer,
-            environment: TFREnvironment(
-                oauth: OAuthClientMock(),
-                coreData: CoreDataService.init(inMemory: true),
-                defaults: DefaultsServiceMock(),
-                keychain: KeychainServiceMock(),
-                appStore: AppStoreServiceMock()
-            )
+        iCloud.set(true, forKey: randomId)
+
+        iCloud.synchronize()
+
+        XCTAssert(iCloud.bool(forKey: randomId))
+    }
+
+    func testReceipt() async throws {
+        let store = Store<MainAppState, MainAppAction, TFREnvironment>(
+            initialState: MainAppState(tab: .liveCommentPreview),
+            reducer: mainAppReducer,
+            environment: .shared
         )
 
-        store.$state.sink { newState in
-            if newState.unreadMessages != nil {
-                waiter.fulfill()
-            }
-        }.store(in: &cancellables)
+        NSUbiquitousKeyValueStore.default.set(true, forKey: "livecommentpreviews")
 
-        store.send(.checkForMessages)
+        store.send(.restorePurchases)
 
-        wait(for: [waiter], timeout: 10)
-
-        XCTAssertNotNil(store.state.unreadMessages)
-        XCTAssertEqual(store.state.unreadMessages?.count ?? -1, 1)
-
-        guard let message = store.state.unreadMessages?.first else {
-            XCTFail("No messages")
-            return
-        }
-
-        XCTAssertEqual(message.author, "thebermudamocket")
-        XCTAssertEqual(message.subreddit, "iOSProgramming")
-        XCTAssertEqual(message.subject, "comment reply")
+        XCTAssert(store.state.receiptValidationStatus == .valid)
     }
 
     func testOAuth() {
@@ -65,11 +58,11 @@ class TweaksForRedditTests: XCTestCase {
             initialState: .init(),
             reducer: .none,
             environment: TFREnvironment(
-                oauth: OAuthClientMock(),
+                oauth: RedditService(),
                 coreData: CoreDataService.init(inMemory: true),
                 defaults: DefaultsServiceMock(),
                 keychain: KeychainServiceMock(),
-                appStore: AppStoreServiceMock()
+                appStore: AppStoreService()
             )
         )
 

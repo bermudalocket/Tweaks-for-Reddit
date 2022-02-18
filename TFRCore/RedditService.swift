@@ -8,7 +8,7 @@
 
 import AppKit
 import Combine
-import Composable_Architecture
+import TFRCompose
 import Foundation
 import KeychainAccess
 
