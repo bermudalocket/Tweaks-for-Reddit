@@ -44,7 +44,7 @@ class TweaksForRedditTests: XCTestCase {
             environment: .shared
         )
 
-        NSUbiquitousKeyValueStore.default.set(true, forKey: "livecommentpreviews")
+        NSUbiquitousKeyValueStore.default.set(true, forKey: InAppPurchase.liveCommentPreview.productId)
 
         store.send(.restorePurchases)
 
@@ -67,17 +67,17 @@ class TweaksForRedditTests: XCTestCase {
         )
 
         store.$state.sink { newState in
-            if newState.didCompleteOAuth {
+            if newState.oauthState == .completed {
                 waiter.fulfill()
             }
         }.store(in: &cancellables)
 
         store.send(.beginOAuth)
-        store.send(.exchangeCodeForTokens(incomingUrl: URL(string: "rdtwks://oauth?code=mocked")!))
+        store.send(.exchangeCodeForTokens(incomingUrl: "rdtwks://oauth?code=mocked"))
 
         wait(for: [waiter], timeout: 10)
 
-        XCTAssertTrue(store.state.didCompleteOAuth)
+        XCTAssertTrue(store.state.oauthState == .completed)
     }
 
     func testAllFeaturesAreAssignedAPageType() {

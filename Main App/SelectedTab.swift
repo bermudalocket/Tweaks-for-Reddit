@@ -18,7 +18,6 @@ enum SelectedTab: String, Codable, CaseIterable, RawRepresentable {
     case toolbar = "The Toolbar Popover"
     case iCloud
     case liveCommentPreview = "Live Comment Previews"
-    case testFlight = "TestFlight"
 
     var name: String {
         self.rawValue
@@ -33,7 +32,6 @@ enum SelectedTab: String, Codable, CaseIterable, RawRepresentable {
             case .iCloud: return "cloud.fill"
             case .liveCommentPreview: return "sparkles.square.fill.on.square"
             case .notifications: return "bell.badge.fill"
-            case .testFlight: return "paperplane.fill"
         }
     }
 
@@ -52,18 +50,13 @@ enum SelectedTab: String, Codable, CaseIterable, RawRepresentable {
             case .iCloud:
                 return .liveCommentPreview
             case .liveCommentPreview:
-                return .testFlight
-            case .testFlight:
-                return .testFlight
+                return .welcome
         }
     }
 
     var view: some View {
         Group {
             switch self {
-                case .testFlight:
-                    TestFlightView()
-
                 case .notifications:
                     NotificationsView()
 

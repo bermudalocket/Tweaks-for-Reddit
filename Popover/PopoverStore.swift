@@ -16,8 +16,8 @@ import TFRCore
 public typealias PopoverStore = Store<PopoverState, PopoverAction, TFREnvironment>
 
 extension PopoverStore {
-    public static let shared = PopoverStore(
-        initialState: .shared,
+    public static let preview = PopoverStore(
+        initialState: PopoverState(),
         reducer: popoverReducer,
         environment: .shared
     )
@@ -52,6 +52,8 @@ public enum PopoverAction: Equatable {
     case copyDebugInfo
     case openFeedbackEmail
 
+    case showWhatsNew(_ isDisplayed: Bool)
+
     case reddit(_ action: RedditAction)
 
     case setFeatureState(feature: Feature, enabled: Bool)
@@ -67,6 +69,9 @@ public enum PopoverAction: Equatable {
 let popoverReducer = Reducer<PopoverState, PopoverAction, TFREnvironment> { state, action, env in
     logReducer("popoverReducer: \(action)")
     switch action {
+        case .showWhatsNew(let isDisplayed):
+            state.isShowingWhatsNew = isDisplayed
+
         case .copyDebugInfo:
             NSPasteboard.general.clearContents()
             var info = """
@@ -160,27 +165,4 @@ let popoverReducer = Reducer<PopoverState, PopoverAction, TFREnvironment> { stat
 
     }
     return .none
-}
-
-
-extension PopoverState {
-
-#if DEBUG
-    static let shared = PopoverState(
-        redditState: .init(),
-        isShowingWhatsNew: false,
-        features: Feature.features,
-        favoriteSubreddits: [
-            FavoriteSubredditMock(name: "swiftui", position: 0),
-            FavoriteSubredditMock(name: "trees", position: 1),
-            FavoriteSubredditMock(name: "apple", position: 2),
-            FavoriteSubredditMock(name: "schittscreek", position: 3)
-        ],
-        favoriteSubredditListSortingMethod: .alphabetical,
-        favoriteSubredditListHeight: .medium
-    )
-#else
-    static let shared = PopoverState()
-#endif
-
 }

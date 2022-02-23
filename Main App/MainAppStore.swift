@@ -38,7 +38,6 @@ struct MainAppState: Equatable {
     var isSafariExtensionEnabled = false
 
     var oauthState = OAuthState.notStarted
-    var didCompleteOAuth = false
 
     var notificationsEnabled = false
 
@@ -143,10 +142,11 @@ let mainAppReducer = Reducer<MainAppState, MainAppAction, TFREnvironment> { stat
             env.appStore.purchase(.liveCommentPreview)
 
         case .validateReceipt:
-            if NSUbiquitousKeyValueStore.default.bool(forKey: "livecommentpreview") {
+            state.receiptValidationStatus = .checking
+            if NSUbiquitousKeyValueStore.default.bool(forKey: InAppPurchase.liveCommentPreview.productId) {
                 state.receiptValidationStatus = .valid
             } else {
-                state.receiptValidationStatus = .invalid
+                state.receiptValidationStatus = .noReceiptFile
             }
 
         // MARK: - Tabs
@@ -189,14 +189,14 @@ let mainAppReducer = Reducer<MainAppState, MainAppAction, TFREnvironment> { stat
 
         case .save:
             env.defaults.set(state.tab?.rawValue, forKey: .selectedTab)
-            env.defaults.set(state.didCompleteOAuth, forKey: .didCompleteOAuth)
+            env.defaults.set(state.oauthState == .completed, forKey: .didCompleteOAuth)
 
         case .initialize:
             if let lastTab = env.defaults.get(.selectedTab) as? SelectedTab {
                 state.tab = lastTab
             }
-            if let didCompleteOAuth = env.defaults.get(.didCompleteOAuth) as? Bool {
-                state.didCompleteOAuth = didCompleteOAuth
+            if let didCompleteOAuth = env.defaults.get(.didCompleteOAuth) as? Bool, didCompleteOAuth {
+                state.oauthState = .completed
             }
             if let lastVersion = env.defaults.get(.lastWhatsNewVersion) as? String {
                 let numeric = Int(lastVersion.replacingOccurrences(of: ".", with: "").replacingOccurrences(of: "-", with: "")) ?? -1
@@ -255,7 +255,6 @@ let mainAppReducer = Reducer<MainAppState, MainAppAction, TFREnvironment> { stat
         case .saveTokens(let tokens):
             env.keychain.setTokens(tokens)
             state.oauthState = .completed
-            state.didCompleteOAuth = true
 
     }
     return .none

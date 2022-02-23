@@ -42,6 +42,6 @@ struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
             .frame(width: TweaksForReddit.popoverWidth)
-            .environmentObject(PopoverStore.shared)
+            .environmentObject(PopoverStore.preview)
     }
 }

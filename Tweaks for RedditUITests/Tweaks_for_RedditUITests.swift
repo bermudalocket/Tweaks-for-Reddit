@@ -15,11 +15,18 @@ class Tweaks_for_RedditUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["--testing"]
+//        app.launchArguments = ["--testing"]
         app.launch()
     }
 
-    func testWindowAlwaysComesToFront() throws {
+    func testOAuth() {
+        app.buttons["Reddit API Access"].click()
+        let startButton = app.buttons["Start OAuth"]
+        if startButton.isEnabled {
+            app.buttons["Start OAuth"].click()
+        } else {
+            app.buttons["Restart OAuth"].click()
+        }
         
     }
 

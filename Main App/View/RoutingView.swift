@@ -14,9 +14,6 @@ struct RoutingView: View {
 
     var body: some View {
         switch tab {
-            case .testFlight:
-                TestFlightView()
-
             case .notifications:
                 NotificationsView()
                 
@@ -37,9 +34,6 @@ struct RoutingView: View {
 
             case .toolbar:
                 SafariPopoverView()
-
-//            case .debug:
-//                DebugView()
         }
     }
 }

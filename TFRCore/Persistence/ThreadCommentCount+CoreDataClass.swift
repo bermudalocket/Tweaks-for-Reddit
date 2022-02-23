@@ -11,6 +11,17 @@ import Foundation
 import CoreData
 
 @objc(ThreadCommentCount)
-public class ThreadCommentCount: NSManagedObject {
+public class ThreadCommentCount: NSManagedObject, Identifiable {
 
+    @NSManaged public var internalCount: Int64
+    @NSManaged public var thread: String?
+    @NSManaged public var timestamp: Date?
+
+}
+
+extension ThreadCommentCount {
+    public var count: Int {
+        get { Int(internalCount) }
+        set { internalCount = Int64(newValue) }
+    }
 }

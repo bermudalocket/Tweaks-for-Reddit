@@ -32,18 +32,18 @@ struct RedditweaksApp: App {
             .sink(receiveValue: self.store.send(_:))
             .store(in: &cancellables)
 
-//        if #available(macOS 12, *) {
-//            Task(priority: .background) {
-//                while true {
-//                    log("async task created, awaiting awaken")
-//                    try? await Task.sleep(nanoseconds: UInt64(90 * 1_000_000_000))
-//                    log("async task awoken - am i cancelled? \(Task.isCancelled ? "Y" : "N")")
-//                    if !Task.isCancelled {
-//                        RedditweaksApp.backgroundTaskActionPipe.send(.checkForMessages)
-//                    }
-//                }
-//            }
-//        } else {
+        if #available(macOS 12, *) {
+            Task(priority: .background) {
+                while true {
+                    log("async task created, awaiting awaken")
+                    try? await Task.sleep(nanoseconds: UInt64(90 * 1_000_000_000))
+                    log("async task awoken - am i cancelled? \(Task.isCancelled ? "Y" : "N")")
+                    if !Task.isCancelled {
+                        RedditweaksApp.backgroundTaskActionPipe.send(.checkForMessages)
+                    }
+                }
+            }
+        } else {
             let backgroundTask = NSBackgroundActivityScheduler(identifier: "com.bermudalocket.redditweaks.background")
             backgroundTask.interval = 90
             backgroundTask.tolerance = 30
@@ -57,13 +57,13 @@ struct RedditweaksApp: App {
                     completion(.finished)
                 }
             }
-//        }
+        }
     }
 
     var body: some Scene {
         WindowGroup {
             if CommandLine.arguments.contains("--testing") {
-                PopoverView(store: .shared)
+                PopoverView(store: .preview)
             } else {
                 MainView()
                     .accentColor(.redditOrange)

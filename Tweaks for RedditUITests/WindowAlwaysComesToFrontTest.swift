@@ -14,7 +14,7 @@ class WindowAlwaysComesToFrontTest: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         let windows = app.windows
-        var foundFront = false;
+        var foundFront = false
         for i in 0...windows.count {
             let window = windows.element(boundBy: i)
             if window.isHittable {

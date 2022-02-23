@@ -88,7 +88,7 @@ struct RedditMailView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             RedditMailView()
-                .environmentObject(PopoverStore.shared)
+                .environmentObject(PopoverStore.preview)
             RedditMailView()
                 .environmentObject(PopoverStore(
                     initialState: PopoverState(

@@ -26,6 +26,9 @@ public struct PopoverView: View {
     public var body: some View {
         VStack(spacing: 5) {
             VersionView()
+                .onTapGesture {
+                    store.send(.showWhatsNew(true))
+                }
 
             RedditInfoView()
                 .frame(width: TweaksForReddit.popoverWidth, height: 150)
@@ -49,7 +52,7 @@ public struct PopoverView: View {
                         Toggle("Live preview comments in markdown", isOn: store.binding(for: .liveCommentPreview))
                             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                             .padding(10)
-                            .disabled(!(store.environment.defaults.get(.didPurchaseLiveCommentPreviews) as? Bool ?? false))
+                            .disabled(!NSUbiquitousKeyValueStore.default.bool(forKey: InAppPurchase.liveCommentPreview.productId))
                     }
                 }
             }
@@ -88,6 +91,6 @@ public struct PopoverView: View {
 
 struct PopoverView_Previews: PreviewProvider {
     static var previews: some View {
-        PopoverView(store: .shared)
+        PopoverView(store: .preview)
     }
 }

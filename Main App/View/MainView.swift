@@ -27,11 +27,10 @@ struct MainView: View {
                             Image(systemName: tab.symbol)
                                 .renderingMode(.original)
                                 .frame(width: 25)
-
-//                                .foregroundColor(.redditOrange)
                             Text(tab.name)
                         }
                         .font(.title3)
+                        .accessibilityLabel(tab.name)
                     }
                 }
             }

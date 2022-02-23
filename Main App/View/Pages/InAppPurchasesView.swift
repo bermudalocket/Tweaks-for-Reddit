@@ -77,7 +77,7 @@ struct InAppPurchasesView: View {
                             store.send(.purchaseLiveCommentPreviews)
                         }
                             .buttonStyle(RedditweaksButtonStyle())
-                            .disabled(store.state.receiptValidationStatus == .valid || store.state.isRestoringPurchases)
+                            .disabled(NSUbiquitousKeyValueStore.default.bool(forKey: InAppPurchase.liveCommentPreview.productId) || store.state.isRestoringPurchases)
                         Button("See a screenshot \(Image(systemName: "camera.viewfinder"))") {
                             isShowingScreenshot.toggle()
                         }

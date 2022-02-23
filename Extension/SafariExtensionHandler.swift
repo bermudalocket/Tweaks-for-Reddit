@@ -95,8 +95,7 @@ public class SafariExtensionHandler: SFSafariExtensionHandler {
                 }
 
             case .customSubredditBar:
-                let subs = CoreDataService.shared
-                        .favoriteSubreddits
+                let subs = coreData.favoriteSubreddits
                         .compactMap(\.name)
                         .compactMap({ "'\($0)'" })
                         .joined(separator: ",")

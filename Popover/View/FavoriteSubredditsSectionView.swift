@@ -104,7 +104,7 @@ struct FavoriteSubredditsSectionView: View {
 struct FavoriteSubredditsSectionView_Previews: PreviewProvider {
     static var previews: some View {
         FavoriteSubredditsSectionView()
-            .environmentObject(PopoverStore.shared)
+            .environmentObject(PopoverStore.preview)
             .frame(width: TweaksForReddit.popoverWidth)
             .padding()
     }

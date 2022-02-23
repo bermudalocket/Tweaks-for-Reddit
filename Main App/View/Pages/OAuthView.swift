@@ -65,11 +65,13 @@ struct OAuthView: View {
                 Button("Start authorizing \(Image(systemName: "lock"))") {
                     store.send(.beginOAuth)
                 }
-                    .disabled(store.state.didCompleteOAuth)
-                if store.state.didCompleteOAuth {
+                    .disabled(store.state.oauthState == .completed)
+                    .accessibilityLabel("Start OAuth")
+                if store.state.oauthState == .completed {
                     Button("Reauthorize \(Image(systemName: "lock.rotation"))") {
                         store.send(.beginOAuth)
                     }
+                    .accessibilityLabel("Restart OAuth")
                 }
                 NextTabButton()
             }
@@ -93,7 +95,7 @@ struct OAuthView_Preview: PreviewProvider {
                 )
             OAuthView()
                 .environmentObject(MainAppStore(
-                    initialState: .init(didCompleteOAuth: true),
+                    initialState: .init(oauthState: .completed),
                     reducer: .none,
                     environment: .shared
                 ))

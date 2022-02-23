@@ -47,22 +47,15 @@ public enum RedditAction: Equatable {
 
 let redditReducer = Reducer<RedditState, RedditAction, TFREnvironment> { state, action, env in
 
-    func getTokens() -> Tokens? {
-        guard let tokens = env.keychain.getTokens() else {
-            state.oauthError = .noToken
-            return nil
-        }
-        return tokens
+    guard let tokens = env.keychain.getTokens() else {
+        state.oauthError = .noToken
+        return .none
     }
 
     logReducer("redditReducer: \(action)")
     switch action {
         case .unhidePosts(let posts):
             state.postsBeingUnhidden.append(contentsOf: posts)
-            guard let tokens = env.keychain.getTokens() else {
-                state.oauthError = .noToken
-                return .none
-            }
             return env.reddit.unhide(tokens: tokens, posts: posts)
                 .map { result in
                     if !result {
@@ -75,10 +68,6 @@ let redditReducer = Reducer<RedditState, RedditAction, TFREnvironment> { state, 
 
         case .fetchHiddenPosts(after: let after, before: let before):
             state.hiddenPosts = nil
-            guard let tokens = env.keychain.getTokens() else {
-                state.oauthError = .noToken
-                return .none
-            }
             guard let username = state.userData?.username else {
                 state.oauthError = .noToken
                 return .none
@@ -124,10 +113,6 @@ let redditReducer = Reducer<RedditState, RedditAction, TFREnvironment> { state, 
 
         case .checkForMessages:
             env.defaults.set(nil, forKey: "newMessageCount")
-            guard let tokens = env.keychain.getTokens() else {
-                state.oauthError = .noToken
-                return .none
-            }
             return env.reddit.getMessages(tokens: tokens)
                 .map(RedditAction.updateMessages)
                 .catch { AnyPublisher(value: RedditAction.setOAuthError($0)) }
@@ -137,10 +122,6 @@ let redditReducer = Reducer<RedditState, RedditAction, TFREnvironment> { state, 
             state.userData = userData
 
         case .fetchUserData:
-            guard let tokens = env.keychain.getTokens() else {
-                state.oauthError = .noToken
-                return .none
-            }
             return env.reddit.getUserData(tokens: tokens)
                 .map(RedditAction.updateUserData)
                 .catch { AnyPublisher(value: RedditAction.setOAuthError($0)) }

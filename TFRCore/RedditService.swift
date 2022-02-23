@@ -8,7 +8,6 @@
 
 import AppKit
 import Combine
-import TFRCompose
 import Foundation
 import KeychainAccess
 
@@ -71,7 +70,7 @@ public enum Endpoint: Equatable {
     }
 }
 
-public protocol RedditServiceProtocol {
+public protocol RedditCommunicating {
     func begin(state: String)
     func exchangeCodeForTokens(code: String) -> AnyPublisher<Tokens, RedditError>
     func getUserData(tokens: Tokens) -> AnyPublisher<UserData, RedditError>
@@ -80,7 +79,7 @@ public protocol RedditServiceProtocol {
     func unhide(tokens: Tokens, posts: [Post]) -> AnyPublisher<Bool, RedditError>
 }
 
-public struct RedditService: RedditServiceProtocol {
+public struct RedditService: RedditCommunicating {
 
     public func begin(state: String) {
         var comps = URLComponents(string: "https://www.reddit.com/api/v1/authorize")!
@@ -165,7 +164,7 @@ public struct RedditService: RedditServiceProtocol {
         request(tokens: tokens, endpoint: .me)
             .decode(type: UserData.self, decoder: JSONDecoder())
             .catch { error in
-                AnyPublisher(error: RedditError.wrapping(message: "\(error)"))
+                Fail(error: RedditError.wrapping(message: "\(error)"))
             }
             .eraseToAnyPublisher()
     }
@@ -181,7 +180,7 @@ public struct RedditService: RedditServiceProtocol {
                 $0.data.contents.map(\.data)
             }
             .catch { error in
-                AnyPublisher(error: RedditError.wrapping(message: "\(error)"))
+                Fail(error: RedditError.wrapping(message: "\(error)"))
             }
             .eraseToAnyPublisher()
     }
@@ -207,7 +206,7 @@ public struct RedditService: RedditServiceProtocol {
                 $0.data.contents.map(\.data)
             }
             .catch { error in
-                AnyPublisher(error: RedditError.wrapping(message: "\(error)"))
+                Fail(error: RedditError.wrapping(message: "\(error)"))
             }
             .eraseToAnyPublisher()
     }
@@ -215,13 +214,14 @@ public struct RedditService: RedditServiceProtocol {
     public func unhide(tokens: Tokens, posts: [Post]) -> AnyPublisher<Bool, RedditError> {
         request(tokens: tokens, endpoint: .unhide(posts: posts))
             .map { _ in true }
-            .catch { _ in AnyPublisher(value: false) }
+            .catch { _ in Just(false).setFailureType(to: RedditError.self) }
             .eraseToAnyPublisher()
     }
 
     private func request(tokens: Tokens, endpoint: Endpoint) -> AnyPublisher<Data, RedditError> {
         guard let accessToken = tokens.accessToken else {
-            return AnyPublisher(error: RedditError.noToken)
+            return Fail(error: RedditError.noToken)
+                .eraseToAnyPublisher()
         }
         let request: URLRequest = {
             var request = URLRequest(url: endpoint.url)

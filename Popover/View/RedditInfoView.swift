@@ -15,6 +15,8 @@ struct RedditInfoView: View {
 
     @EnvironmentObject private var store: RedditStore
 
+    @State private var isHoveringOverMailButton = false
+
     /// A NumberFormatter that adds thousands separators
     private var decimalFormatter: NumberFormatter {
         let fmt = NumberFormatter()
@@ -59,8 +61,13 @@ struct RedditInfoView: View {
             if let error = store.state.oauthError {
                 switch error {
                     case .noToken:
-                        Text("No tokens were found.\nPlease re-authorize in the main app.")
-                            .multilineTextAlignment(.center)
+                        VStack {
+                            Text("No tokens were found.\nPlease re-authorize in the main app.")
+                                .multilineTextAlignment(.center)
+                            Button("Open Tweaks for Reddit") {
+                                NSWorkspace.shared.open(URL(string: "rdtwks://")!)
+                            }
+                        }
 
                     case .unauthorized:
                         Text("Unauthorized")
@@ -97,66 +104,32 @@ struct RedditInfoView: View {
                         Text("u/abcdefghijk")
                             .redacted(reason: .placeholder)
                     }
-                    HStack {
+
+                    RedditRowView(isPopoverPresented: .constant(false)) {
                         Image(systemName: "note.text")
                             .frame(width: 20)
                         Text("\(postKarma)")
                             .accessibilityLabel("\(postKarma) post karma")
-                        Spacer()
-                        Button("\(Image(systemName: "chevron.right"))") {
-                            store.send(.openPostHistory)
-                        }
-                        .buttonStyle(BorderlessButtonStyle())
-                        .foregroundColor(Color(NSColor.placeholderTextColor))
-                        .disabled(store.state.userData?.postKarma == nil)
-                        .padding(.horizontal)
                     }
-                    HStack {
+
+                    RedditRowView(isPopoverPresented: .constant(false)) {
                         Image(systemName: "text.bubble")
                             .frame(width: 20)
                         Text("\(commentKarma)")
                             .accessibilityLabel("\(commentKarma) comment karma")
-                        Spacer()
-                        Button("\(Image(systemName: "chevron.right"))") {
-                            store.send(.openCommentHistory)
-                        }
-                        .buttonStyle(BorderlessButtonStyle())
-                        .foregroundColor(Color(NSColor.placeholderTextColor))
-                        .disabled(store.state.userData?.commentKarma == nil)
-                        .padding(.horizontal)
                     }
-                    HStack {
+
+                    RedditRowView(isPopoverPresented: $isShowingHiddenPostsView) {
                         Image(systemName: "eye.slash")
                             .frame(width: 20)
                         Text("Hidden posts")
-                        Spacer()
-                        Button("\(Image(systemName: "chevron.right"))") {
-                            isShowingHiddenPostsView.toggle()
-                            store.send(.fetchHiddenPosts())
-                        }
-                        .buttonStyle(BorderlessButtonStyle())
-                        .foregroundColor(Color(NSColor.placeholderTextColor))
-                        .padding(.horizontal)
-                        .popover(isPresented: $isShowingHiddenPostsView, attachmentAnchor: .rect(.bounds), arrowEdge: .leading) {
-                            HiddenPostsView()
-                        }
                     }
-                    HStack {
+
+                    RedditRowView(isPopoverPresented: $store.state.isShowingMailView) {
                         self.inboxSymbol
                             .frame(width: 20)
                         Text("\(inboxCount) new message\(inboxCount > 1 ? "s" : "")")
                             .accessibilityLabel("\(inboxCount) new messages")
-                        Spacer()
-                        Button("\(Image(systemName: "chevron.right"))") {
-                            store.send(.setIsShowingMailView(true))
-                        }
-                        .buttonStyle(BorderlessButtonStyle())
-                        .foregroundColor(Color(NSColor.placeholderTextColor))
-                        .padding(.horizontal)
-                        .popover(isPresented: $store.state.isShowingMailView, attachmentAnchor: .rect(.bounds), arrowEdge: .trailing) {
-                            RedditMailView()
-                                .frame(width: 400)
-                        }
                     }
                 } // VStack
             }
@@ -165,5 +138,43 @@ struct RedditInfoView: View {
             store.send(.fetchUserData)
         }
     } // body
+
+    private struct RedditRowView<Content: View>: View {
+
+        let content: Content
+
+        var popoverBinding: Binding<Bool>
+
+        @State private var isHovering = false
+
+        init(isPopoverPresented: Binding<Bool>, @ViewBuilder content: () -> Content) {
+            self.content = content()
+            self.popoverBinding = isPopoverPresented
+        }
+
+        var body: some View {
+            HStack {
+                content
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .padding(.horizontal)
+            }
+                .padding(2.5)
+                .contentShape(RoundedRectangle(cornerRadius: 5))
+                .onHover { isHovering = $0 }
+                .background(
+                    RoundedRectangle(cornerRadius: 5)
+                        .foregroundColor(
+                            isHovering ? Color.redditOrange.opacity(0.33) : Color.clear
+                        )
+                        .padding(.trailing, 5)
+                )
+                .onTapGesture { popoverBinding.wrappedValue.toggle() }
+                .popover(isPresented: popoverBinding, attachmentAnchor: .rect(.bounds), arrowEdge: .trailing) {
+                    RedditMailView()
+                        .frame(width: 400)
+                }
+        }
+    }
 
 }

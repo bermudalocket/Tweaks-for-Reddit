@@ -14,6 +14,26 @@ class TFRCore_Tests: XCTestCase {
 
     private var cancellables = Set<AnyCancellable>()
 
+    func testKeychain() {
+        let keychain = KeychainServiceLive()
+
+        keychain.set("testkey", value: "testvalue")
+
+        XCTAssertEqual(keychain.get("testkey"), "testvalue")
+    }
+
+    func testTokens() {
+        let keychain = KeychainServiceLive()
+
+        guard let tokens = keychain.getTokens() else {
+            XCTFail("No tokens are stored.")
+            return
+        }
+
+        XCTAssertNotNil(tokens.accessToken)
+        XCTAssertNotNil(tokens.refreshToken)
+    }
+
     func testExample() throws {
         let keychainService = KeychainServiceLive()
         guard let tokens = keychainService.getTokens() else {
@@ -79,7 +99,7 @@ class TFRCore_Tests: XCTestCase {
                     XCTFail("error: \(error)")
                 }
             } receiveValue: { post in
-                redditService.getHiddenPosts(tokens: tokens, username: "thebermudalocket", after: post.name)
+                redditService.getHiddenPosts(tokens: tokens, username: "thebermudalocket", after: post)
                     .sink { completion in
                         if case let .failure(error) = completion {
                             XCTFail("error: \(error)")

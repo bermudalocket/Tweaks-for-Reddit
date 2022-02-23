@@ -17,15 +17,18 @@ public protocol KeychainService {
 
 class KeychainServiceLive: KeychainService {
 
-    private let keychain = Keychain(service: "com.bermudalocket.tweaksforreddit", accessGroup: "2VZ489BR9H.group.com.bermudalocket.tweaksforreddit")
+    private let keychain = Keychain(
+        service: "com.bermudalocket.tweaksforreddit",
+        accessGroup: "2VZ489BR9H.group.com.bermudalocket.tweaksforreddit"
+    )
             .synchronizable(true)
-            .accessibility(.afterFirstUnlock, authenticationPolicy: .userPresence)
+            .accessibility(.always)
 
-    private func get(_ key: String) -> String? {
+    func get(_ key: String) -> String? {
         try? keychain.get(key)
     }
 
-    private func set(_ key: String, value: String) {
+    func set(_ key: String, value: String) {
         try? keychain.set(value, key: key)
     }
 

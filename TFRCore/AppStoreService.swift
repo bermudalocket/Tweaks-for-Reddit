@@ -13,7 +13,7 @@ import StoreKit
 public enum InAppPurchase: CaseIterable {
     case liveCommentPreview
 
-    var productId: String {
+    public var productId: String {
         switch self {
             case .liveCommentPreview: return "livecommentpreview"
         }
@@ -85,10 +85,10 @@ public class AppStoreService: NSObject, SKProductsRequestDelegate, SKPaymentTran
         for transaction in transactions {
             switch transaction.transactionState {
                 case .purchased, .restored:
-                    NSUbiquitousKeyValueStore.default.set(true, forKey: "livecommentpreviews")
+                    NSUbiquitousKeyValueStore.default.set(true, forKey: InAppPurchase.liveCommentPreview.productId)
 
                 default:
-                    NSUbiquitousKeyValueStore.default.set(false, forKey: "livecommentpreviews")
+                    NSUbiquitousKeyValueStore.default.set(false, forKey: InAppPurchase.liveCommentPreview.productId)
             }
         }
     }

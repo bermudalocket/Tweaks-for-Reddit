@@ -44,7 +44,7 @@ struct FeaturesListView: View {
 struct FeaturesListView_Preview: PreviewProvider {
     static var previews: some View {
         FeaturesListView()
-            .environmentObject(PopoverStore.shared)
+            .environmentObject(PopoverStore.preview)
             .frame(width: TweaksForReddit.popoverWidth)
     }
 }

@@ -41,7 +41,7 @@ struct NotificationsView: View {
                         .foregroundColor(.gray)
                 }
             }
-            if !store.state.didCompleteOAuth {
+            if store.state.oauthState != .completed {
                 HStack {
                 Text("This feature requires OAuth authorization.")
                     .font(.title2)
@@ -55,7 +55,7 @@ struct NotificationsView: View {
                 Button("Request notifications \(Image(systemName: "lock"))") {
                     store.send(.requestNotificationAuthorization)
                 }.buttonStyle(RedditweaksButtonStyle())
-                    .disabled(store.state.notificationsEnabled || !store.state.didCompleteOAuth)
+                    .disabled(store.state.notificationsEnabled || store.state.oauthState != .completed)
                 NextTabButton()
             }
         }.onAppear {

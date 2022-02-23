@@ -19,13 +19,13 @@ public struct TFREnvironment {
         appStore: AppStoreService()
     )
 
-    public var reddit: RedditServiceProtocol
+    public var reddit: RedditCommunicating
     public var coreData: CoreDataService
     public var defaults: DefaultsService
     public var keychain: KeychainService
     public var appStore: AppStoreService
 
-    init(oauth: RedditServiceProtocol, coreData: CoreDataService, defaults: DefaultsService, keychain: KeychainService, appStore: AppStoreService) {
+    init(oauth: RedditCommunicating, coreData: CoreDataService, defaults: DefaultsService, keychain: KeychainService, appStore: AppStoreService) {
         self.reddit = oauth
         self.coreData = coreData
         self.defaults = defaults
@@ -50,24 +50,34 @@ extension TFREnvironment {
         )
     }
 
-    private struct RedditServiceMocked: RedditServiceProtocol {
+    private struct RedditServiceMocked: RedditCommunicating {
         func begin(state: String) { }
         func exchangeCodeForTokens(code: String) -> AnyPublisher<Tokens, RedditError> {
-            AnyPublisher(value: Tokens(accessToken: "mocked-Access-Token", refreshToken: "mocked-Refresh-Token"))
+            Just(Tokens(accessToken: "mocked-Access-Token", refreshToken: "mocked-Refresh-Token"))
+                .setFailureType(to: RedditError.self)
+                .eraseToAnyPublisher()
         }
         func getUserData(tokens: Tokens) -> AnyPublisher<UserData, RedditError> {
-            AnyPublisher(value: UserData.mock)
+            Just(UserData.mock)
+                .setFailureType(to: RedditError.self)
+                .eraseToAnyPublisher()
         }
         func getMessages(tokens: Tokens) -> AnyPublisher<[UnreadMessage], RedditError> {
-            AnyPublisher(value: [])
+            Just([])
+                .setFailureType(to: RedditError.self)
+                .eraseToAnyPublisher()
         }
         func getHiddenPosts(tokens: Tokens, username: String, after: Post?, before: Post?) -> AnyPublisher<[Post], RedditError> {
-            AnyPublisher(value: [
+            Just([
                 Post(subreddit: "mocking", title: "This is a mocked post", permalink: "", name: "t3_mocked")
             ])
+                .setFailureType(to: RedditError.self)
+                .eraseToAnyPublisher()
         }
         func unhide(tokens: Tokens, posts: [Post]) -> AnyPublisher<Bool, RedditError> {
-            AnyPublisher(value: true)
+            Just(true)
+                .setFailureType(to: RedditError.self)
+                .eraseToAnyPublisher()
         }
     }
 }
