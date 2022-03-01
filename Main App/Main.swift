@@ -95,6 +95,10 @@ class RedditweaksAppDelegate: NSObject, NSApplicationDelegate {
         false
     }
 
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        .terminateNow
+    }
+
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
 
