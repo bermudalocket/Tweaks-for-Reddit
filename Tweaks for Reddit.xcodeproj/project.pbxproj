@@ -47,7 +47,6 @@
 		8949C04623DD582D002CF0C0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8949C04223DD5810002CF0C0 /* LICENSE */; };
 		8949C04723DD582E002CF0C0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8949C04223DD5810002CF0C0 /* LICENSE */; };
 		8952B9C325EED97D00EF44DF /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8952B9C125EED97D00EF44DF /* TitleView.swift */; };
-		895C79712630C15C00268E76 /* NoCommit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895C79702630C15C00268E76 /* NoCommit.swift */; };
 		89619D7326503C3400214AD0 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89619D7226503C3400214AD0 /* LogoView.swift */; };
 		896514DC26F18B6000268E76 /* WindowAlwaysComesToFrontTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896514DB26F18B6000268E76 /* WindowAlwaysComesToFrontTest.swift */; };
 		896514E026F269EC00268E76 /* TFRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 898A390F2688FFBA00268E76 /* TFRCore.framework */; };
@@ -99,6 +98,7 @@
 		898D091F262A4AFE00268E76 /* InAppPurchasesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898D091D262A4AF800268E76 /* InAppPurchasesView.swift */; };
 		898F0566267C3EDC00268E76 /* OAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898F0565267C3EDC00268E76 /* OAuthView.swift */; };
 		898F0578267EBDE600268E76 /* Tweaks_for_RedditUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898F0577267EBDE600268E76 /* Tweaks_for_RedditUITests.swift */; };
+		89927AD327D019A800268E76 /* TFRPrivate in Frameworks */ = {isa = PBXBuildFile; productRef = 89927AD227D019A800268E76 /* TFRPrivate */; };
 		899A09F6262FB33D00268E76 /* SafariPopoverViewArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899A09F5262FB33D00268E76 /* SafariPopoverViewArt.swift */; };
 		89B4EF7526F409E900268E76 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 89B4EF7426F409E900268E76 /* Kingfisher */; };
 		89B4EF7726F40A6300268E76 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 89B4EF7626F40A6300268E76 /* Kingfisher */; };
@@ -308,7 +308,6 @@
 		895233BF24A6AC0300B72CE8 /* Tweaks for Reddit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tweaks for Reddit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8952B9BE25EED54200EF44DF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8952B9C125EED97D00EF44DF /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
-		895C79702630C15C00268E76 /* NoCommit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCommit.swift; sourceTree = "<group>"; };
 		895C79732630C46500268E76 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		89619D7226503C3400214AD0 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		896514DB26F18B6000268E76 /* WindowAlwaysComesToFrontTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAlwaysComesToFrontTest.swift; sourceTree = "<group>"; };
@@ -338,6 +337,7 @@
 		898F056A267D129000268E76 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		898F0575267EBDE600268E76 /* Tweaks for RedditUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tweaks for RedditUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		898F0577267EBDE600268E76 /* Tweaks_for_RedditUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tweaks_for_RedditUITests.swift; sourceTree = "<group>"; };
+		89927AD127D0197800268E76 /* TFRPrivate */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TFRPrivate; path = ../TFRPrivate; sourceTree = "<group>"; };
 		899A09F5262FB33D00268E76 /* SafariPopoverViewArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariPopoverViewArt.swift; sourceTree = "<group>"; };
 		89A7D1132685008300268E76 /* URL+queryParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+queryParameters.swift"; sourceTree = "<group>"; };
 		89A7D1192685017E00268E76 /* RedditError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditError.swift; sourceTree = "<group>"; };
@@ -439,6 +439,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				896514E826F269F700268E76 /* Tweaks_for_Reddit_Popover.framework in Frameworks */,
+				89927AD327D019A800268E76 /* TFRPrivate in Frameworks */,
 				896514EA26F269FA00268E76 /* TFRCore.framework in Frameworks */,
 				8988B79326521CF500268E76 /* CloudKit.framework in Frameworks */,
 			);
@@ -451,6 +452,7 @@
 			isa = PBXGroup;
 			children = (
 				8917F47A27C019A200268E76 /* Compose */,
+				89927AD127D0197800268E76 /* TFRPrivate */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -695,7 +697,6 @@
 			isa = PBXGroup;
 			children = (
 				8935C51A2614DFC700268E76 /* Resources */,
-				895C79702630C15C00268E76 /* NoCommit.swift */,
 				89CD138A245E153200A8D3E4 /* SafariExtensionHandler.swift */,
 				8904856E268D666E00A91BD4 /* Message.swift */,
 			);
@@ -869,6 +870,7 @@
 			);
 			name = "Tweaks for Reddit Extension";
 			packageProductDependencies = (
+				89927AD227D019A800268E76 /* TFRPrivate */,
 			);
 			productName = "redditweaks2 Extension";
 			productReference = 99C7C300235D81AA00ABA6EA /* Tweaks for Reddit Extension.appex */;
@@ -1163,7 +1165,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				895C79712630C15C00268E76 /* NoCommit.swift in Sources */,
 				89C5BE9E2613AD7800268E76 /* SafariExtensionHandler.swift in Sources */,
 				8952B9C325EED97D00EF44DF /* TitleView.swift in Sources */,
 				8904856F268D666E00A91BD4 /* Message.swift in Sources */,
@@ -1843,6 +1844,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8925681F26EC577600268E76 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
+		};
+		89927AD227D019A800268E76 /* TFRPrivate */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TFRPrivate;
 		};
 		89B4EF7426F409E900268E76 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

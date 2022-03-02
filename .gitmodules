@@ -1,3 +1,6 @@
 [submodule "Compose"]
 	path = Compose
 	url = https://github.com/bermudalocket/TFRCompose
+[submodule "TFRPrivate"]
+	path = TFRPrivate
+	url = https://github.com/bermudalocket/TFRPrivate

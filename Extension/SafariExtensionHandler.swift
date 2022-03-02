@@ -13,6 +13,7 @@ import SafariServices
 import SwiftUI
 import TFRCore
 import Tweaks_for_Reddit_Popover
+import TFRPrivate
 
 public class SafariExtensionHandler: SFSafariExtensionHandler {
 
@@ -35,12 +36,13 @@ public class SafariExtensionHandler: SFSafariExtensionHandler {
                     return
                 }
                 if Feature.liveCommentPreview.isEnabled {
-                    NoCommit.inject(into: page) // premium/paid features
+                    TFRPrivate.inject(into: page) // premium/paid features
                 }
                 pageType.features
                     .filter(\.isEnabled)
                     .map { buildJavascriptFunction(for: $0, on: pageType) }
                     .forEach(page.executeJavascript(_:))
+                page.dispatchMessageToScript(message: .end)
 
             case .threadCommentCountSaveRequest:
                 guard let thread = userInfo["thread"] as? String,
