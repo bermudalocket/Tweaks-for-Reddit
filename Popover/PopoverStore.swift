@@ -115,7 +115,7 @@ let popoverReducer = Reducer<PopoverState, PopoverAction, TFREnvironment> { stat
 
         case .setFavoriteSubredditsListHeight(height: let height):
             state.favoriteSubredditListHeight = height
-            env.defaults.set(height.rawValue, forKey: .favoriteSubredditListHeight)
+            env.defaults.set(height.heightInPixels, forKey: .favoriteSubredditListHeight)
 
         case .reddit(let redditAction):
             return redditReducer(&state.redditState, redditAction, env)
