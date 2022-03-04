@@ -10,6 +10,7 @@ import Foundation
 
 enum Message: CaseIterable {
     case begin
+    case end
     case script
     case userKarmaFetchRequest, userKarmaSaveRequest, userKarmaFetchRequestResponse
     case threadCommentCountFetchRequest, threadCommentCountSaveRequest, threadCommentCountFetchRequestResponse
