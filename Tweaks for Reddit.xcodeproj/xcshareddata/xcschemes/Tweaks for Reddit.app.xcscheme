@@ -14,6 +14,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "TFRCompose"
+               BuildableName = "TFRCompose"
+               BlueprintName = "TFRCompose"
+               ReferencedContainer = "container:Compose">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "TFRPrivate"
+               BuildableName = "TFRPrivate"
+               BlueprintName = "TFRPrivate"
+               ReferencedContainer = "container:../TFRPrivate">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "898A390E2688FFBA00268E76"
                BuildableName = "TFRCore.framework"
                BlueprintName = "TFRCore"
