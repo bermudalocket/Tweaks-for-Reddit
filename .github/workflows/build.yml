@@ -43,4 +43,4 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       - name: Build
-        run: xcodebuild clean build analyze -scheme "Tweaks for Reddit.app" -project "Tweaks for Reddit.xcodeproj" | xcpretty && exit ${PIPESTATUS[0]}
+        run: xcodebuild clean build -destination generic/platform=macOS -scheme "Tweaks for Reddit.app" -project "Tweaks for Reddit.xcodeproj" | xcpretty && exit ${PIPESTATUS[0]}
