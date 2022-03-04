@@ -51,4 +51,4 @@ jobs:
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH_EXT ~/Library/MobileDevice/Provisioning\ Profiles
       - name: Build
-        run: xcodebuild clean build -destination generic/platform=macOS -scheme "Tweaks for Reddit.app" -project "Tweaks for Reddit.xcodeproj"
+        run: xcodebuild clean build -destination generic/platform=macOS -scheme "Tweaks for Reddit.app" -workspace "Tweaks for Reddit.xcworkspace"
