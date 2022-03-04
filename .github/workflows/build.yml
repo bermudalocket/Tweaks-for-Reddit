@@ -18,7 +18,7 @@ jobs:
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
         
-      - name: Install the Apple certificate and provisioning profile
+      - name: Import cert & provisioning profiles
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE }}
           P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
@@ -50,5 +50,9 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH_EXT ~/Library/MobileDevice/Provisioning\ Profiles
-      - name: Build
+      - name: TFRCompose
+        run: cd Compose && swift build
+      - name: TFRPrivate
+        run: cd TFRPrivate && swift build
+      - name: Tweaks for Reddit.app
         run: xcodebuild clean build -destination generic/platform=macOS -scheme "Tweaks for Reddit.app" -workspace "Tweaks for Reddit.xcworkspace"
