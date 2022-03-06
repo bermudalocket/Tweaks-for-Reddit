@@ -21,6 +21,7 @@ jobs:
       - name: Set up keys
         run: |
           echo -n "${{ secrets.SSH_KEY }}" | base64 --decode --output ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
           git config --global url.ssh://git@github.com/.insteadOf https://github.com/
         
       - name: Import cert & provisioning profiles
