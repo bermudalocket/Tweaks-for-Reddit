@@ -7,6 +7,10 @@
     </a>
 </p>
 
+### CI Status
+
+[![Xcode - Build and Analyze](https://github.com/bermudalocket/Tweaks-for-Reddit/actions/workflows/build.yml/badge.svg?branch=testflight)](https://github.com/bermudalocket/Tweaks-for-Reddit/actions/workflows/build.yml)
+
 ## Background
 
 This project started in June 2019 as an attempt to port the entirety of the Reddit Enhancement Suite to the Safari App Extension framework. Since then, this project has diverted from that path and instead implements a select swath of features. Requests are welcome: simply open an issue. Pull requests are also welcome, as are code reviews.
