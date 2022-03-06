@@ -18,6 +18,24 @@
           "revision": "d06df9adf50ed8cde5786d935836a5f445f780ba",
           "version": "6.3.1"
         }
+      },
+      {
+        "package": "TFRCompose",
+        "repositoryURL": "https://github.com/bermudalocket/TFRCompose",
+        "state": {
+          "branch": "main",
+          "revision": "8c32053078689c0a8bda6ed81340d8e1004bdee3",
+          "version": null
+        }
+      },
+      {
+        "package": "TFRPrivate",
+        "repositoryURL": "https://github.com/bermudalocket/TFRPrivate",
+        "state": {
+          "branch": "main",
+          "revision": "5c71bb9c6b1f438b64d7902f8a6e91f53843082a",
+          "version": null
+        }
       }
     ]
   },
