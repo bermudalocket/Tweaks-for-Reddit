@@ -17,6 +17,12 @@ jobs:
         with:
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
+          
+      - name: Set up keys
+        run: |
+          echo -n "${{ secrets.SSH_KEY }}" | base64 --decode --output ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          git config --global url.ssh://git@github.com/.insteadOf https://github.com/
         
       - name: Import cert & provisioning profiles
         env:
@@ -50,9 +56,9 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH_EXT ~/Library/MobileDevice/Provisioning\ Profiles
+          
       - name: Resolve package dependencies
         run: xcodebuild -resolvePackageDependencies
-      - name: Check dependencies
-        run: ls -lah TFRPrivate
+
       - name: Tweaks for Reddit.app
         run: xcodebuild clean build -destination generic/platform=macOS -scheme "Tweaks for Reddit.app" -workspace "Tweaks for Reddit.xcworkspace"
