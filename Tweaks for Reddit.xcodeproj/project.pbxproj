@@ -284,7 +284,6 @@
 		8914CDA924B776150015E4C4 /* TweaksForReddit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweaksForReddit.swift; sourceTree = "<group>"; };
 		8914CDAD24B788C10015E4C4 /* FavoriteSubredditsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteSubredditsSectionView.swift; sourceTree = "<group>"; };
 		8917DE392665994C0081DA7D /* FavoriteSubreddit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteSubreddit.swift; sourceTree = "<group>"; };
-		8917F47A27C019A200268E76 /* Compose */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Compose; sourceTree = "<group>"; };
 		891A7500268111EF00268E76 /* PopoverStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverStore.swift; sourceTree = "<group>"; };
 		891A75032681126B00268E76 /* RedditStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditStore.swift; sourceTree = "<group>"; };
 		891A750926811F6400268E76 /* MainAppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppStore.swift; sourceTree = "<group>"; };
@@ -308,6 +307,8 @@
 		895233BF24A6AC0300B72CE8 /* Tweaks for Reddit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tweaks for Reddit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8952B9BE25EED54200EF44DF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8952B9C125EED97D00EF44DF /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
+		8953157127D52F0100268E76 /* TFRPrivate */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = TFRPrivate; sourceTree = "<group>"; };
+		8953157227D52F1D00268E76 /* TFRCompose */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TFRCompose; path = ../TFRCompose; sourceTree = "<group>"; };
 		895C79732630C46500268E76 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		89619D7226503C3400214AD0 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		896514DB26F18B6000268E76 /* WindowAlwaysComesToFrontTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAlwaysComesToFrontTest.swift; sourceTree = "<group>"; };
@@ -337,7 +338,6 @@
 		898F056A267D129000268E76 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		898F0575267EBDE600268E76 /* Tweaks for RedditUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tweaks for RedditUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		898F0577267EBDE600268E76 /* Tweaks_for_RedditUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tweaks_for_RedditUITests.swift; sourceTree = "<group>"; };
-		89927AD127D0197800268E76 /* TFRPrivate */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TFRPrivate; path = ../TFRPrivate; sourceTree = "<group>"; };
 		899A09F5262FB33D00268E76 /* SafariPopoverViewArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariPopoverViewArt.swift; sourceTree = "<group>"; };
 		89A7D1132685008300268E76 /* URL+queryParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+queryParameters.swift"; sourceTree = "<group>"; };
 		89A7D1192685017E00268E76 /* RedditError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditError.swift; sourceTree = "<group>"; };
@@ -448,15 +448,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8917F47927C019A200268E76 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				8917F47A27C019A200268E76 /* Compose */,
-				89927AD127D0197800268E76 /* TFRPrivate */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		8925682926ED27AD00268E76 /* TFRCore Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -508,6 +499,15 @@
 				89E03BF026E93BE900268E76 /* Background.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		8953157027D52F0100268E76 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				8953157127D52F0100268E76 /* TFRPrivate */,
+				8953157227D52F1D00268E76 /* TFRCompose */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		898384D5265360C100BD3C57 /* Pages */ = {
@@ -638,7 +638,7 @@
 		99C7C2E4235D81A700ABA6EA = {
 			isa = PBXGroup;
 			children = (
-				8917F47927C019A200268E76 /* Packages */,
+				8953157027D52F0100268E76 /* Packages */,
 				895C79732630C46500268E76 /* .gitignore */,
 				8909ACBF25F46FAA00251064 /* README.md */,
 				8949C04223DD5810002CF0C0 /* LICENSE */,
