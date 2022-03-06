@@ -828,7 +828,6 @@
 				99C7C2EB235D81A700ABA6EA /* Resources */,
 				99C7C31A235D81AA00ABA6EA /* Embed App Extensions */,
 				89A10A5B262CE5C400268E76 /* Embed Frameworks */,
-				89F56CAD264E1EC900F90BE2 /* ShellScript */,
 				89C4EAA326E9326900268E76 /* Embed XPC Services */,
 			);
 			buildRules = (
@@ -1025,23 +1024,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "periphery scan \\\n  --project \"/Users/bermudalocket/git/redditweaks/Tweaks for Reddit.xcodeproj\" \\\n  --schemes \"Tweaks for Reddit.app\" \\\n  --targets \"Tweaks for Reddit\",\"Tweaks for Reddit Extension\",\"TFRCore\",\"Tweaks for Reddit Popover\",\"Composable Architecture\" \\\n  --retain-objc-accessible \\\n  --disable-update-check \\\n  --format xcode\n";
-		};
-		89F56CAD264E1EC900F90BE2 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# sync build numbers between main app and extension\nif [ $ENABLE_PREVIEWS == \"NO\" ]; then\n    APP_INFO_PLIST=\"/Users/bermudalocket/git/redditweaks/Resources/Main App Info.plist\"\n    EXT_INFO_PLIST=\"/Users/bermudalocket/git/redditweaks/Resources/Extension Info.plist\"\n    #buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$APP_INFO_PLIST\")\n    #buildNumber=$(($buildNumber + 1))\n    buildNumber=\"$(date +%Y%m%d.%H%M%S)\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$APP_INFO_PLIST\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$EXT_INFO_PLIST\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
