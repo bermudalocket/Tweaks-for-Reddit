@@ -50,11 +50,9 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH_EXT ~/Library/MobileDevice/Provisioning\ Profiles
-      - name: TFRCompose
-        run: cd Compose && swift build
-      - name: TFRPrivate
-        run: cd TFRPrivate && swift build
       - name: Resolve package dependencies
         run: xcodebuild -resolvePackageDependencies
+      - name: Check dependencies
+        run: ls -lah TFRPrivate
       - name: Tweaks for Reddit.app
         run: xcodebuild clean build -destination generic/platform=macOS -scheme "Tweaks for Reddit.app" -workspace "Tweaks for Reddit.xcworkspace"
