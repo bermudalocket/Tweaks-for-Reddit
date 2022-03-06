@@ -8,19 +8,21 @@
 
 import Foundation
 
-public enum FavoriteSubredditListHeight: Int, CaseIterable {
-    case small = 125, medium = 200, large = 320
+public struct FavoriteSubredditListHeight: Equatable, Hashable {
+    public let heightInPixels: Int
+    public let displayName: String
+}
 
-    var displayName: String {
-        switch self {
-            case .small: return "a few"
-            case .medium: return "a bunch"
-            case .large: return "a lot"
-        }
-    }
-
+extension FavoriteSubredditListHeight {
     static func fromRawValue(_ value: Int) -> FavoriteSubredditListHeight? {
-        allCases.first { $0.rawValue == value }
+        allCases.first { $0.heightInPixels == value }
     }
+}
 
+extension FavoriteSubredditListHeight {
+    public static let small = FavoriteSubredditListHeight(heightInPixels: 125, displayName: "a few")
+    public static let medium = FavoriteSubredditListHeight(heightInPixels: 200, displayName: "a bunch")
+    public static let large = FavoriteSubredditListHeight(heightInPixels: 320, displayName: "a lot")
+
+    public static let allCases = [ small, medium, large ]
 }

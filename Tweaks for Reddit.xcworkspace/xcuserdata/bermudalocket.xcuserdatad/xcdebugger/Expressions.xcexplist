@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "ReceiptValidator.validate():DebugView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in ReceiptValidator.validate():DebugView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in IAPHelper.validateReceipt():IAPHelper.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in IAPHelper.validateReceipt():IAPHelper.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ReceiptValidator.$isReceiptValid.getter:DebugView.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

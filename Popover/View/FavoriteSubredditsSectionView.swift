@@ -92,7 +92,7 @@ struct FavoriteSubredditsSectionView: View {
             .transition(.opacity.animation(.default))
             .listStyle(PlainListStyle())
             .frame(height: min(
-                CGFloat(store.state.favoriteSubredditListHeight.rawValue),
+                CGFloat(store.state.favoriteSubredditListHeight.heightInPixels),
                 25 * CGFloat(store.state.favoriteSubreddits.count)
             ))
 

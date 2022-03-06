@@ -2,9 +2,9 @@ name: Xcode - Build and Analyze
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, testflight ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, testflight ]
 
 jobs:
   build:
@@ -14,21 +14,34 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install the Apple certificate and provisioning profile
+        with:
+          submodules: recursive
+          token: ${{ secrets.ACCESS_TOKEN }}
+          
+      - name: Set up keys
+        run: |
+          echo -n "${{ secrets.SSH_KEY }}" | base64 --decode --output ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          git config --global url.ssh://git@github.com/.insteadOf https://github.com/
+        
+      - name: Import cert & provisioning profiles
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE }}
           P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
           BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          BUILD_PROVISION_PROFILE_BASE64_EXT: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64_EXT }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
           # create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          PP_PATH=$RUNNER_TEMP/build_pp.provisionprofile
+          PP_PATH_EXT=$RUNNER_TEMP/build_pp_ext.provisionprofile
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
           # import certificate and provisioning profile from secrets
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64_EXT" | base64 --decode --output $PP_PATH_EXT
 
           # create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
@@ -42,5 +55,10 @@ jobs:
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-      - name: Build
-        run: xcodebuild clean build analyze -scheme "Tweaks for Reddit.app" -project "Tweaks for Reddit.xcodeproj" | xcpretty && exit ${PIPESTATUS[0]}
+          cp $PP_PATH_EXT ~/Library/MobileDevice/Provisioning\ Profiles
+          
+      - name: Resolve package dependencies
+        run: xcodebuild -resolvePackageDependencies
+
+      - name: Tweaks for Reddit.app
+        run: xcodebuild clean build -destination generic/platform=macOS -scheme "Tweaks for Reddit.app" -workspace "Tweaks for Reddit.xcworkspace"
