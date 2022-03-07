@@ -9,7 +9,7 @@
 
 ### CI Status
 
-[![Xcode - Build and Analyze](https://github.com/bermudalocket/Tweaks-for-Reddit/actions/workflows/build.yml/badge.svg?branch=testflight)](https://github.com/bermudalocket/Tweaks-for-Reddit/actions/workflows/build.yml)
+[![xcodebuild](https://github.com/bermudalocket/Tweaks-for-Reddit/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/bermudalocket/Tweaks-for-Reddit/actions/workflows/build.yml)
 
 ## Background
 
