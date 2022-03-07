@@ -1,4 +1,4 @@
-name: Xcode - Build and Analyze
+name: xcodebuild
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build and analyse default scheme using xcodebuild command
+    name: Build
     runs-on: macos-latest
 
     steps:
