@@ -117,7 +117,6 @@
 		89D738C026DF275500C5CE40 /* AppStoreValidationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89AA690B2667F5A900A3AFBB /* AppStoreValidationRequest.swift */; };
 		89D815BA27FA424900268E76 /* TFRCompose in Frameworks */ = {isa = PBXBuildFile; productRef = 89D815B927FA424900268E76 /* TFRCompose */; };
 		89D815BC27FA42BB00268E76 /* TFRCompose in Frameworks */ = {isa = PBXBuildFile; productRef = 89D815BB27FA42BB00268E76 /* TFRCompose */; };
-		89D88D3927EF9E7D00268E76 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 89D88D3827EF9E7D00268E76 /* Sentry */; };
 		89E03BF126E93BE900268E76 /* Background.plist in Resources */ = {isa = PBXBuildFile; fileRef = 89E03BF026E93BE900268E76 /* Background.plist */; };
 		89E03BF226E93BE900268E76 /* Background.plist in Resources */ = {isa = PBXBuildFile; fileRef = 89E03BF026E93BE900268E76 /* Background.plist */; };
 		89EC4E6D262DE06800268E76 /* SafariPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC4E6C262DE06800268E76 /* SafariPopoverView.swift */; };
@@ -445,7 +444,6 @@
 				89927AD327D019A800268E76 /* TFRPrivate in Frameworks */,
 				896514EA26F269FA00268E76 /* TFRCore.framework in Frameworks */,
 				8988B79326521CF500268E76 /* CloudKit.framework in Frameworks */,
-				89D88D3927EF9E7D00268E76 /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -866,7 +864,6 @@
 			packageProductDependencies = (
 				89927AD227D019A800268E76 /* TFRPrivate */,
 				8953157927D531FB00268E76 /* TFRPrivate */,
-				89D88D3827EF9E7D00268E76 /* Sentry */,
 			);
 			productName = "redditweaks2 Extension";
 			productReference = 99C7C300235D81AA00ABA6EA /* Tweaks for Reddit Extension.appex */;
@@ -925,7 +922,6 @@
 				8925681F26EC577600268E76 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				89B4EF7326F409E900268E76 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				8953157827D531FB00268E76 /* XCRemoteSwiftPackageReference "TFRPrivate" */,
-				89D88D3527EF9B6D00268E76 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				89D815B827FA424900268E76 /* XCRemoteSwiftPackageReference "TFRCompose" */,
 			);
 			productRefGroup = 99C7C2EE235D81A700ABA6EA /* Products */;
@@ -1831,14 +1827,6 @@
 				kind = branch;
 			};
 		};
-		89D88D3527EF9B6D00268E76 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1875,11 +1863,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 89D815B827FA424900268E76 /* XCRemoteSwiftPackageReference "TFRCompose" */;
 			productName = TFRCompose;
-		};
-		89D88D3827EF9E7D00268E76 /* Sentry */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 89D88D3527EF9B6D00268E76 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
-			productName = Sentry;
 		};
 /* End XCSwiftPackageProductDependency section */
 

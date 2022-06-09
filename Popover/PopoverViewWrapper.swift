@@ -18,7 +18,7 @@ import TFRCore
  */
 public class PopoverViewWrapper: SFSafariExtensionViewController {
 
-    public init(onAppear: @escaping () -> Void) {
+    public init() {
         super.init(nibName: nil, bundle: nil)
         logInit("PopoverViewWrapper")
 
@@ -36,7 +36,6 @@ public class PopoverViewWrapper: SFSafariExtensionViewController {
         let view = PopoverView(store: store)
             .environment(\.managedObjectContext, environment.coreData.container.viewContext)
             .accentColor(.redditOrange)
-            .onAppear(perform: onAppear)
 
         self.view = NSHostingView(rootView: view)
     }
