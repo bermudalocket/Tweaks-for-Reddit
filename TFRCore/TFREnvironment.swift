@@ -13,7 +13,7 @@ public struct TFREnvironment {
 
     public static let shared = Self(
         oauth: RedditService(),
-        coreData: CoreDataService(inMemory: false),
+        coreData: CoreDataService.shared,
         defaults: DefaultsServiceLive(),
         keychain: KeychainServiceLive(),
         appStore: AppStoreService()

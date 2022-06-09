@@ -1,61 +1,48 @@
-const debug = (msg) => {
+function debug(msg) {
     console.log(`[Tweaks for Reddit][DEBUG] ${msg}`)
 }
 
-const ready = (callback) => {
-    if (document.readyState != "loading") callback()
-    else document.addEventListener("DOMContentLoaded", callback)
+function ready(callback) {
+    if (document.readyState != "loading") {
+        callback()
+    } else {
+        document.addEventListener("DOMContentLoaded", callback)
+    }
 }
 
-const uuidv4 = () => {
-    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-}
-
-const enabledFeatures = {
-    autoExpandImages: false,
-    hideAds: false,
-    hidePromotedPosts: false,
-    hideHappeningNowBanners: false,
-    rememberUserVotes: false,
-}
+// An empty object that will be populated when a feature message is received from the app.
+// e.g.: Object.defineProperty(Features, funcName, true)
+const Features = { }
 
 ready(() => {
     if (window.top === window) {
-        safari.self.addEventListener("message", event => {
-            switch (event.name) {
-                case "script":
-                    let func = event.message["function"]
-                    eval(func)
-                    switch (func) {
-                        case "autoExpandImages()": enabledFeatures.autoExpandImages = true; break;
-                        case "hideAds()": enabledFeatures.hideAds = true; break;
-                        case "hidePromotedPosts()": enabledFeatures.hidePromotedPosts = true; break;
-                        case "hideHappeningNowBanners()": enabledFeatures.hideHappeningNowBanners = true; break;
-                        case "rememberUserVotes()": enabledFeatures.rememberUserVotes = true; break;
-                    }
-                    break
-
-                case "userKarmaFetchRequestResponse":
-                    debug(`${event.name} in: ${event.message['user']} -> ${event.message['karma']}`)
-                    rememberUserVotes("userKarmaFetchRequestResponse", event.message)
-                    break
-
-                case "threadCommentCountFetchRequestResponse":
-                    debug(`${event.name} in: ${event.message["thread"]} -> ${event.message["count"]}`)
-                    showNewComments("fulfillRequest", event.message)
-                    break
-            }
-        });
+        safari.self.addEventListener("message", acceptMessage);
         safari.extension.dispatchMessage("begin", { "url": window.location.href })
     }
 })
 
-// MARK: - TFRFeature implementations
+function acceptMessage(event) {
+    switch (event.name) {
+        case "script":
+            let func = event.message["function"]
+            eval(func)
+            let funcName = func.replace("()", "")
+            Object.defineProperty(Features, funcName, true)
+            break
 
-// MARK: liveCommentPreview
-// NoCommit.swift
+        case "userKarmaFetchRequestResponse":
+            debug(`${event.name} in: ${event.message['user']} -> ${event.message['karma']}`)
+            rememberUserVotes("userKarmaFetchRequestResponse", event.message)
+            break
+
+        case "threadCommentCountFetchRequestResponse":
+            debug(`${event.name} in: ${event.message["thread"]} -> ${event.message["count"]}`)
+            showNewComments("fulfillRequest", event.message)
+            break
+    }
+}
+
+// MARK: - TFRFeature implementations
 
 // MARK: endlessScroll
 let endlessScroll = () => {
@@ -86,13 +73,13 @@ let endlessScroll = () => {
             const parser = new DOMParser()
             const html = parser.parseFromString(text, "text/html")
             preloadedData = html.documentElement.querySelector(".sitetable")
-            if (enabledFeatures.hidePromotedPosts) {
+            if (Features.hidePromotedPosts) {
                 hidePromotedPosts(preloadedData)
             }
-            if (enabledFeatures.hideHappeningNowBanners) {
+            if (Features.hideHappeningNowBanners) {
                 hideHappeningNowBanners(preloadedData)
             }
-            if (enabledFeatures.hideAds) {
+            if (Features.hideAds) {
                 hideAds(preloadedData)
             }
             debug("Endless scrolling: preloading completed")
@@ -101,10 +88,10 @@ let endlessScroll = () => {
     ready(preloadData)
 
     const postLoadTasks = () => {
-        if (enabledFeatures.autoExpandImages) {
+        if (Features.autoExpandImages) {
             autoExpandImages()
         }
-        if (enabledFeatures.rememberUserVotes) {
+        if (Features.rememberUserVotes) {
             rememberUserVotes("load")
         }
     }

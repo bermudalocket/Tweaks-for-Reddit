@@ -18,7 +18,7 @@ import TFRCore
  */
 public class PopoverViewWrapper: SFSafariExtensionViewController {
 
-    public init() {
+    public init(onAppear: @escaping () -> Void) {
         super.init(nibName: nil, bundle: nil)
         logInit("PopoverViewWrapper")
 
@@ -33,29 +33,10 @@ public class PopoverViewWrapper: SFSafariExtensionViewController {
             environment: environment
         )
 
-        var activity: NSBackgroundActivityScheduler {
-            let activity = NSBackgroundActivityScheduler(identifier: "com.bermudalocket.redditweaks.checkForMessagesTask")
-            activity.interval = 60
-            activity.qualityOfService = .background
-            activity.repeats = true
-            activity.tolerance = 20
-            activity.schedule { completion in
-                if activity.shouldDefer {
-                    logService("Deferring task", service: .background)
-                    completion(.deferred)
-                } else {
-                    logService("Checking for messages...", service: .background)
-                    store.send(.reddit(.checkForMessages))
-                    completion(.finished)
-                }
-            }
-            return activity
-        }
-
         let view = PopoverView(store: store)
-//            .environmentObject(store)
             .environment(\.managedObjectContext, environment.coreData.container.viewContext)
             .accentColor(.redditOrange)
+            .onAppear(perform: onAppear)
 
         self.view = NSHostingView(rootView: view)
     }

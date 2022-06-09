@@ -26,6 +26,27 @@ class TweaksForRedditTests: XCTestCase {
 
     private var cancellables = Set<AnyCancellable>()
 
+    func testCoreDataSetup() {
+        let cd = TFREnvironment.shared.coreData
+        let container = cd.container
+        XCTAssertNotNil(container)
+        XCTAssertNotNil(container.persistentStoreCoordinator)
+        XCTAssertTrue(container.persistentStoreCoordinator.persistentStores.count > 0)
+    }
+
+    func testAddFavoriteSubreddit() {
+        let store = Store<PopoverState, PopoverAction, TFREnvironment>(
+            initialState: PopoverState(),
+            reducer: popoverReducer,
+            environment: .shared
+        )
+        _ = TFREnvironment.shared.coreData.favoriteSubreddits
+
+        store.send(.addFavoriteSubreddit("test"))
+
+        XCTAssertTrue(store.state.favoriteSubreddits.contains { $0.name == "test" })
+    }
+
     func testICloudKeyValueStore() async throws {
         let randomId = UUID().uuidString
         let iCloud = NSUbiquitousKeyValueStore.default

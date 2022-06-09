@@ -26,7 +26,6 @@
 		8909ACC025F46FAB00251064 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8909ACBF25F46FAA00251064 /* README.md */; };
 		8909ACC125F46FAB00251064 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8909ACBF25F46FAA00251064 /* README.md */; };
 		890CD1E126531C1600CC4405 /* iCloudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD1E026531C1600CC4405 /* iCloudView.swift */; };
-		8917F47C27C01B2B00268E76 /* TFRCompose in Frameworks */ = {isa = PBXBuildFile; productRef = 8917F47B27C01B2B00268E76 /* TFRCompose */; };
 		891A750A26811F6400268E76 /* MainAppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891A750926811F6400268E76 /* MainAppStore.swift */; };
 		891B1B6E26E52F4E00268E76 /* RedditweaksButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8925FD0F2633AD3000D83FF1 /* RedditweaksButtonStyle.swift */; };
 		891BA369262B8CDF00268E76 /* ConnectToSafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891BA368262B8CDF00268E76 /* ConnectToSafariView.swift */; };
@@ -47,7 +46,6 @@
 		8949C04623DD582D002CF0C0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8949C04223DD5810002CF0C0 /* LICENSE */; };
 		8949C04723DD582E002CF0C0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8949C04223DD5810002CF0C0 /* LICENSE */; };
 		8952B9C325EED97D00EF44DF /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8952B9C125EED97D00EF44DF /* TitleView.swift */; };
-		8953157727D531D800268E76 /* TFRCompose in Frameworks */ = {isa = PBXBuildFile; productRef = 8953157627D531D800268E76 /* TFRCompose */; };
 		8953157A27D531FB00268E76 /* TFRPrivate in Frameworks */ = {isa = PBXBuildFile; productRef = 8953157927D531FB00268E76 /* TFRPrivate */; };
 		89619D7326503C3400214AD0 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89619D7226503C3400214AD0 /* LogoView.swift */; };
 		896514DC26F18B6000268E76 /* WindowAlwaysComesToFrontTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896514DB26F18B6000268E76 /* WindowAlwaysComesToFrontTest.swift */; };
@@ -117,6 +115,9 @@
 		89D59871268A404C00268E76 /* KarmaMemory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D59869268A404C00268E76 /* KarmaMemory+CoreDataClass.swift */; };
 		89D59874268A408500268E76 /* RedditMailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D59873268A408500268E76 /* RedditMailView.swift */; };
 		89D738C026DF275500C5CE40 /* AppStoreValidationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89AA690B2667F5A900A3AFBB /* AppStoreValidationRequest.swift */; };
+		89D815BA27FA424900268E76 /* TFRCompose in Frameworks */ = {isa = PBXBuildFile; productRef = 89D815B927FA424900268E76 /* TFRCompose */; };
+		89D815BC27FA42BB00268E76 /* TFRCompose in Frameworks */ = {isa = PBXBuildFile; productRef = 89D815BB27FA42BB00268E76 /* TFRCompose */; };
+		89D88D3927EF9E7D00268E76 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 89D88D3827EF9E7D00268E76 /* Sentry */; };
 		89E03BF126E93BE900268E76 /* Background.plist in Resources */ = {isa = PBXBuildFile; fileRef = 89E03BF026E93BE900268E76 /* Background.plist */; };
 		89E03BF226E93BE900268E76 /* Background.plist in Resources */ = {isa = PBXBuildFile; fileRef = 89E03BF026E93BE900268E76 /* Background.plist */; };
 		89EC4E6D262DE06800268E76 /* SafariPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC4E6C262DE06800268E76 /* SafariPopoverView.swift */; };
@@ -401,6 +402,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89D815BC27FA42BB00268E76 /* TFRCompose in Frameworks */,
 				89B4EF7726F40A6300268E76 /* Kingfisher in Frameworks */,
 				896514E026F269EC00268E76 /* TFRCore.framework in Frameworks */,
 			);
@@ -410,8 +412,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8953157727D531D800268E76 /* TFRCompose in Frameworks */,
-				8917F47C27C01B2B00268E76 /* TFRCompose in Frameworks */,
 				8925682326EC57DC00268E76 /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -427,6 +427,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89D815BA27FA424900268E76 /* TFRCompose in Frameworks */,
 				89B4EF7526F409E900268E76 /* Kingfisher in Frameworks */,
 				898D091C262A286C00268E76 /* StoreKit.framework in Frameworks */,
 				8988B79226521C4700268E76 /* CloudKit.framework in Frameworks */,
@@ -444,6 +445,7 @@
 				89927AD327D019A800268E76 /* TFRPrivate in Frameworks */,
 				896514EA26F269FA00268E76 /* TFRCore.framework in Frameworks */,
 				8988B79326521CF500268E76 /* CloudKit.framework in Frameworks */,
+				89D88D3927EF9E7D00268E76 /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -772,6 +774,7 @@
 			name = "Tweaks for Reddit Popover";
 			packageProductDependencies = (
 				89B4EF7626F40A6300268E76 /* Kingfisher */,
+				89D815BB27FA42BB00268E76 /* TFRCompose */,
 			);
 			productName = TfRSwiftUI;
 			productReference = 898A38F82688FE5E00268E76 /* Tweaks_for_Reddit_Popover.framework */;
@@ -794,8 +797,6 @@
 			name = TFRCore;
 			packageProductDependencies = (
 				8925682226EC57DC00268E76 /* KeychainAccess */,
-				8917F47B27C01B2B00268E76 /* TFRCompose */,
-				8953157627D531D800268E76 /* TFRCompose */,
 			);
 			productName = TfRGlobals;
 			productReference = 898A390F2688FFBA00268E76 /* TFRCore.framework */;
@@ -840,6 +841,7 @@
 			name = "Tweaks for Reddit";
 			packageProductDependencies = (
 				89B4EF7426F409E900268E76 /* Kingfisher */,
+				89D815B927FA424900268E76 /* TFRCompose */,
 			);
 			productName = redditweaks2;
 			productReference = 99C7C2ED235D81A700ABA6EA /* Tweaks for Reddit.app */;
@@ -864,6 +866,7 @@
 			packageProductDependencies = (
 				89927AD227D019A800268E76 /* TFRPrivate */,
 				8953157927D531FB00268E76 /* TFRPrivate */,
+				89D88D3827EF9E7D00268E76 /* Sentry */,
 			);
 			productName = "redditweaks2 Extension";
 			productReference = 99C7C300235D81AA00ABA6EA /* Tweaks for Reddit Extension.appex */;
@@ -921,8 +924,9 @@
 			packageReferences = (
 				8925681F26EC577600268E76 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				89B4EF7326F409E900268E76 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				8953157527D531D800268E76 /* XCRemoteSwiftPackageReference "TFRCompose" */,
 				8953157827D531FB00268E76 /* XCRemoteSwiftPackageReference "TFRPrivate" */,
+				89D88D3527EF9B6D00268E76 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+				89D815B827FA424900268E76 /* XCRemoteSwiftPackageReference "TFRCompose" */,
 			);
 			productRefGroup = 99C7C2EE235D81A700ABA6EA /* Products */;
 			projectDirPath = "";
@@ -1605,7 +1609,7 @@
 				CODE_SIGN_ENTITLEMENTS = Resources/Extension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1915;
+				CURRENT_PROJECT_VERSION = 20220404.154547;
 				DEVELOPMENT_TEAM = 2VZ489BR9H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "Resources/Extension Info.plist";
@@ -1615,7 +1619,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks.extension;
@@ -1633,7 +1637,7 @@
 				CODE_SIGN_ENTITLEMENTS = Resources/Extension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1915;
+				CURRENT_PROJECT_VERSION = 20220404.154547;
 				DEVELOPMENT_TEAM = 2VZ489BR9H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "Resources/Extension Info.plist";
@@ -1643,7 +1647,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks.extension;
@@ -1664,7 +1668,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1073;
+				CURRENT_PROJECT_VERSION = 20220404.154547;
 				DEVELOPMENT_TEAM = 2VZ489BR9H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "Resources/Main App Info.plist";
@@ -1673,7 +1677,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1691,7 +1695,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1073;
+				CURRENT_PROJECT_VERSION = 20220404.154547;
 				DEVELOPMENT_TEAM = 2VZ489BR9H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "Resources/Main App Info.plist";
@@ -1700,7 +1704,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bermudalocket.redditweaks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1803,14 +1807,6 @@
 				minimumVersion = 4.0.0;
 			};
 		};
-		8953157527D531D800268E76 /* XCRemoteSwiftPackageReference "TFRCompose" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bermudalocket/TFRCompose";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		8953157827D531FB00268E76 /* XCRemoteSwiftPackageReference "TFRPrivate" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/bermudalocket/TFRPrivate";
@@ -1827,22 +1823,29 @@
 				version = 6.3.1;
 			};
 		};
+		89D815B827FA424900268E76 /* XCRemoteSwiftPackageReference "TFRCompose" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bermudalocket/TFRCompose";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		89D88D3527EF9B6D00268E76 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8917F47B27C01B2B00268E76 /* TFRCompose */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = TFRCompose;
-		};
 		8925682226EC57DC00268E76 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8925681F26EC577600268E76 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
-		};
-		8953157627D531D800268E76 /* TFRCompose */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8953157527D531D800268E76 /* XCRemoteSwiftPackageReference "TFRCompose" */;
-			productName = TFRCompose;
 		};
 		8953157927D531FB00268E76 /* TFRPrivate */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1862,6 +1865,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 89B4EF7326F409E900268E76 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		89D815B927FA424900268E76 /* TFRCompose */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 89D815B827FA424900268E76 /* XCRemoteSwiftPackageReference "TFRCompose" */;
+			productName = TFRCompose;
+		};
+		89D815BB27FA42BB00268E76 /* TFRCompose */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 89D815B827FA424900268E76 /* XCRemoteSwiftPackageReference "TFRCompose" */;
+			productName = TFRCompose;
+		};
+		89D88D3827EF9E7D00268E76 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 89D88D3527EF9B6D00268E76 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
 		};
 /* End XCSwiftPackageProductDependency section */
 

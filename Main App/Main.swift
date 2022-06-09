@@ -32,29 +32,13 @@ struct RedditweaksApp: App {
             .sink(receiveValue: self.store.send(_:))
             .store(in: &cancellables)
 
-        if #available(macOS 12, *) {
-            Task(priority: .background) {
-                while true {
-                    log("async task created, awaiting awaken")
-                    try? await Task.sleep(nanoseconds: UInt64(90 * 1_000_000_000))
-                    log("async task awoken - am i cancelled? \(Task.isCancelled ? "Y" : "N")")
-                    if !Task.isCancelled {
-                        RedditweaksApp.backgroundTaskActionPipe.send(.checkForMessages)
-                    }
-                }
-            }
-        } else {
-            let backgroundTask = NSBackgroundActivityScheduler(identifier: "com.bermudalocket.redditweaks.background")
-            backgroundTask.interval = 90
-            backgroundTask.tolerance = 30
-            backgroundTask.qualityOfService = .background
-            backgroundTask.repeats = true
-            backgroundTask.schedule { completion in
-                if backgroundTask.shouldDefer {
-                    completion(.deferred)
-                } else {
+        Task(priority: .background) {
+            log("async task created, awaiting awaken")
+            while true {
+                try? await Task.sleep(nanoseconds: UInt64(90 * 1_000_000_000))
+                log("async task awoken - am i cancelled? \(Task.isCancelled ? "Y" : "N")")
+                if !Task.isCancelled {
                     RedditweaksApp.backgroundTaskActionPipe.send(.checkForMessages)
-                    completion(.finished)
                 }
             }
         }
